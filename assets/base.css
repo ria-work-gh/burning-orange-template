@@ -2,18 +2,37 @@
 
 /* ========== 1. Reset ========== */
 
-body {
-  margin: 0;
-}
-
-* {
+*,
+*::before,
+*::after {
   box-sizing: border-box;
 }
 
-.unstyled-list {
-  padding: 0;
+* {
   margin: 0;
-  list-style: none;
+}
+
+html {
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+body {
+  line-height: 1.5;
+  min-height: 100vh;
+}
+
+img,
+picture,
+video,
+canvas,
+svg {
+  display: block;
+  max-width: 100%;
+}
+
+img {
+  height: auto;
 }
 
 p,
@@ -23,20 +42,14 @@ h3,
 h4,
 h5,
 h6 {
-  margin: 0;
   font-size: 100%;
   font-weight: normal;
+  overflow-wrap: break-word;
 }
 
 a {
   color: inherit;
   text-decoration: none;
-}
-
-img {
-  height: auto;
-  max-width: 100%;
-  display: block;
 }
 
 button {
@@ -45,8 +58,7 @@ button {
   border-radius: 0;
   padding: 0;
   color: inherit;
-  font-size: inherit;
-  font-family: inherit;
+  font: inherit;
 }
 
 button:not([disabled]) {
@@ -64,6 +76,12 @@ textarea {
   padding: 0;
   border-radius: 0;
   outline-offset: 5px;
+}
+
+.unstyled-list {
+  padding: 0;
+  margin: 0;
+  list-style: none;
 }
 
 dd,
@@ -97,85 +115,90 @@ summary::-webkit-details-marker {
 /* ========== 2. Custom Properties ========== */
 
 :root {
-  /* Raw palette */
-  --color-black: black;
-  --color-white: white;
-  --color-green: #34dc0e;
-
-  /* Semantic colors */
-  --color-text: hsla(0, 0%, 0%, 1);
-  --color-text-light: hsla(0, 0%, 0%, 0.5);
-  --color-bg: var(--color-white);
-  --color-success: #d4edda;
-  --color-error-bg: #f8d7da;
-
-  --color-button-text: hsla(0, 0%, 100%, 1);
-  --color-button-bg: hsla(0, 0%, 0%, 1);
-  --color-button-bg-active: hsla(0, 0%, 20%, 1);
-
   /* Typography */
-  --type-cap-spacing: 0.066em;
-  --type-normal-spacing: 0em;
+  --font-body: 'Litteratur', serif;
+  --font-heading: var(--font-body);
 
-  --type-mini-size: 12px;
-  --type-mini-height: 14px;
+  --font-base-size: 14px;
+  --font-base-height: 1.3;
 
-  --type-base-size: 14px;
-  --type-base-height: 16px;
+  --font-detail-size: 12px;
+  --font-control-size: 16px;
 
-  --type-medium-size: 18px;
-  --type-medium-height: 20px;
+  --font-medium-size: 24px;
+  --font-medium-height: 1.2;
 
-  --type-large-size: 28px;
-  --type-large-height: 30px;
+  --font-large-size: 32px;
+  --font-large-height: 1.2;
 
-  --type-xl-size: 32px;
-  --type-xl-height: 34px;
+  --font-hero-size: 56px;
+  --font-hero-height: 0.95;
 
-  /* Spacing */
-  --spacing-xxs: 2px;
-  --spacing-xs: 4px;
-  --spacing-s: 8px;
-  --spacing-base: 16px;
-  --spacing-m: 32px;
-  --spacing-l: 64px;
-  --spacing-xl: 128px;
-  --spacing-xxl: 256px;
+  /* Heading hierarchy (mobile-first) */
+  --h1-size: 36px;
+  --h1-height: 0.95;
+  --h2-size: 28px;
+  --h2-height: 1.2;
+  --h3-size: 24px;
+  --h3-height: 1.2;
+  --h4-size: 14px;
+  --h4-height: 1.3;
+
+  /* Spacing (mobile-first) */
+  --spacing-1: 6px;
+  --spacing-2: 16px;
+  --spacing-3: 32px;
+  --spacing-4: 32px;
+  --spacing-5: 64px;
+
+  /* Button */
+  --button-padding: 8px 16px;
 
   /* Transitions */
-  --transition-fast: 0.2s ease;
-  --transition-slow: 0.5s ease;
+  --transition-fast: 100ms ease;
+  --transition-base: 300ms ease;
+  --transition-slow: 500ms ease;
+
+  /* Z-Index */
+  --z-dropdown: 50;
+  --z-header: 100;
+  --z-drawer: 200;
+  --z-modal: 300;
+  --z-toast: 400;
+
+  /* Border Radius */
+  --radius-sm: 4px;
+
+  /* Blur */
+  --blur-md: 8px;
+
+  /* Colors */
+  --color-background: #fdfdf4;
+  --color-text: hsl(0, 0%, 0%);
+  --color-text-muted: hsla(0, 0%, 0%, 0.5);
+  --color-accent: hsl(15, 48%, 56%);
+  --color-accent-dark: hsl(15, 48%, 40%);
+
+  --color-input-bg: hsl(45, 33%, 95%);
+  --color-input-bg-hover: hsl(45, 33%, 90%);
+  --color-input-bg-pressed: hsl(45, 33%, 85%);
+
+  /* Collection palettes */
+  --color-saffra: hsl(15, 48%, 56%);
+  --color-saffra-dark: hsl(15, 48%, 40%);
+
+  /* Overlay */
+  --color-overlay: hsla(0, 0%, 0%, 0.4);
 }
 
-@media (min-width: 900px) {
+@media (min-width: 750px) {
   :root {
-    --type-base-size: 14px;
-    --type-base-height: 16px;
+    --h1-size: 56px;
+    --h2-size: 32px;
 
-    --type-medium-size: 20px;
-    --type-medium-height: 22px;
-
-    --type-large-size: 28px;
-    --type-large-height: 30px;
-
-    --type-xl-size: 48px;
-    --type-xl-height: 50px;
-  }
-}
-
-@media (min-width: 1600px) {
-  :root {
-    --type-base-size: 16px;
-    --type-base-height: 18px;
-
-    --type-medium-size: 24px;
-    --type-medium-height: 26px;
-
-    --type-large-size: 36px;
-    --type-large-height: 38px;
-
-    --type-xl-size: 64px;
-    --type-xl-height: 66px;
+    --spacing-3: 48px;
+    --spacing-4: 64px;
+    --spacing-5: 128px;
   }
 }
 
@@ -185,63 +208,66 @@ summary::-webkit-details-marker {
 /* ========== 4. Body Defaults ========== */
 
 body {
-  font-family: "Antarctica", sans-serif;
-  font-size: var(--type-base-size);
-  line-height: var(--type-base-height);
+  font-family: var(--font-body);
+  font-size: var(--font-base-size);
+  line-height: var(--font-base-height);
   color: var(--color-text);
-  background-color: var(--color-bg);
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
+  background-color: var(--color-background);
 }
+
+h1 { font-family: var(--font-heading); font-size: var(--h1-size); line-height: var(--h1-height); }
+h2 { font-family: var(--font-heading); font-size: var(--h2-size); line-height: var(--h2-height); }
+h3 { font-family: var(--font-heading); font-size: var(--h3-size); line-height: var(--h3-height); }
+h4 { font-family: var(--font-heading); font-size: var(--h4-size); line-height: var(--h4-height); }
 
 /* ========== 5. Typography Utilities ========== */
 
 .text-mini {
-  font-size: var(--type-mini-size);
-  line-height: var(--type-mini-height);
+  font-size: var(--font-detail-size);
+  line-height: 1.3;
 }
 
 .text-base {
-  font-size: var(--type-base-size);
-  line-height: var(--type-base-height);
+  font-size: var(--font-base-size);
+  line-height: var(--font-base-height);
 }
 
 .text-medium {
-  font-size: var(--type-medium-size);
-  line-height: var(--type-medium-height);
+  font-family: var(--font-body);
+  font-size: var(--font-medium-size);
+  line-height: var(--font-medium-height);
 }
 
 .text-large {
-  font-size: var(--type-large-size);
-  line-height: var(--type-large-height);
+  font-family: var(--font-heading);
+  font-size: var(--font-large-size);
+  line-height: var(--font-large-height);
 }
 
 .text-xl {
-  font-size: var(--type-xl-size);
-  line-height: var(--type-xl-height);
-  font-family: "Antarctica", sans-serif;
-  font-weight: bold;
-  text-transform: uppercase;
-  letter-spacing: 0.02em;
+  font-family: var(--font-heading);
+  font-size: var(--font-hero-size);
+  line-height: var(--font-hero-height);
 }
 
 .text-cap {
   text-transform: uppercase;
-  letter-spacing: var(--type-cap-spacing);
+  letter-spacing: 0.1em;
 }
 
 .text-light {
-  color: var(--color-text-light);
+  color: var(--color-text-muted);
 }
 
 .text-link {
-  color: var(--color-text-light);
+  color: var(--color-text-muted);
+  transition: color var(--transition-fast);
 }
 .text-link:hover {
-  color: var(--color-text);
+  color: var(--color-accent);
 }
 .text-link:active {
-  color: var(--color-text-light);
+  color: var(--color-accent-dark);
 }
 
 /* ========== 6. Prose ========== */
@@ -263,17 +289,16 @@ body {
 
 .typeset a,
 .inline-link {
-  text-decoration: underline;
-  text-decoration-color: var(--color-text-light);
+  color: var(--color-text-muted);
+  transition: color var(--transition-fast);
 }
 .typeset a:hover,
 .inline-link:hover {
-  text-decoration-color: var(--color-text);
+  color: var(--color-accent);
 }
 .typeset a:active,
 .inline-link:active {
-  color: var(--color-text-light);
-  text-decoration-color: var(--color-text-light);
+  color: var(--color-accent-dark);
 }
 
 /* ========== 7. Buttons ========== */
@@ -281,27 +306,27 @@ body {
 .button {
   display: inline-flex;
   justify-content: center;
-  padding: var(--spacing-s) var(--spacing-base);
-  background-color: var(--color-button-bg);
-  color: var(--color-button-text);
-  border-radius: 2px;
-  box-shadow: 1px 2px 8px hsla(0, 0%, 0%, 0.1);
-  transition: transform var(--transition-fast);
+  padding: var(--button-padding);
+  background-color: var(--color-accent);
+  color: white;
+  transition: all var(--transition-fast);
 }
 
 .button:hover {
-  transform: translateY(-2px);
+  background-color: var(--color-accent-dark);
 }
 
 .button:active {
-  transform: translateY(1px);
-  background-color: var(--color-button-bg-active);
+  background-color: var(--color-accent-dark);
 }
 
 .button.secondary {
-  --color-button-bg: hsla(0, 0%, 0%, 0.10);
-  --color-button-text: black;
-  --color-button-bg-active: hsla(0, 0%, 0%, 0.2);
+  background-color: hsla(0, 0%, 0%, 0.10);
+  color: black;
+}
+
+.button.secondary:hover {
+  background-color: hsla(0, 0%, 0%, 0.2);
 }
 
 .button:disabled,
@@ -320,7 +345,7 @@ body {
   position: absolute;
   width: 16px;
   height: 16px;
-  border: 2px solid var(--color-button-text);
+  border: 2px solid white;
   border-right-color: transparent;
   border-radius: 50%;
   animation: spin 0.6s linear infinite;
@@ -337,25 +362,30 @@ body {
 .input {
   display: block;
   width: 100%;
-  padding: var(--spacing-s);
+  padding: var(--spacing-1);
   background-color: var(--color-input-bg);
-  border: 1px solid var(--color-text-light);
-  border-radius: 2px;
-  transition: border-color var(--transition-fast);
+  border: none;
+  border-top: 1px solid var(--color-text);
+  border-bottom: 1px solid var(--color-text);
+  border-radius: 0;
+  font-size: var(--font-detail-size);
+  transition: background-color var(--transition-fast);
 }
 
 .input:hover {
   background-color: var(--color-input-bg-hover);
-  border-color: var(--color-text);
 }
 
 .input:focus {
   background-color: var(--color-input-bg-hover);
-  border-color: var(--color-text);
+}
+
+.input:active {
+  background-color: var(--color-input-bg-pressed);
 }
 
 .input::placeholder {
-  color: var(--color-text-light);
+  color: var(--color-text-muted);
 }
 
 .input:disabled {
@@ -369,8 +399,8 @@ body {
 
 .input-error {
   color: #dc2626;
-  font-size: 14px;
-  margin-top: var(--spacing-xs);
+  font-size: var(--font-detail-size);
+  margin-top: 4px;
 }
 
 .textarea {
@@ -382,27 +412,27 @@ body {
   appearance: none;
   background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath fill='%23000' d='M1.41 0L6 4.58 10.59 0 12 1.41l-6 6-6-6z'/%3E%3C/svg%3E");
   background-repeat: no-repeat;
-  background-position: right var(--spacing-base) center;
-  padding-right: var(--spacing-m);
+  background-position: right var(--spacing-2) center;
+  padding-right: 32px;
 }
 
 /* ========== 9. Form Layout ========== */
 
 .form-label {
   display: block;
-  margin-bottom: var(--spacing-xs);
+  margin-bottom: 4px;
   font-weight: 500;
 }
 
 .form-hint {
-  color: var(--color-text-light);
-  font-size: 14px;
-  margin-top: var(--spacing-xs);
+  color: var(--color-text-muted);
+  font-size: var(--font-detail-size);
+  margin-top: 4px;
 }
 
 .form-inline {
   display: flex;
-  gap: var(--spacing-s);
+  gap: 8px;
 }
 
 .form-inline .form-group {
@@ -411,14 +441,14 @@ body {
 
 .form-error {
   color: #dc2626;
-  font-size: 14px;
-  margin-top: var(--spacing-xs);
+  font-size: var(--font-detail-size);
+  margin-top: 4px;
 }
 
 .form-success {
   color: #16a34a;
-  font-size: 14px;
-  margin-top: var(--spacing-xs);
+  font-size: var(--font-detail-size);
+  margin-top: 4px;
 }
 
 /* ========== 10. Variant Pills & Checkboxes ========== */
@@ -426,9 +456,9 @@ body {
 .checkbox {
   display: flex;
   align-items: center;
-  gap: var(--spacing-xs);
+  gap: 4px;
   cursor: pointer;
-  padding: var(--spacing-s);
+  padding: 8px;
   border-radius: 2px;
   background-color: var(--color-input-bg);
   transition: transform var(--transition-fast);
@@ -441,7 +471,7 @@ body {
 }
 
 .checkbox:active {
-  background-color: var(--color-input-bg);
+  background-color: var(--color-input-bg-pressed);
   transform: translateY(1px);
 }
 
@@ -458,7 +488,7 @@ body {
 .variant-pills {
   display: flex;
   flex-wrap: wrap;
-  gap: var(--spacing-xs);
+  gap: 4px;
 }
 
 .variant-pill {
@@ -473,9 +503,9 @@ body {
 
 .variant-pill span {
   display: block;
-  padding: var(--spacing-s) var(--spacing-base);
+  padding: var(--button-padding);
   border-radius: 2px;
-  background-color: var(--color-white);
+  background-color: var(--color-background);
   box-shadow: 1px 2px 8px hsla(0, 0%, 0%, 0.1);
   transition:
     transform 0.2s ease,
@@ -509,12 +539,12 @@ body {
 .badge {
   display: inline-flex;
   align-items: center;
-  padding: var(--spacing-xs) var(--spacing-s);
-  font-size: 12px;
+  padding: 4px 8px;
+  font-size: var(--font-detail-size);
   font-weight: 500;
   border-radius: 2px;
   background: var(--color-text);
-  color: var(--color-bg);
+  color: var(--color-background);
 }
 
 .badge-sale {
@@ -528,14 +558,14 @@ body {
 }
 
 .badge-soldout {
-  background: var(--color-text-light);
+  background: var(--color-text-muted);
 }
 
 /* ========== 12. Grid Utilities ========== */
 
 .grid {
   display: grid;
-  gap: var(--spacing-base);
+  gap: var(--spacing-2);
 }
 
 .grid-2 {
@@ -647,8 +677,8 @@ body {
   position: absolute;
   top: -100%;
   left: 0;
-  padding: var(--spacing-s) var(--spacing-base);
-  background: var(--color-bg);
+  padding: 8px var(--spacing-2);
+  background: var(--color-background);
   z-index: 9999;
 }
 
@@ -680,15 +710,13 @@ body {
   display: inline-flex;
   align-items: center;
   border: 1px solid hsla(0, 0%, 0%, 0.1);
-  background-color: white;
+  background-color: var(--color-background);
   border-radius: 2px;
 }
 
 .quantity-selector button {
-  padding: var(--spacing-s);
+  padding: 8px;
   width: 2.3em;
-  /* font-size: 18px;
-  line-height: 1; */
   transition: transform 0.2s ease;
 }
 
@@ -701,7 +729,7 @@ body {
 
 .quantity-selector input {
   width: 3em;
-  padding: var(--spacing-s);
+  padding: 8px;
   text-align: center;
   border-left: 1px solid hsla(0, 0%, 0%, 0.1);
   border-right: 1px solid hsla(0, 0%, 0%, 0.1);
@@ -717,7 +745,7 @@ body {
 /* ========== 17. Focus States ========== */
 
 :focus-visible {
-  outline: 2px solid currentColor;
+  outline: 2px solid var(--color-accent);
   outline-offset: 2px;
 }
 
@@ -741,8 +769,8 @@ body {
 
 .tab-button {
   color: black;
-  background-color: var(--color-white);
-  padding: var(--spacing-s);
+  background-color: var(--color-background);
+  padding: 8px;
   border-radius: 2px;
   box-shadow: 1px 2px 8px hsla(0, 0%, 0%, 0.1);
   transition:
@@ -777,7 +805,7 @@ body {
 .filter-bar {
   display: flex;
   flex-wrap: wrap;
-  gap: var(--spacing-s);
+  gap: 8px;
 }
 
 /* ========== 20. Nav & Footer Links ========== */
@@ -791,24 +819,15 @@ body {
 .nav-link:active {
   opacity: 1;
 }
-.nav-link:focus-visible {
-  /* TODO: add focus-visible styles */
-}
 .nav-link.current {
   text-decoration: underline;
 }
 
-.footer-link {
-  /* TODO: add base styles */
-}
 .footer-link:hover {
-  color: var(--color-text-light);
+  color: var(--color-text-muted);
 }
 .footer-link:active {
-  color: var(--color-text-light);
-}
-.footer-link:focus-visible {
-  /* TODO: add focus-visible styles */
+  color: var(--color-text-muted);
 }
 
 /* ========== 21. Sticky Header Group ========== */
@@ -816,5 +835,18 @@ body {
 .shopify-section-group-header-group {
   position: sticky;
   top: calc(-1 * var(--header-group-offset, 0px));
-  z-index: 9;
+  z-index: var(--z-header);
+}
+
+/* ========== 22. Scroll Reveal ========== */
+
+.fade-in {
+  opacity: 0;
+  transform: translateY(20px);
+  transition: opacity 500ms ease, transform 500ms ease;
+}
+
+.fade-in.visible {
+  opacity: 1;
+  transform: translateY(0);
 }

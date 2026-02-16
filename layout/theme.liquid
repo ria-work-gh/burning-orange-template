@@ -30,10 +30,17 @@
 
   <style>
     @font-face {
-      font-family: 'Antarctica';
-      src: url('{{ "antarctica-beta-vf.ttf" | asset_url }}') format('truetype');
-      font-weight: 100 900;
+      font-family: 'Litteratur';
+      src: url('{{ "LitteraturTextSN-Regular.woff2" | asset_url }}') format('woff2');
+      font-weight: 400;
       font-style: normal;
+      font-display: swap;
+    }
+    @font-face {
+      font-family: 'Litteratur';
+      src: url('{{ "LitteraturTextTrialSN-Italic.otf" | asset_url }}') format('opentype');
+      font-weight: 400;
+      font-style: italic;
       font-display: swap;
     }
   </style>
@@ -43,13 +50,13 @@
   {% style %}
     {%- for scheme in settings.color_schemes -%}
       .color-{{ scheme.id }} {
-        --color-bg: {{ scheme.settings.background }};
+        --color-background: {{ scheme.settings.background }};
         --color-text: {{ scheme.settings.text }};
-        --color-text-light: {{ scheme.settings.text | color_modify: 'alpha', 0.66 }};
+        --color-text-muted: {{ scheme.settings.text | color_modify: 'alpha', 0.5 }};
         --color-input-bg: {{ scheme.settings.text | color_modify: 'alpha', 0.1 }};
         --color-input-bg-hover: {{ scheme.settings.text | color_modify: 'alpha', 0.15 }};
-        --color-button-bg: {{ scheme.settings.button_background }};
-        --color-button-text: {{ scheme.settings.button_text }};
+        --color-accent: {{ scheme.settings.button_background }};
+        --color-accent-dark: {{ scheme.settings.button_background | color_darken: 15 }};
       }
     {%- endfor -%}
   {% endstyle %}
