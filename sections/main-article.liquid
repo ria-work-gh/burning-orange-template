@@ -1,133 +1,218 @@
-<article class="article color-{{ section.settings.color_scheme }}">
-  <div class="article-container">
-    <a href="{{ blog.url }}" class="article-back text-link">
-      &larr; {{ 'blogs.article.back_to_blog' | t: blog_title: blog.title }}
-    </a>
+{%- comment -%} Journal article: header, hero image, lead paragraph, gallery, body, back link. {%- endcomment -%}
 
-    <header class="article-header">
-      <h1 class="article-title text-large">{{ article.title }}</h1>
-
-      {%- if section.settings.show_author or section.settings.show_date -%}
-        <div class="article-meta text-mini text-light">
-          {%- if section.settings.show_author -%}
-            <span>{{ 'blogs.article.author' | t: author: article.author }}</span>
-          {%- endif -%}
-          {%- if section.settings.show_author and section.settings.show_date -%}
-            <span aria-hidden="true">&middot;</span>
-          {%- endif -%}
-          {%- if section.settings.show_date -%}
-            <time datetime="{{ article.published_at | date: '%Y-%m-%d' }}">
-              {{ 'blogs.article.date' | t: date: article.published_at | date: format: 'abbreviated_date' }}
-            </time>
-          {%- endif -%}
-        </div>
+<article class="entry color-{{ section.settings.color_scheme }}">
+  {%- comment -%} — Header: date left, tag + title right — {%- endcomment -%}
+  <header class="entry-header">
+    <time class="entry-date" datetime="{{ article.published_at | date: '%Y-%m-%d' }}">
+      {{ article.published_at | date: '%d.%m.%y' }}
+    </time>
+    <div class="entry-header-right">
+      {%- if article.tags.size > 0 -%}
+        <span class="entry-intro">{{ article.tags | first }}</span>
       {%- endif -%}
-    </header>
+      <h1 class="text-large">{{ article.title }}</h1>
+    </div>
+  </header>
 
-    {%- if article.image -%}
-      <div class="article-image">
-        {{ article.image | image_url: width: 1200 | image_tag:
-          loading: 'eager',
-          width: article.image.width,
-          height: article.image.height
-        }}
+  {%- comment -%} — Hero image — {%- endcomment -%}
+  {%- if article.image -%}
+    <div class="entry-image">
+      {{ article.image | image_url: width: 1800 | image_tag:
+        loading: 'eager',
+        sizes: '100vw',
+        width: article.image.width,
+        height: article.image.height
+      }}
+    </div>
+  {%- endif -%}
+
+  {%- comment -%} — Lead paragraph (first <p> from content) — {%- endcomment -%}
+  {%- assign content_paragraphs = article.content | split: '</p>' -%}
+  {%- if content_paragraphs.size > 0 -%}
+    {%- assign lead_raw = content_paragraphs[0] | strip_html -%}
+    {%- if lead_raw != blank -%}
+      <div class="entry-body entry-body-lead">
+        <p class="entry-lead">{{ lead_raw }}</p>
       </div>
     {%- endif -%}
+  {%- endif -%}
 
-    <div class="article-content typeset">
-      {{ article.content }}
-    </div>
+  {%- comment -%} — Gallery (from article metafields) — {%- endcomment -%}
+  {%- assign gallery_image_1 = article.metafields.custom.gallery_image_1 -%}
+  {%- assign gallery_image_2 = article.metafields.custom.gallery_image_2 -%}
+  {%- assign gallery_caption = article.metafields.custom.gallery_caption -%}
 
-    <footer class="article-footer">
-      {%- if section.settings.show_tags and article.tags.size > 0 -%}
-        <div class="article-tags">
-          <span class="article-tags-label">{{ 'blogs.article.tags' | t }}:</span>
-          {%- for tag in article.tags -%}
-            <a href="{{ blog.url }}/tagged/{{ tag | handle }}" class="text-link">
-              {{ tag }}{%- unless forloop.last -%},{%- endunless -%}
-            </a>
-          {%- endfor -%}
+  {%- if section.settings.show_gallery and gallery_image_1 != blank -%}
+    <div class="entry-gallery">
+      <div class="entry-gallery-grid">
+        <div class="entry-gallery-item">
+          {{ gallery_image_1 | image_url: width: 800 | image_tag:
+            loading: 'lazy',
+            alt: ''
+          }}
         </div>
-      {%- endif -%}
-
-      {%- if section.settings.show_share -%}
-        {% render 'share-buttons', title: article.title, url: article.url %}
-      {%- endif -%}
-    </footer>
-  </div>
-
-  {%- if section.settings.show_related -%}
-    <div class="article-related">
-      <h2 class="article-related-heading text-medium">{{ 'blogs.article.related' | t }}</h2>
-      <div class="article-related-grid grid grid-3">
-        {%- for blog_article in blog.articles limit: 4 -%}
-          {%- unless blog_article.id == article.id -%}
-            {% render 'article-card', article: blog_article %}
-          {%- endunless -%}
-        {%- endfor -%}
+        {%- if gallery_image_2 != blank -%}
+          <figure class="entry-gallery-item entry-gallery-item-captioned">
+            {{ gallery_image_2 | image_url: width: 800 | image_tag:
+              loading: 'lazy',
+              alt: ''
+            }}
+            {%- if gallery_caption != blank -%}
+              <figcaption class="entry-gallery-caption">&uarr; {{ gallery_caption }}</figcaption>
+            {%- endif -%}
+          </figure>
+        {%- endif -%}
       </div>
     </div>
   {%- endif -%}
+
+  {%- comment -%} — Body (remaining paragraphs after the first) — {%- endcomment -%}
+  {%- if content_paragraphs.size > 1 -%}
+    <div class="entry-body">
+      {%- for paragraph in content_paragraphs -%}
+        {%- if forloop.index0 > 0 -%}
+          {%- assign paragraph_text = paragraph | strip_html | strip -%}
+          {%- if paragraph_text != blank -%}
+            {{ paragraph | append: '</p>' }}
+          {%- endif -%}
+        {%- endif -%}
+      {%- endfor -%}
+    </div>
+  {%- endif -%}
+
+  {%- comment -%} — Back link — {%- endcomment -%}
+  <a href="{{ blog.url }}" class="text-cap inline-link entry-back">
+    {{ 'blogs.article.back_to_blog' | t: blog_title: blog.title }}
+  </a>
 </article>
 
-{%- if section.settings.show_share -%}
-  <script src="{{ 'share-buttons.js' | asset_url }}" defer></script>
-{%- endif -%}
-
 {% stylesheet %}
-  .article-container {
-    max-width: 720px;
-    margin-inline: auto;
-    padding: var(--spacing-l) var(--spacing-base);
+  .entry {
+    padding-top: var(--spacing-5);
   }
 
-  @media (min-width: 600px) {
-    .article-container {
-      padding: var(--spacing-xl) var(--spacing-m);
+  .entry-header {
+    padding: var(--spacing-5) var(--spacing-2) var(--spacing-3);
+    display: grid;
+    grid-template-columns: auto 1fr;
+    gap: var(--spacing-3);
+    align-items: baseline;
+  }
+
+  @media (max-width: 749px) {
+    .entry-header {
+      grid-template-columns: 1fr;
+      gap: var(--spacing-2);
     }
   }
 
-  .article-back {
-    display: inline-block;
-    margin-bottom: var(--spacing-m);
+  .entry-date {
+    font-size: var(--font-base-size);
+    color: var(--color-text);
   }
 
-  .article-meta {
-    margin-top: var(--spacing-s);
+  .entry-header-right {
+    display: grid;
+    gap: var(--spacing-1);
   }
 
-  .article-image {
-    margin: var(--spacing-m) 0;
+  .entry-intro {
+    font-size: var(--font-base-size);
+    color: var(--color-text);
   }
 
-  .article-image img {
+  .entry-image {
+    padding: 0 var(--spacing-2);
+  }
+
+  .entry-image img {
+    width: 100%;
+    max-height: 70vh;
+    object-fit: cover;
+  }
+
+  .entry-body {
+    max-width: 100ch;
+    margin-inline: auto;
+    padding: var(--spacing-3) var(--spacing-2) var(--spacing-4);
+    display: grid;
+    gap: var(--spacing-2);
+    line-height: 1.7;
+    justify-items: center;
+  }
+
+  .entry-body p {
+    max-width: 65ch;
+  }
+
+  .entry-body-lead {
+    padding-bottom: 0;
+  }
+
+  .entry-lead {
+    font-size: var(--font-medium-size);
+    line-height: var(--font-medium-height);
+    max-width: 100ch;
+  }
+
+  .entry-gallery {
+    padding: var(--spacing-3) var(--spacing-2);
+    display: flex;
+    justify-content: center;
+  }
+
+  .entry-gallery-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: var(--spacing-2);
+    width: 50%;
+    max-width: 800px;
+  }
+
+  .entry-gallery-grid > :nth-child(2) {
+    margin-top: var(--spacing-4);
+  }
+
+  @media (max-width: 1023px) {
+    .entry-gallery-grid {
+      width: 100%;
+    }
+  }
+
+  @media (max-width: 749px) {
+    .entry-gallery-grid {
+      grid-template-columns: 1fr;
+    }
+  }
+
+  .entry-gallery-item img {
     width: 100%;
     height: auto;
+    object-fit: cover;
   }
 
-  .article-footer {
-    margin-top: var(--spacing-m);
-    padding-top: var(--spacing-m);
-    border-top: 1px solid var(--color-text-light);
+  .entry-gallery-item-captioned {
     display: flex;
-    justify-content: space-between;
-    align-items: center;
-    flex-wrap: wrap;
-    gap: var(--spacing-base);
+    flex-direction: column;
   }
 
-  .article-related {
-    padding: var(--spacing-l) var(--spacing-base);
+  .entry-gallery-caption {
+    font-size: var(--font-detail-size);
+    color: var(--color-text-muted);
+    margin-top: var(--spacing-1);
+    max-width: 80ch;
   }
 
-  @media (min-width: 600px) {
-    .article-related {
-      padding: var(--spacing-l) var(--spacing-m);
+  .entry-back {
+    display: block;
+    text-align: center;
+    padding: 0 var(--spacing-2) var(--spacing-5);
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .entry-image img {
+      transition: none !important;
     }
-  }
-
-  .article-related-heading {
-    margin-bottom: var(--spacing-m);
   }
 {% endstylesheet %}
 
@@ -137,33 +222,10 @@
   "settings": [
     {
       "type": "checkbox",
-      "id": "show_author",
-      "label": "Show author",
-      "default": true
-    },
-    {
-      "type": "checkbox",
-      "id": "show_date",
-      "label": "Show date",
-      "default": true
-    },
-    {
-      "type": "checkbox",
-      "id": "show_tags",
-      "label": "Show tags",
-      "default": true
-    },
-    {
-      "type": "checkbox",
-      "id": "show_share",
-      "label": "Show share buttons",
-      "default": true
-    },
-    {
-      "type": "checkbox",
-      "id": "show_related",
-      "label": "Show related articles",
-      "default": true
+      "id": "show_gallery",
+      "label": "Show gallery",
+      "default": true,
+      "info": "Upload gallery images via article metafields: custom.gallery_image_1, custom.gallery_image_2, custom.gallery_caption"
     },
     {
       "type": "color_scheme",

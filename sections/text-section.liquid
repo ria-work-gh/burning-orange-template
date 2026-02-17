@@ -41,8 +41,8 @@
 {% stylesheet %}
   .text-section {
     display: grid;
-    gap: var(--spacing-base);
-    padding: var(--spacing-l) var(--spacing-base);
+    gap: var(--spacing-2);
+    padding: var(--spacing-4) var(--spacing-2);
   }
 
   @media (min-width: 900px) {
@@ -58,7 +58,7 @@
   @media (min-width: 900px) {
     .text-section-heading {
       position: sticky;
-      top: var(--spacing-xl);
+      top: var(--spacing-5);
       align-self: start;
     }
   }
@@ -70,7 +70,7 @@
   .text-section-text + .text-section-text,
   .text-section-text + .text-section-accordion,
   .text-section-accordion + .text-section-text {
-    margin-top: var(--spacing-m);
+    margin-top: var(--spacing-3);
   }
 
   .text-section-accordion + .text-section-accordion {
@@ -90,7 +90,7 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: var(--spacing-base) 0;
+    padding: var(--spacing-2) 0;
     cursor: pointer;
     list-style: none;
   }
@@ -111,7 +111,7 @@
   }
 
   .text-section-accordion-body {
-    padding: 0 0 var(--spacing-base) 0;
+    padding: 0 0 var(--spacing-2) 0;
   }
 {% endstylesheet %}
 

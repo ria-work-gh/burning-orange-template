@@ -39,7 +39,6 @@ class FilterDrawer extends HTMLElement {
 
     this.bindFilterLinks();
     this.bindPills();
-    this.bindSort();
     this.bindClear();
 
     window.addEventListener('popstate', this._onPopState);
@@ -131,17 +130,6 @@ class FilterDrawer extends HTMLElement {
     });
   }
 
-  bindSort() {
-    this.section?.addEventListener('change', (e) => {
-      const select = e.target.closest('[data-sort-select]');
-      if (!select) return;
-      const currentUrl = new URL(location.href);
-      const sortUrl = new URL(select.value, location.origin);
-      currentUrl.searchParams.set('sort_by', sortUrl.searchParams.get('sort_by'));
-      this.applyFilters(currentUrl.href);
-    });
-  }
-
   bindClear() {
     this.addEventListener('click', (e) => {
       const clearLink = e.target.closest('[data-clear-filters]');
@@ -170,7 +158,6 @@ class FilterDrawer extends HTMLElement {
 
       this.swap('[data-products]', doc);
       this.swap('[data-active-filters]', doc);
-      this.swap('[data-sorting]', doc);
       this.swap('.filter-count', doc);
       this.swapDrawer(doc);
 

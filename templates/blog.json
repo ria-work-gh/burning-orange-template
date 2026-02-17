@@ -1,13 +1,24 @@
 {
   "sections": {
+    "intro": {
+      "type": "intro-section",
+      "settings": {
+        "heading": "Journal",
+        "heading_tag": "h1",
+        "description": "<p>Thoughts on craft, materials, and the spaces we make for living slowly.</p>",
+        "color_scheme": "scheme-1"
+      }
+    },
     "main": {
       "type": "main-blog",
       "settings": {
-        "description": "<p>Thoughts on craft, materials, and the spaces we make for living slowly.</p>",
         "articles_per_page": 9,
         "color_scheme": "scheme-1"
       }
     }
   },
-  "order": ["main"]
+  "order": [
+    "intro",
+    "main"
+  ]
 }

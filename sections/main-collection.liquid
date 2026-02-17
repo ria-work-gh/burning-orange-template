@@ -1,47 +1,19 @@
 <div class="collection color-{{ section.settings.color_scheme }}" data-section-id="{{ section.id }}">
-  <header class="collection-header">
-    <h1 class="collection-title text-xl">{{ collection.title }}</h1>
-
-    {%- if collection.description != blank -%}
-      <div class="collection-description typeset">
-        {{ collection.description }}
-      </div>
-    {%- endif -%}
-  </header>
-
   {%- assign active_filter_count = 0 -%}
   {%- for filter in collection.filters -%}
     {%- assign active_filter_count = active_filter_count | plus: filter.active_values.size -%}
   {%- endfor -%}
 
-  <div class="collection-toolbar">
-    {%- if section.settings.show_filters -%}
-      <button class="collection-filter-toggle button" aria-expanded="false" aria-controls="filter-drawer">
+  {%- if section.settings.show_filters -%}
+    <div class="collection-toolbar">
+      <button class="filter-toggle text-cap" aria-expanded="false" aria-controls="filter-drawer">
         {{ 'collections.filtering.filters' | t }}
         {%- if active_filter_count > 0 -%}
           <span class="filter-count">({{ active_filter_count }})</span>
         {%- endif -%}
       </button>
-    {%- endif -%}
-
-    {%- if section.settings.show_sorting -%}
-      <div class="collection-sorting" data-sorting>
-        <label for="sort-by" class="visually-hidden">{{ 'collections.sorting.title' | t }}</label>
-        <select id="sort-by" class="input" data-sort-select>
-          {%- for option in collection.sort_options -%}
-            <option
-              value="{{ collection.url }}?sort_by={{ option.value }}"
-              {% if option.value == collection.sort_by %}
-                selected
-              {% endif %}
-            >
-              {{ option.name }}
-            </option>
-          {%- endfor -%}
-        </select>
-      </div>
-    {%- endif -%}
-  </div>
+    </div>
+  {%- endif -%}
 
   {%- if section.settings.show_filters -%}
     <div class="active-filters" data-active-filters>
@@ -89,39 +61,35 @@
 
 {% stylesheet %}
   .collection {
-    padding: var(--spacing-base);
-  }
-
-  .collection-header {
-    margin-block: var(--spacing-xl);
-    text-align: center;
-    display: flex;
-    flex-direction: column;
-    gap: var(--spacing-base);
-  }
-
-  .collection-description {
-    max-width: 45ch;
-    margin-inline: auto;
-  }
-
-  .collection-description {
-    margin-top: var(--spacing-s);
+    padding: var(--spacing-2);
   }
 
   .collection-toolbar {
     display: flex;
-    justify-content: space-between;
     align-items: center;
-    flex-wrap: wrap;
-    gap: var(--spacing-s);
-    margin-block: var(--spacing-base);
+    margin-block: var(--spacing-2);
+  }
+
+  .filter-toggle {
+    font: inherit;
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-1);
+    transition: color var(--transition-fast);
+  }
+
+  .filter-toggle:hover {
+    color: var(--color-accent);
+  }
+
+  .filter-count {
+    color: var(--color-text-muted);
   }
 
   .collection-content {
     display: grid;
     grid-template-columns: 1fr;
-    gap: var(--spacing-m);
+    gap: var(--spacing-3);
   }
 
   /* Product grid: 2 → 3 → 4 columns */
@@ -153,37 +121,35 @@
   .active-filters {
     display: flex;
     flex-wrap: wrap;
-    gap: var(--spacing-xs);
+    gap: var(--spacing-1);
     min-height: 0;
   }
 
   .active-filters:not(:empty) {
-    margin-bottom: var(--spacing-base);
+    margin-bottom: var(--spacing-2);
   }
 
   .active-filter {
     display: inline-flex;
     align-items: center;
-    gap: var(--spacing-xs);
-    padding: var(--spacing-xs) var(--spacing-s);
-    font-size: var(--type-mini-size);
-    line-height: var(--type-mini-height);
-    border: 1px solid var(--color-text-light);
-    border-radius: 2px;
+    gap: var(--spacing-1);
+    padding: var(--spacing-1) var(--spacing-2);
+    font-size: var(--font-detail-size);
+    border: 1px solid currentColor;
     transition: border-color var(--transition-fast);
   }
 
   .active-filter:hover {
-    border-color: var(--color-text);
+    border-color: var(--color-accent);
   }
 
   .collection-empty {
     text-align: center;
-    padding: var(--spacing-xl) 0;
+    padding: var(--spacing-5) 0;
   }
 
   .collection-empty .button {
-    margin-top: var(--spacing-base);
+    margin-top: var(--spacing-2);
   }
 {% endstylesheet %}
 
@@ -204,12 +170,6 @@
       "type": "checkbox",
       "id": "show_filters",
       "label": "Show filters",
-      "default": true
-    },
-    {
-      "type": "checkbox",
-      "id": "show_sorting",
-      "label": "Show sorting",
       "default": true
     },
     {

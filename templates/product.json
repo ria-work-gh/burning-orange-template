@@ -48,21 +48,15 @@
           "settings": {
             "heading": ""
           }
-        },
-        "body_block": {
-          "type": "body",
-          "settings": {
-            "content": ""
-          }
         }
       },
       "block_order": [
-        "heading_block",
-        "body_block"
+        "heading_block"
       ],
       "settings": {
         "image_position": "right",
         "image_width": "three-quarter",
+        "image_ratio": "landscape",
         "color_scheme": "scheme-1"
       }
     }
