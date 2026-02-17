@@ -1,37 +1,64 @@
-{% comment %}
-  Renders product price with sale badge and compare-at price.
+{%- comment -%}
+  Renders product price. Handles sale pricing and sold-out state.
+  Sold out: price struck through in muted color, "SOLD OUT" label beside it.
+
   Expects: product (product object)
-{% endcomment %}
+
+  Usage:
+    {% render 'product-price', product: product %}
+{%- endcomment -%}
 
 {%- assign current_variant = product.selected_or_first_available_variant -%}
-<div class="product-price">
+
+{%- unless product.available -%}
+  <p class="product-price sold-out-price">
+    <span>{{ current_variant.price | money }}</span>
+    <span class="sold-out-label text-cap">{{ 'products.product.sold_out' | t }}</span>
+  </p>
+{%- else -%}
   {%- if current_variant.compare_at_price > current_variant.price -%}
-    <dl class="price-list">
+    <dl class="product-price">
       <dt class="visually-hidden">{{ 'products.product.price' | t }}</dt>
       <dd class="price-sale">{{ current_variant.price | money }}</dd>
-
       <dt class="visually-hidden">{{ 'products.product.compare_at_price' | t }}</dt>
-      <dd class="price-compare text-light">
+      <dd class="price-compare">
         <s>{{ current_variant.compare_at_price | money }}</s>
       </dd>
     </dl>
   {%- else -%}
-    <dl class="price-list">
+    <dl class="product-price">
       <dt class="visually-hidden">{{ 'products.product.price' | t }}</dt>
-      <dd class="price-regular text-light">{{ current_variant.price | money }}</dd>
+      <dd>{{ current_variant.price | money }}</dd>
     </dl>
   {%- endif -%}
-</div>
+{%- endunless -%}
 
 {% stylesheet %}
   .product-price {
     display: flex;
-    gap: var(--spacing-xs);
-    align-items: baseline;
+    gap: var(--spacing-1);
+    align-items: center;
   }
-  .price-list {
+
+  .price-compare {
+    text-decoration: line-through;
+    color: var(--color-text-muted);
+  }
+
+  /* Sold-out price */
+  .sold-out-price {
     display: flex;
-    gap: var(--spacing-xs);
-    align-items: baseline;
+    align-items: center;
+    gap: var(--spacing-1);
+  }
+
+  .sold-out-price > span:first-child {
+    text-decoration: line-through;
+    color: var(--color-text-muted);
+  }
+
+  .sold-out-label {
+    font-size: var(--font-detail-size);
+    color: var(--color-text-muted);
   }
 {% endstylesheet %}

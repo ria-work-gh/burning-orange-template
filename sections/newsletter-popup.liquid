@@ -1,0 +1,181 @@
+{%- comment -%} Newsletter popup: fixed bottom-right slide-in with image + newsletter form. {%- endcomment -%}
+<newsletter-popup data-delay="{{ section.settings.delay_seconds | times: 1000 }}" aria-hidden="true">
+  <button class="popup-close text-cap" data-close aria-label="{{ 'general.close' | t }}">{{ 'general.close' | t }}</button>
+
+  {%- if section.settings.image != blank -%}
+    <div class="popup-image">
+      {{
+        section.settings.image
+        | image_url: width: 700
+        | image_tag:
+          loading: 'lazy',
+          width: section.settings.image.width,
+          height: section.settings.image.height
+      }}
+    </div>
+  {%- endif -%}
+
+  <div class="popup-content">
+    {%- if section.settings.heading != blank -%}
+      <h2 class="text-medium">{{ section.settings.heading }}</h2>
+    {%- endif -%}
+    {% render 'newsletter-form' %}
+  </div>
+</newsletter-popup>
+
+<script src="{{ 'newsletter-popup.js' | asset_url }}" defer></script>
+
+{% stylesheet %}
+  newsletter-popup {
+    position: fixed;
+    bottom: var(--spacing-2);
+    right: var(--spacing-2);
+    background-color: var(--color-background);
+    max-width: 700px;
+    width: 100%;
+    z-index: var(--z-modal);
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: var(--spacing-1);
+    padding: var(--spacing-1);
+    box-shadow: 0 4px 24px rgba(0, 0, 0, 0.12);
+    transform: translateX(calc(100% + var(--spacing-2)));
+    transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+    pointer-events: none;
+  }
+
+  newsletter-popup.is-visible {
+    transform: translateX(0);
+    pointer-events: auto;
+  }
+
+  .popup-image {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .popup-image img {
+    width: 100%;
+    height: auto;
+    aspect-ratio: 1 / 1;
+    object-fit: cover;
+  }
+
+  .popup-content {
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-2);
+    justify-content: flex-end;
+  }
+
+  .popup-close {
+    position: absolute;
+    top: var(--spacing-1);
+    right: var(--spacing-1);
+    font-size: var(--font-detail-size);
+    line-height: 1;
+    color: var(--color-text);
+    padding: var(--spacing-1);
+    opacity: 0.6;
+    transition: opacity var(--transition-fast);
+    z-index: 1;
+  }
+
+  .popup-close:hover {
+    opacity: 1;
+  }
+
+  /* Newsletter form styles inside popup */
+  newsletter-popup .newsletter-input-wrap {
+    display: flex;
+    align-items: center;
+    position: relative;
+  }
+
+  newsletter-popup .input {
+    width: 100%;
+    border-top: 1px solid black;
+    border-bottom: 1px solid black;
+    background-color: var(--color-input-bg);
+    padding: var(--spacing-1);
+    padding-right: 80px;
+  }
+
+  newsletter-popup .newsletter-submit {
+    padding: var(--spacing-1);
+    position: absolute;
+    right: var(--spacing-1);
+    transition: color var(--transition-fast);
+    font-size: var(--font-detail-size);
+    color: var(--color-text-muted);
+  }
+
+  newsletter-popup .newsletter-submit:hover {
+    color: var(--color-accent);
+  }
+
+  @media (max-width: 749px) {
+    newsletter-popup {
+      width: 75%;
+      max-width: none;
+      grid-template-columns: 1fr;
+    }
+
+    .popup-content {
+      gap: var(--spacing-1);
+    }
+
+    .popup-content .text-medium {
+      font-size: 20px;
+    }
+
+    .popup-close {
+      position: relative;
+      top: auto;
+      right: auto;
+      justify-self: end;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    newsletter-popup {
+      transition: none;
+    }
+  }
+{% endstylesheet %}
+
+{% schema %}
+{
+  "name": "Newsletter popup",
+  "tag": "section",
+  "class": "newsletter-popup-section",
+  "settings": [
+    {
+      "type": "image_picker",
+      "id": "image",
+      "label": "Image"
+    },
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Heading",
+      "default": "Join the mailing list"
+    },
+    {
+      "type": "range",
+      "id": "delay_seconds",
+      "label": "Delay (seconds)",
+      "min": 1,
+      "max": 30,
+      "step": 1,
+      "default": 5
+    }
+  ],
+  "presets": [
+    {
+      "name": "Newsletter popup"
+    }
+  ]
+}
+{% endschema %}

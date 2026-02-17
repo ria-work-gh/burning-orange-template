@@ -1,131 +1,62 @@
-<section
-  class="hero hero-{{ section.settings.min_height }} color-{{ section.settings.color_scheme }}"
->
-  {%- if section.settings.image -%}
-    <div class="hero-image">
-      {{
-        section.settings.image
-        | image_url: width: 1920
-        | image_tag:
-          loading: 'eager',
-          sizes: '100vw',
-          class: 'hero-banner__image',
-          width: section.settings.image.width,
-          height: section.settings.image.height
-      }}
-      {%- if section.settings.overlay_opacity > 0 -%}
-        <div class="hero-overlay" style="opacity: {{ section.settings.overlay_opacity | divided_by: 100.0 }};"></div>
-      {%- endif -%}
-    </div>
+{%- comment -%} Hero banner: full-viewport image with text overlay at bottom center. {%- endcomment -%}
+<div class="hero-banner{% if section.settings.height == 'compact' %} compact{% endif %}">
+  {%- if section.settings.image != blank -%}
+    {{
+      section.settings.image
+      | image_url: width: 2400
+      | image_tag:
+        loading: 'eager',
+        sizes: '100vw',
+        width: section.settings.image.width,
+        height: section.settings.image.height
+    }}
   {%- endif -%}
 
-  <div class="hero-card">
-    <div class="hero-content">
-      {%- if section.settings.heading != blank -%}
-        {%- if template.name == 'index' -%}
-          <h1 class="hero-heading text-xl">{{ section.settings.heading }}</h1>
-        {%- else -%}
-          <h2 class="hero-heading text-xl">{{ section.settings.heading }}</h2>
-        {%- endif -%}
-      {%- endif -%}
-
-      {%- if section.settings.subheading != blank -%}
-        <p class="hero-subheading">{{ section.settings.subheading }}</p>
-      {%- endif -%}
-
-      {%- if section.blocks.size > 0 -%}
-        <div class="hero-buttons">
-          {%- for block in section.blocks -%}
-            {%- if block.settings.text != blank and block.settings.link != blank -%}
-              <a
-                href="{{ block.settings.link }}"
-                class="button{% if block.settings.style == 'secondary' %} secondary{% endif %}"
-                {{ block.shopify_attributes }}
-              >
-                {{ block.settings.text }}
-              </a>
-            {%- endif -%}
-          {%- endfor -%}
-        </div>
-      {%- endif -%}
+  {%- if section.settings.text != blank -%}
+    <div class="hero-text-overlay">
+      <p class="hero-text text-medium">{{ section.settings.text }}</p>
     </div>
-  </div>
-</section>
+  {%- endif -%}
+</div>
 
 {% stylesheet %}
-  .hero {
+  .hero-banner {
     position: relative;
-    display: flex;
-    align-items: flex-end;
-    justify-content: flex-start;
-    padding: var(--spacing-base) var(--spacing-base);
+    height: 100dvh;
+    margin-bottom: var(--spacing-4);
     overflow: hidden;
   }
 
-  .hero-small {
-    min-height: 40vh;
-  }
-  .hero-medium {
-    min-height: 60vh;
-  }
-  .hero-large {
-    min-height: 80vh;
-  }
-  .hero-full {
-    min-height: 100vh;
+  .hero-banner.compact {
+    height: 75vh;
   }
 
-  .hero-image {
-    position: absolute;
-    inset: 0;
-  }
-
-  .hero-image img {
+  .hero-banner img {
     width: 100%;
     height: 100%;
     object-fit: cover;
   }
 
-  .hero-overlay {
+  .hero-text-overlay {
     position: absolute;
-    inset: 0;
-    background: black;
+    bottom: var(--spacing-3);
+    left: 0;
+    right: 0;
+    color: white;
+    text-align: center;
+    padding-left: var(--spacing-3);
+    padding-right: var(--spacing-3);
   }
 
-  .hero-card {
-    position: relative;
-    z-index: 1;
-    width: 100%;
-    background: white;
-    color: black;
-    padding: var(--spacing-base);
-    border-radius: 0;
-  }
-
-  .hero-content {
-    text-align: left;
-  }
-
-  .hero-subheading {
-    margin-top: var(--spacing-s);
-  }
-
-  .hero-buttons {
-    display: flex;
-    flex-wrap: wrap;
-    gap: var(--spacing-s);
-    margin-top: var(--spacing-base);
+  .hero-text {
+    max-width: 35ch;
+    margin-inline: auto;
   }
 
   @media (min-width: 750px) {
-    .hero-card {
-      width: 50%;
-    }
-  }
-
-  @media (min-width: 990px) {
-    .hero-card {
-      width: 33.333%;
+    .hero-text-overlay {
+      padding-left: calc(var(--spacing-3) * 3);
+      padding-right: calc(var(--spacing-3) * 3);
     }
   }
 {% endstylesheet %}
@@ -137,84 +68,29 @@
   "class": "hero-section",
   "settings": [
     {
-      "type": "text",
-      "id": "heading",
-      "label": "Heading",
-      "default": "Welcome to our store"
-    },
-    {
-      "type": "text",
-      "id": "subheading",
-      "label": "Subheading"
-    },
-    {
       "type": "image_picker",
       "id": "image",
       "label": "Background image"
     },
     {
-      "type": "color_scheme",
-      "id": "color_scheme",
-      "label": "Color scheme",
-      "default": "scheme-1"
+      "type": "text",
+      "id": "text",
+      "label": "Text"
     },
     {
       "type": "select",
-      "id": "min_height",
-      "label": "Section height",
+      "id": "height",
+      "label": "Height",
       "options": [
-        { "value": "small", "label": "Small" },
-        { "value": "medium", "label": "Medium" },
-        { "value": "large", "label": "Large" },
-        { "value": "full", "label": "Full screen" }
+        { "value": "full", "label": "Full (100dvh)" },
+        { "value": "compact", "label": "Compact (75vh)" }
       ],
-      "default": "medium"
-    },
-    {
-      "type": "range",
-      "id": "overlay_opacity",
-      "label": "Image overlay opacity",
-      "min": 0,
-      "max": 100,
-      "step": 10,
-      "default": 0,
-      "unit": "%"
-    }
-  ],
-  "blocks": [
-    {
-      "type": "button",
-      "name": "Button",
-      "limit": 2,
-      "settings": [
-        {
-          "type": "text",
-          "id": "text",
-          "label": "Button text",
-          "default": "Shop now"
-        },
-        {
-          "type": "url",
-          "id": "link",
-          "label": "Link"
-        },
-        {
-          "type": "select",
-          "id": "style",
-          "label": "Style",
-          "options": [
-            { "value": "primary", "label": "Primary" },
-            { "value": "secondary", "label": "Secondary" }
-          ],
-          "default": "primary"
-        }
-      ]
+      "default": "full"
     }
   ],
   "presets": [
     {
-      "name": "Hero banner",
-      "blocks": [{ "type": "button" }]
+      "name": "Hero banner"
     }
   ]
 }

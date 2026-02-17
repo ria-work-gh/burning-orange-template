@@ -634,30 +634,6 @@ h4 { font-family: var(--font-heading); font-size: var(--h4-size); line-height: v
   object-fit: cover;
 }
 
-/* Product card hover image */
-.product-card-image {
-  position: relative;
-  overflow: hidden;
-}
-
-.product-card-image-hover {
-  position: absolute;
-  inset: 0;
-  opacity: 0;
-  transition: opacity var(--transition-fast);
-}
-
-@media (hover: hover) {
-  .product-card:hover .product-card-image-hover {
-    opacity: 1;
-  }
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .product-card-image-hover {
-    transition: none;
-  }
-}
 
 /* ========== 14. Accessibility Utilities ========== */
 
@@ -830,11 +806,13 @@ h4 { font-family: var(--font-heading); font-size: var(--h4-size); line-height: v
   color: var(--color-text-muted);
 }
 
-/* ========== 21. Sticky Header Group ========== */
+/* ========== 21. Fixed Header Group ========== */
 
 .shopify-section-group-header-group {
-  position: sticky;
-  top: calc(-1 * var(--header-group-offset, 0px));
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
   z-index: var(--z-header);
 }
 

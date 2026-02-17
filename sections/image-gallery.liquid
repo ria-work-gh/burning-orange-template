@@ -1,0 +1,126 @@
+{%- comment -%} Image gallery: 2-column grid with optional narrow crop and captions. {%- endcomment -%}
+<div class="gallery{% if section.settings.color_scheme != blank %} color-{{ section.settings.color_scheme }}{% endif %}">
+  {%- if section.blocks.size > 0 -%}
+    <div class="gallery-grid">
+      {%- for block in section.blocks -%}
+        {%- if block.settings.image != blank -%}
+          {%- if block.settings.caption != blank -%}
+            <figure class="gallery-item" {{ block.shopify_attributes }}>
+              {{
+                block.settings.image
+                | image_url: width: 1200
+                | image_tag:
+                  loading: 'lazy',
+                  width: block.settings.image.width,
+                  height: block.settings.image.height,
+                  alt: block.settings.alt
+              }}
+              <figcaption class="gallery-caption">{{ block.settings.caption }}</figcaption>
+            </figure>
+          {%- else -%}
+            <div class="gallery-item{% if block.settings.narrow %} gallery-item-narrow{% endif %}" {{ block.shopify_attributes }}>
+              {{
+                block.settings.image
+                | image_url: width: 1200
+                | image_tag:
+                  loading: 'lazy',
+                  width: block.settings.image.width,
+                  height: block.settings.image.height,
+                  alt: block.settings.alt
+              }}
+            </div>
+          {%- endif -%}
+        {%- endif -%}
+      {%- endfor -%}
+    </div>
+  {%- endif -%}
+</div>
+
+{% stylesheet %}
+  .gallery {
+    padding: var(--spacing-4) var(--spacing-2);
+    max-width: 1600px;
+    margin-inline: auto;
+  }
+
+  .gallery-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: var(--spacing-2);
+    align-items: center;
+    justify-items: center;
+  }
+
+  .gallery-item {
+    display: flex;
+    justify-content: center;
+  }
+
+  .gallery-item img {
+    width: 100%;
+    height: auto;
+  }
+
+  .gallery-item-narrow img {
+    aspect-ratio: 3 / 4;
+    object-fit: cover;
+    width: 60%;
+  }
+
+  .gallery-caption {
+    font-size: var(--font-detail-size);
+    color: var(--color-text-muted);
+    margin-top: var(--spacing-1);
+    max-width: 80ch;
+  }
+{% endstylesheet %}
+
+{% schema %}
+{
+  "name": "Image gallery",
+  "tag": "section",
+  "class": "image-gallery-section",
+  "settings": [
+    {
+      "type": "color_scheme",
+      "id": "color_scheme",
+      "label": "Color scheme"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "image",
+      "name": "Image",
+      "limit": 8,
+      "settings": [
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "Image"
+        },
+        {
+          "type": "text",
+          "id": "alt",
+          "label": "Alt text"
+        },
+        {
+          "type": "text",
+          "id": "caption",
+          "label": "Caption"
+        },
+        {
+          "type": "checkbox",
+          "id": "narrow",
+          "label": "Narrow (60% width, 3:4 crop)",
+          "default": false
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Image gallery"
+    }
+  ]
+}
+{% endschema %}

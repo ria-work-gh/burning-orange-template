@@ -3,8 +3,8 @@
     "main": {
       "type": "main-blog",
       "settings": {
+        "description": "<p>Thoughts on craft, materials, and the spaces we make for living slowly.</p>",
         "articles_per_page": 9,
-        "grid_columns": "3",
         "color_scheme": "scheme-1"
       }
     }

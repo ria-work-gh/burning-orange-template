@@ -1,0 +1,120 @@
+{%- comment -%} Journal feature: 2-column featured article with 3:2 image and hover zoom. {%- endcomment -%}
+
+{%- if section.settings.article != blank -%}
+  {%- assign article = section.settings.article -%}
+  <div class="journal-feature color-{{ section.settings.color_scheme }}">
+    <a href="{{ article.url }}" class="journal-feature-link">
+      {%- if article.image -%}
+        <div class="journal-feature-image-wrapper">
+          {{
+            article.image
+            | image_url: width: 1200
+            | image_tag:
+              loading: 'lazy',
+              width: article.image.width,
+              height: article.image.height
+          }}
+        </div>
+      {%- endif -%}
+
+      <div class="journal-feature-content">
+        <span class="journal-date">
+          {{ article.published_at | date: format: 'abbreviated' }}
+          {%- if article.metafields.custom.intro != blank %} — {{ article.metafields.custom.intro }}{%- endif -%}
+        </span>
+        <h2 class="text-large">{{ article.title }}</h2>
+        {%- if article.excerpt_or_content != blank -%}
+          <p class="journal-feature-excerpt">{{ article.excerpt_or_content | strip_html | truncate: 200 }}</p>
+        {%- endif -%}
+        <span class="text-cap inline-link">{{ 'blogs.article.read_more' | t }}</span>
+      </div>
+    </a>
+  </div>
+{%- endif -%}
+
+{% stylesheet %}
+  .journal-feature {
+    padding: 0 var(--spacing-2) var(--spacing-4);
+  }
+
+  .journal-feature-link {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: var(--spacing-2);
+    text-decoration: none;
+    color: inherit;
+    cursor: pointer;
+    align-items: center;
+  }
+
+  .journal-feature-link:hover .inline-link {
+    color: var(--color-accent);
+  }
+
+  .journal-feature-image-wrapper {
+    overflow: hidden;
+  }
+
+  .journal-feature-image-wrapper img {
+    width: 100%;
+    aspect-ratio: 3 / 2;
+    object-fit: cover;
+    transition: transform var(--transition-base);
+  }
+
+  .journal-feature-link:hover img {
+    transform: scale(1.03);
+  }
+
+  .journal-feature-content {
+    display: grid;
+    gap: var(--spacing-2);
+  }
+
+  .journal-feature-excerpt {
+    color: var(--color-text-muted);
+    max-width: 80ch;
+  }
+
+  .journal-date {
+    font-size: var(--font-base-size);
+    color: var(--color-text);
+  }
+
+  @media (max-width: 749px) {
+    .journal-feature-link {
+      grid-template-columns: 1fr;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .journal-feature-image-wrapper img {
+      transition: none;
+    }
+  }
+{% endstylesheet %}
+
+{% schema %}
+{
+  "name": "Journal feature",
+  "tag": "section",
+  "class": "journal-feature-section",
+  "settings": [
+    {
+      "type": "article",
+      "id": "article",
+      "label": "Featured article"
+    },
+    {
+      "type": "color_scheme",
+      "id": "color_scheme",
+      "label": "Color scheme"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Journal feature"
+    }
+  ]
+}
+{% endschema %}

@@ -23,7 +23,7 @@
     "dismiss_announcement": "Dismiss announcement"
   },
   "footer": {
-    "copyright": "&copy; {{ year }} {{ shop_name }}",
+    "copyright": "&copy; {{ year }} {{ shop_name }}. All rights reserved.",
     "navigation": "Footer navigation"
   },
   "products": {
@@ -45,7 +45,8 @@
       "gallery_thumbnails": "Gallery thumbnails",
       "new": "New",
       "quick_add": "Quick add",
-      "choose_options": "Choose options"
+      "choose_options": "Choose options",
+      "details_heading": "Product details"
     }
   },
   "collections": {
@@ -63,12 +64,14 @@
     },
     "filtering": {
       "filters": "Filters",
+      "filter_and_sort": "Filter & Sort",
       "apply": "Apply filters",
+      "view_results": "View results ({{ count }})",
       "clear": "Clear all",
       "active_count": "{{ count }} active",
       "min": "Min",
       "max": "Max",
-      "close": "Close filters"
+      "close": "Close"
     }
   },
   "cart": {
@@ -80,8 +83,8 @@
       },
       "subtotal": "Subtotal",
       "checkout": "Checkout",
-      "taxes_note": "Taxes and shipping calculated at checkout",
-      "empty": "Your cart is empty",
+      "taxes_note": "Shipping, taxes, and discount codes calculated at checkout.",
+      "empty": "Your cart is currently empty.",
       "continue_shopping": "Continue shopping",
       "order_note": "Order note",
       "remove": "Remove",
@@ -90,8 +93,12 @@
     },
     "drawer": {
       "title": "Your cart",
-      "close": "Close cart",
-      "upsell_heading": "You might also like"
+      "close": "Close",
+      "col_item": "Item",
+      "col_description": "Description",
+      "col_price": "Price",
+      "col_qty": "Qty",
+      "terms_label": "I agree to the Sales Terms"
     }
   },
   "search": {

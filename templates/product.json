@@ -1,80 +1,75 @@
-/*
- * ------------------------------------------------------------
- * IMPORTANT: The contents of this file are auto-generated.
- *
- * This file may be updated by the Shopify admin theme editor
- * or related systems. Please exercise caution as any changes
- * made to this file may be overwritten.
- * ------------------------------------------------------------
- */
 {
   "sections": {
     "main": {
       "type": "main-product",
       "blocks": {
-        "title": {
-          "type": "title",
-          "settings": {}
-        },
-        "price": {
-          "type": "price",
-          "settings": {}
-        },
-        "variant_selector": {
-          "type": "variant_selector",
-          "settings": {}
-        },
-        "buy_buttons": {
-          "type": "buy_buttons",
-          "settings": {
-            "show_quantity": true
-          }
-        },
-        "accordion_QVAyJJ": {
+        "accordion_dimensions": {
           "type": "accordion",
           "settings": {
-            "heading": "Details",
-            "content": "<p>some details about the product</p>"
+            "heading": "Dimensions",
+            "content": ""
           }
         },
-        "accordion_xiU6wB": {
+        "accordion_material": {
           "type": "accordion",
           "settings": {
-            "heading": "Shipping",
-            "content": "<p>Some text about shipping...</p>"
+            "heading": "Material",
+            "content": ""
           }
         },
-        "description": {
-          "type": "description",
-          "settings": {}
+        "accordion_origin": {
+          "type": "accordion",
+          "settings": {
+            "heading": "Origin",
+            "content": ""
+          }
         }
       },
       "block_order": [
-        "title",
-        "price",
-        "variant_selector",
-        "buy_buttons",
-        "accordion_QVAyJJ",
-        "accordion_xiU6wB",
-        "description"
+        "accordion_dimensions",
+        "accordion_material",
+        "accordion_origin"
       ],
       "settings": {
         "color_scheme": "scheme-1"
       }
     },
-    "product_recommendations_76MMMN": {
-      "type": "product-recommendations",
-      "name": "Product recommendations",
+    "hotspot_image": {
+      "type": "hotspot-image",
       "settings": {
-        "heading": "You may also like",
-        "products_to_show": 4,
-        "grid_columns": "4",
-        "color_scheme": "scheme-3"
+        "color_scheme": "scheme-1"
+      }
+    },
+    "image_text_craft": {
+      "type": "image-text",
+      "blocks": {
+        "heading_block": {
+          "type": "heading",
+          "settings": {
+            "heading": ""
+          }
+        },
+        "body_block": {
+          "type": "body",
+          "settings": {
+            "content": ""
+          }
+        }
+      },
+      "block_order": [
+        "heading_block",
+        "body_block"
+      ],
+      "settings": {
+        "image_position": "right",
+        "image_width": "three-quarter",
+        "color_scheme": "scheme-1"
       }
     }
   },
   "order": [
     "main",
-    "product_recommendations_76MMMN"
+    "hotspot_image",
+    "image_text_craft"
   ]
 }

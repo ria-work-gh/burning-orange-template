@@ -1,82 +1,131 @@
+{%- comment -%} PDP: stacked layout — gallery, info grid, collection products. {%- endcomment -%}
+
 <section class="main-product color-{{ section.settings.color_scheme }}">
   {% render 'json-ld-product', product: product %}
 
-  <div class="product-layout">
-    <div class="product-gallery-column">
+  {%- comment -%} — Media — {%- endcomment -%}
+  <product-form class="pdp" data-section-id="{{ section.id }}">
+    <script type="application/json" class="product-json">
+      {{ product | json }}
+    </script>
+
+    <div class="pdp-media">
       {% render 'product-gallery', product: product %}
+
+      {%- comment -%} Color variant tags {%- endcomment -%}
+      {%- assign current_variant = product.selected_or_first_available_variant -%}
+      {%- assign hex_color = current_variant.metafields.custom.hex_color -%}
+      {%- assign color_collection_handle = product.metafields.custom.color_collection -%}
+
+      {%- if hex_color != blank -%}
+        <div class="pdp-tags">
+          <div class="pdp-tag-wrapper" data-color-tag>
+            <div class="tag-popover" data-color-popover hidden>
+              {%- if color_collection_handle != blank -%}
+                {%- assign sibling_collection = collections[color_collection_handle] -%}
+                {%- for sibling_product in sibling_collection.products -%}
+                  {%- if sibling_product.handle != product.handle -%}
+                    {%- assign sibling_hex = sibling_product.selected_or_first_available_variant.metafields.custom.hex_color -%}
+                    {%- if sibling_hex != blank -%}
+                      <a href="{{ sibling_product.url }}" class="tag-popover-item">
+                        <span class="pdp-swatch" style="--hex: {{ sibling_hex }}"></span>
+                        {{ sibling_product.selected_or_first_available_variant.title | downcase }}
+                      </a>
+                    {%- endif -%}
+                  {%- endif -%}
+                {%- endfor -%}
+              {%- endif -%}
+            </div>
+            <button type="button" class="pdp-tag" data-color-trigger aria-expanded="false">
+              <span class="pdp-swatch" style="--hex: {{ hex_color }}"></span>
+              {{ current_variant.title | downcase }}
+            </button>
+          </div>
+        </div>
+      {%- endif -%}
     </div>
 
-    <product-form class="product-info-column" data-section-id="{{ section.id }}">
-      <script type="application/json" class="product-json">
-        {{ product | json }}
-      </script>
+    {%- comment -%} — Info grid — {%- endcomment -%}
+    {%- form 'product', product -%}
+      <input type="hidden" name="id" value="{{ current_variant.id }}">
 
-      {%- form 'product', product -%}
-        <input type="hidden" name="id" value="{{ product.selected_or_first_available_variant.id }}">
+      <div class="pdp-info">
+        <div class="pdp-info-left">
+          <div class="pdp-header">
+            <h1 class="text-large">{{ product.title }}</h1>
+            <div class="pdp-price" data-product-price data-variant-render="price">
+              {% render 'product-price', product: product %}
+            </div>
+          </div>
 
-        {%- for block in section.blocks -%}
-          {%- case block.type -%}
-            {%- when 'title' -%}
-              <h1 class="product-title text-xl" {{ block.shopify_attributes }}>
-                {{ product.title }}
-              </h1>
+          {%- if product.has_only_default_variant == false -%}
+            <div class="product-variants">
+              {% render 'product-variant-selector', product: product %}
+            </div>
+          {%- endif -%}
 
-            {%- when 'price' -%}
-              <div class="product-price-block" data-product-price data-variant-render="price" {{ block.shopify_attributes }}>
-                {% render 'product-price', product: product %}
-              </div>
+          <div class="pdp-actions" data-variant-render="buy-buttons">
+            {% render 'product-buy-buttons', product: product, show_quantity: true %}
+          </div>
+        </div>
 
-            {%- when 'variant_selector' -%}
-              <div class="product-variants" {{ block.shopify_attributes }}>
-                {% render 'product-variant-selector', product: product %}
-              </div>
+        <div class="pdp-info-right">
+          {%- if product.description != blank -%}
+            <div class="typeset">{{ product.description }}</div>
+          {%- endif -%}
+        </div>
+      </div>
+    {%- endform -%}
+  </product-form>
 
-            {%- when 'buy_buttons' -%}
-              <div class="product-buy-buttons" data-variant-render="buy-buttons" {{ block.shopify_attributes }}>
-                {% render 'product-buy-buttons', product: product, show_quantity: block.settings.show_quantity %}
-              </div>
+  {%- comment -%} — Collection products + accordions — {%- endcomment -%}
+  {%- if color_collection_handle != blank -%}
+    {%- assign pdp_collection = collections[color_collection_handle] -%}
+  {%- else -%}
+    {%- assign pdp_collection = product.collections.first -%}
+  {%- endif -%}
 
-            {%- when 'description' -%}
-              <div class="product-description typeset" {{ block.shopify_attributes }}>
-                {{ product.description }}
-              </div>
+  {%- assign has_accordions = false -%}
+  {%- for block in section.blocks -%}
+    {%- if block.type == 'accordion' -%}
+      {%- assign has_accordions = true -%}
+      {%- break -%}
+    {%- endif -%}
+  {%- endfor -%}
 
-            {%- when 'accordion' -%}
-              {%- unless prev_block_type == 'accordion' -%}
-                <div class="product-accordions">
-              {%- endunless -%}
+  {%- if has_accordions or pdp_collection != blank -%}
+    <div class="pdp-collection">
+      <div class="pdp-collection-left">
+        {%- if has_accordions -%}
+          <span class="text-cap">{{ 'products.product.details_heading' | t }}</span>
+          {%- for block in section.blocks -%}
+            {%- case block.type -%}
+              {%- when 'accordion' -%}
+                <details class="pdp-dropdown" {{ block.shopify_attributes }}>
+                  <summary class="pdp-dropdown-summary text-medium">{{ block.settings.heading }}</summary>
+                  <div class="pdp-dropdown-content typeset">{{ block.settings.content }}</div>
+                </details>
+              {%- when '@app' -%}
+                {% render block %}
+            {%- endcase -%}
+          {%- endfor -%}
+        {%- endif -%}
+      </div>
 
-              <details class="product-accordion" {{ block.shopify_attributes }}>
-                <summary>
-                  {{ block.settings.heading }}
-                  <span class="product-accordion-icon" aria-hidden="true">+</span>
-                </summary>
-                <div class="typeset">{{ block.settings.content }}</div>
-              </details>
-
-              {%- assign next_block = section.blocks[forloop.index] -%}
-              {%- unless next_block.type == 'accordion' -%}
-                </div>
-              {%- endunless -%}
-
-            {%- when 'upsells' -%}
-              <div class="product-upsells" {{ block.shopify_attributes }}>
-                {% render 'product-upsells', product: product, heading: block.settings.heading %}
-              </div>
-
-            {%- when 'custom_text' -%}
-              <div class="product-custom-text typeset" {{ block.shopify_attributes }}>
-                {{ block.settings.content }}
-              </div>
-
-            {%- when '@app' -%}
-              {% render block %}
-          {%- endcase -%}
-          {%- assign prev_block_type = block.type -%}
-        {%- endfor -%}
-      {%- endform -%}
-    </product-form>
-  </div>
+      {%- if pdp_collection != blank -%}
+        <div class="pdp-collection-right">
+          <span class="text-cap">{{ pdp_collection.title }}</span>
+          <div class="pdp-collection-grid">
+            {%- for coll_product in pdp_collection.products -%}
+              {%- if coll_product.handle != product.handle -%}
+                {% render 'product-card', product: coll_product, lazy_load: true %}
+              {%- endif -%}
+            {%- endfor -%}
+          </div>
+        </div>
+      {%- endif -%}
+    </div>
+  {%- endif -%}
 </section>
 
 <script src="{{ 'product-form.js' | asset_url }}" defer></script>
@@ -84,57 +133,254 @@
 <script src="{{ 'product-gallery.js' | asset_url }}" defer></script>
 <script src="{{ 'quantity-selector.js' | asset_url }}" defer></script>
 
-{% stylesheet %}
-  .product-layout {
-    display: grid;
-    grid-template-columns: 1fr;
+{% javascript %}
+  var tagWrapper = document.querySelector('[data-color-tag]');
+  if (!tagWrapper) return;
+
+  var trigger = tagWrapper.querySelector('[data-color-trigger]');
+  var popover = tagWrapper.querySelector('[data-color-popover]');
+  if (!trigger || !popover) return;
+
+  var isTouch = 'ontouchstart' in window || navigator.maxTouchPoints > 0;
+
+  function show() {
+    popover.hidden = false;
+    trigger.setAttribute('aria-expanded', 'true');
   }
 
-  @media (min-width: 900px) {
-    .product-layout {
+  function hide() {
+    popover.hidden = true;
+    trigger.setAttribute('aria-expanded', 'false');
+  }
+
+  if (!isTouch) {
+    tagWrapper.addEventListener('mouseenter', show);
+    tagWrapper.addEventListener('mouseleave', hide);
+  }
+
+  trigger.addEventListener('click', function () {
+    if (popover.hidden) {
+      show();
+    } else {
+      hide();
+    }
+  });
+{% endjavascript %}
+
+{% stylesheet %}
+  .pdp {
+    padding-top: var(--spacing-5);
+  }
+
+  .pdp-media {
+    width: 100%;
+    height: 50vh;
+    position: relative;
+  }
+
+  @media (min-width: 750px) {
+    .pdp-media {
+      height: 75vh;
+    }
+  }
+
+  .pdp-tags {
+    position: absolute;
+    bottom: var(--spacing-2);
+    left: var(--spacing-2);
+    display: flex;
+    gap: var(--spacing-1);
+    z-index: 1;
+  }
+
+  .pdp-tag-wrapper {
+    position: relative;
+  }
+
+  .tag-popover {
+    position: absolute;
+    bottom: 100%;
+    padding-bottom: var(--spacing-1);
+    left: 0;
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-1);
+  }
+
+  .tag-popover-item {
+    background-color: hsla(45, 33%, 85%, 0.85);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    padding: var(--spacing-1) var(--spacing-2);
+    font-size: var(--font-base-size);
+    display: flex;
+    align-items: center;
+    white-space: nowrap;
+    text-decoration: none;
+    color: inherit;
+    transition: background-color var(--transition-fast);
+  }
+
+  .tag-popover-item:hover {
+    background-color: hsla(45, 33%, 75%, 0.9);
+  }
+
+  .pdp-tag {
+    background-color: hsla(45, 33%, 85%, 0.85);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    padding: var(--spacing-1) var(--spacing-2);
+    font-size: var(--font-base-size);
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+    transition: background-color var(--transition-fast);
+  }
+
+  .pdp-tag:hover {
+    background-color: hsla(45, 33%, 75%, 0.9);
+  }
+
+  .pdp-swatch {
+    display: inline-block;
+    width: 12px;
+    height: 12px;
+    background-color: var(--hex);
+    border: 1px solid hsla(0, 0%, 0%, 0.1);
+    margin-right: 8px;
+  }
+
+  .pdp-info {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: var(--spacing-2);
+    align-items: start;
+    padding: var(--spacing-3) var(--spacing-2);
+  }
+
+  @media (min-width: 750px) {
+    .pdp-info {
       grid-template-columns: 1fr 1fr;
     }
   }
 
-  .product-gallery-column {
-    position: relative;
-    overflow: hidden;
-    aspect-ratio: 1 / 1;
+  .pdp-info-left {
+    display: grid;
+    gap: var(--spacing-3);
   }
 
-  @media (min-width: 900px) {
-    .product-gallery-column {
-      position: sticky;
-      top: var(--header-height);
-      height: calc(100svh - var(--header-height));
-      aspect-ratio: auto;
-      align-self: start;
-    }
+  .pdp-header {
+    display: grid;
+    gap: var(--spacing-1);
   }
 
-  .product-info-column {
-    padding: var(--spacing-m) var(--spacing-base);
+  .pdp-price {
+    font-size: var(--font-medium-size);
+    line-height: var(--font-medium-height);
   }
 
-  @media (min-width: 900px) {
-    .product-info-column {
-      min-height: calc(100svh - var(--header-height));
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-    }
+  .pdp-info-right {
+    max-width: 65ch;
+    color: var(--color-text);
   }
 
-  .product-info-column form {
+  .pdp-actions {
     display: flex;
-    flex-direction: column;
-    gap: var(--spacing-base);
-    max-width: 450px;
-    margin-inline: auto;
+    align-items: stretch;
+    gap: var(--spacing-2);
   }
 
-  .product-title {
-    margin: 0;
+  .pdp-actions .buy-buttons {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--spacing-s);
+    align-items: stretch;
+    flex: 1;
+  }
+
+  .pdp-actions .button {
+    flex: 1;
+  }
+
+  .pdp-collection {
+    padding: var(--spacing-4) var(--spacing-2);
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: var(--spacing-2);
+    align-items: start;
+  }
+
+  @media (min-width: 750px) {
+    .pdp-collection {
+      grid-template-columns: 1fr 1fr;
+    }
+  }
+
+  .pdp-collection-left {
+    max-width: 65ch;
+  }
+
+  .pdp-collection-left > .text-cap,
+  .pdp-collection-right > .text-cap {
+    display: block;
+    margin-bottom: var(--spacing-2);
+  }
+
+  .pdp-collection-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+    gap: var(--spacing-2);
+  }
+
+  @media (min-width: 750px) and (max-width: 1023px) {
+    .pdp-collection-grid {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+
+  @media (min-width: 1024px) {
+    .pdp-collection-grid {
+      grid-template-columns: repeat(3, 1fr);
+    }
+  }
+
+  .pdp-dropdown + .pdp-dropdown {
+    border-top: 1px solid var(--color-text);
+  }
+
+  .pdp-dropdown summary {
+    padding: var(--spacing-2) 0;
+    cursor: pointer;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+    text-align: left;
+    list-style: none;
+  }
+
+  .pdp-dropdown summary::-webkit-details-marker {
+    display: none;
+  }
+
+  .pdp-dropdown summary::after {
+    content: '+';
+    font-size: var(--font-control-size);
+  }
+
+  .pdp-dropdown[open] summary::after {
+    content: '\2212';
+  }
+
+  .pdp-dropdown-content {
+    padding-bottom: var(--spacing-2);
+    display: grid;
+    gap: var(--spacing-1);
+  }
+
+  product-form.is-loading [data-variant-render] {
+    opacity: 0.6;
+    pointer-events: none;
   }
 
   .variant-options {
@@ -143,46 +389,11 @@
     padding: 0;
   }
 
-  .buy-buttons {
-    display: flex;
-    flex-wrap: wrap;
-    gap: var(--spacing-s);
-    align-items: stretch;
-  }
-
-  .buy-buttons .button {
-    flex: 1;
-  }
-
-  .product-accordions {
-    border-top: 1px solid var(--color-text-light);
-  }
-
-  .product-accordion summary {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    cursor: pointer;
-    padding: var(--spacing-s) 0;
-    border-bottom: 1px solid var(--color-text-light);
-  }
-
-  .product-accordion-icon {
-    flex-shrink: 0;
-    transition: transform var(--transition-fast);
-  }
-
-  .product-accordion[open] .product-accordion-icon {
-    transform: rotate(45deg);
-  }
-
-  .product-accordion .typeset {
-    padding: var(--spacing-s) 0;
-  }
-
-  product-form.is-loading [data-variant-render] {
-    opacity: 0.6;
-    pointer-events: none;
+  @media (prefers-reduced-motion: reduce) {
+    .tag-popover-item,
+    .pdp-tag {
+      transition: none !important;
+    }
   }
 {% endstylesheet %}
 
@@ -199,39 +410,6 @@
   ],
   "blocks": [
     {
-      "type": "title",
-      "name": "Title",
-      "limit": 1
-    },
-    {
-      "type": "price",
-      "name": "Price",
-      "limit": 1
-    },
-    {
-      "type": "variant_selector",
-      "name": "Variant selector",
-      "limit": 1
-    },
-    {
-      "type": "buy_buttons",
-      "name": "Buy buttons",
-      "limit": 1,
-      "settings": [
-        {
-          "type": "checkbox",
-          "id": "show_quantity",
-          "label": "Show quantity selector",
-          "default": true
-        }
-      ]
-    },
-    {
-      "type": "description",
-      "name": "Description",
-      "limit": 1
-    },
-    {
       "type": "accordion",
       "name": "Accordion",
       "settings": [
@@ -240,30 +418,6 @@
           "id": "heading",
           "label": "Heading"
         },
-        {
-          "type": "richtext",
-          "id": "content",
-          "label": "Content"
-        }
-      ]
-    },
-    {
-      "type": "upsells",
-      "name": "Upsells",
-      "limit": 1,
-      "settings": [
-        {
-          "type": "text",
-          "id": "heading",
-          "label": "Heading",
-          "default": "Complete the set"
-        }
-      ]
-    },
-    {
-      "type": "custom_text",
-      "name": "Custom text",
-      "settings": [
         {
           "type": "richtext",
           "id": "content",

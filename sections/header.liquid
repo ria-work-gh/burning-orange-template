@@ -1,269 +1,274 @@
+{%- comment -%} Transparent header with collapsible nav row + wordmark logo. {%- endcomment -%}
 <header class="header color-{{ section.settings.color_scheme }}">
   <div class="header-container">
-    <div class="header-left">
-      <nav class="header-nav" aria-label="{{ 'header.navigation' | t }}">
-        {%- for link in linklists[section.settings.menu].links -%}
-          <a href="{{ link.url }}" class="nav-link">{{ link.title }}</a>
-        {%- endfor -%}
+    {%- comment -%} Collapsible nav row {%- endcomment -%}
+    <div class="header-nav-row">
+      {%- comment -%} Mobile nav — visible below 750px {%- endcomment -%}
+      <nav class="header-nav-mobile" aria-label="{{ 'header.mobile_navigation' | t }}">
+        <button
+          class="header-nav-link text-cap"
+          aria-controls="mobile-menu"
+          aria-expanded="false"
+          aria-label="{{ 'header.open_menu' | t }}"
+        >
+          {{ 'header.menu' | t }}
+        </button>
+        <cart-icon data-aria-template="{{ 'accessibility.cart_count' | t: count: '__COUNT__' }}">
+          <a
+            href="{{ routes.cart_url }}"
+            class="header-nav-link text-cap"
+            aria-label="{{ 'accessibility.cart_count' | t: count: cart.item_count }}"
+          >
+            {{ 'header.cart' | t }} ( <span class="cart-count">{{ cart.item_count }}</span> )
+          </a>
+        </cart-icon>
       </nav>
-      <button
-        class="header-menu-toggle"
-        aria-label="{{ 'header.open_menu' | t }}"
-        aria-controls="mobile-menu"
-        aria-expanded="false"
-      >
-        {% render 'icon-menu' %}
-      </button>
+
+      {%- comment -%} Desktop nav — visible at 750px+ {%- endcomment -%}
+      <nav class="header-nav-desktop" aria-label="{{ 'header.navigation' | t }}">
+        {%- for link in linklists[section.settings.menu].links -%}
+          <a href="{{ link.url }}" class="header-nav-link text-cap">{{ link.title }}</a>
+        {%- endfor -%}
+        <cart-icon data-aria-template="{{ 'accessibility.cart_count' | t: count: '__COUNT__' }}">
+          <a
+            href="{{ routes.cart_url }}"
+            class="header-nav-link text-cap"
+            aria-label="{{ 'accessibility.cart_count' | t: count: cart.item_count }}"
+          >
+            {{ 'header.cart' | t }} ( <span class="cart-count">{{ cart.item_count }}</span> )
+          </a>
+        </cart-icon>
+      </nav>
     </div>
 
-    <a href="/" class="header-logo text-cap">
+    {%- comment -%} Logo {%- endcomment -%}
+    <a href="/" class="header-logo header-nav-link" aria-label="{{ shop.name }}">
       {%- if section.settings.logo -%}
-        {{ section.settings.logo | image_url: width: 200 | image_tag: alt: shop.name }}
+        {{ section.settings.logo | image_url: width: 500 | image_tag: alt: shop.name }}
       {%- else -%}
-        {{ shop.name }}
+        <svg width="492" height="36" viewBox="0 0 492 36" fill="none" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="{{ shop.name }}">
+          <path d="M0 35.2131H6.67336C12.9018 35.2131 19.2786 31.6721 19.2786 25.918C19.2786 20.8525 14.3848 17.0656 9.44157 16.4262V17.1639C13.495 16.2295 17.3013 13.3279 17.3013 9.14754C17.3013 4.13115 11.8143 0.786885 6.17904 0.786885H0V35.2131ZM4.69607 33.1967V18H6.67336C11.6166 18 14.0882 21.4426 14.0882 25.5246C14.0882 29.6066 11.666 33.1967 6.67336 33.1967H4.69607ZM4.69607 16.2787V2.7541H6.17904C10.2325 2.7541 12.6547 5.80328 12.6547 9.59016C12.6547 13.377 10.1831 16.2787 6.17904 16.2787H4.69607ZM42.5612 35.9508C51.6074 35.9508 56.3034 29.0164 56.3034 19.2295V0.786885H53.5846V19.2295C53.5846 27.3443 50.2727 33.4918 42.8578 33.4918C35.3935 33.4918 32.5759 27.3934 32.5759 19.2295V0.786885H27.6327V19.2295C27.6327 28.5738 32.9714 35.9508 42.5612 35.9508ZM88.6816 35.6066C90.0657 35.6066 91.2026 35.1148 91.9441 34.7213C89.1759 34.7213 86.6054 31.1803 84.035 26.1639C82.1071 22.4262 79.1412 17.8033 75.236 17.0164L75.1371 17.1639C80.3275 17.1639 84.2821 13.6721 84.2821 9.34426C84.2821 4.13115 78.6468 0.786885 72.1712 0.786885H66.4865V35.2131H71.1826V2.7541H72.1712C76.1752 2.7541 79.1412 5.55738 79.1412 9.54098C79.1412 13.4754 76.2246 16.2787 72.1712 16.2787H70.886V16.377C74.9888 17.5574 77.0156 22.918 79.1906 27C82.1071 32.5082 85.1719 35.6066 88.6816 35.6066ZM130.946 35.9508V0.786885H126.003V28.1803L95.2561 0V35.2131H100.199V7.81967L130.946 35.9508ZM141.525 35.2131H146.221V0.786885H141.525V35.2131ZM192.489 35.9508V0.786885H187.546V28.1803L156.799 0V35.2131H161.743V7.81967L192.489 35.9508ZM276.673 35.9508C287.4 35.9508 295.951 28.1311 295.951 18C295.951 7.47541 286.856 0 276.673 0C266.44 0 257.394 7.42623 257.394 18C257.394 28.3279 266.144 35.9508 276.673 35.9508ZM276.673 33.9836C268.17 33.9836 262.832 26.3607 262.832 18C262.832 9.34426 268.516 2.01639 276.673 2.01639C284.434 2.01639 290.514 8.95082 290.514 18C290.514 27.1475 284.434 33.9836 276.673 33.9836ZM327.341 35.2131H329.219L329.911 34.7213C327.143 34.7213 324.573 31.1803 322.002 26.1639C320.074 22.4262 317.108 17.8033 313.203 17.0164L313.104 17.1639C318.295 17.1639 322.249 13.6721 322.249 9.34426C322.249 4.13115 316.614 0.786885 310.138 0.786885H304.454V35.2131H309.15V2.7541H310.138C314.142 2.7541 317.108 5.55738 317.108 9.54098C317.108 13.4754 314.192 16.2787 310.138 16.2787H308.853V16.377C312.956 17.5574 314.983 22.918 317.158 27C320.074 32.5082 323.139 35.2131 327.341 35.2131ZM328.972 35.2131H332.63L347.41 6.73771L362.042 35.2131H367.579L348.3 0L328.972 35.2131ZM350.623 29.1148C353.787 29.1148 356.012 27.2951 358.286 24.9836C351.81 27.9836 348.992 24.0492 343.95 24.0492C340.885 24.0492 337.919 25.5246 335.942 28.1803C342.517 25.1803 345.927 29.1148 350.623 29.1148ZM409.3 35.9508V0.786885H404.356V28.1803L373.61 0V35.2131H378.553V7.81967L409.3 35.9508ZM481.125 20.5574C484.684 20.5574 487.502 18.7377 489.726 16.4262C482.509 19.4262 479.345 15.4918 473.71 15.4918C470.25 15.4918 466.938 16.9672 464.713 19.623C472.079 16.623 475.885 20.5574 481.125 20.5574ZM460.363 18C460.363 28.7705 469.657 36 479.79 36C483.794 36 488.243 34.8689 491.951 32.2131L490.665 29.8033C487.749 32.6557 484.536 33.9344 480.68 33.9344C471.832 33.9344 465.801 26.9016 465.801 18C465.801 9.09836 471.832 2.06557 480.68 2.06557C484.536 2.06557 487.798 3.39344 490.715 6.19672L492 3.78689C488.293 1.13115 483.794 0 479.79 0C469.657 0 460.363 7.22951 460.363 18ZM220.32 35.9508C225.51 35.9508 231.59 34.3279 235.298 30.541C235.298 23.9016 235.298 19.7213 237.572 16.8689L233.073 20.5082C230.651 24.0984 230.651 26.8525 230.651 29.5574C227.834 32.8525 223.681 33.9836 220.221 33.9836C211.521 33.9836 206.429 26.6557 206.429 18.2459C206.429 9.09836 212.46 2.06557 221.309 2.06557C225.856 2.06557 229.564 3.88525 232.381 7.37705L234.161 5.06557C230.256 1.47541 225.016 0 220.419 0C210.285 0 200.992 7.22951 200.992 18.2459C200.992 29.0656 209.89 35.9508 220.32 35.9508ZM230.058 21.4918C232.777 21.4918 235.199 19.6721 237.522 16.8689C231.838 19.4262 228.427 16.4262 224.274 16.4262C220.913 16.4262 217.947 18.3934 215.772 21.1475C218.046 20.1639 220.221 19.6229 222.248 19.6721C225.659 19.7705 227.438 21.4918 230.058 21.4918ZM437.13 35.9508C442.32 35.9508 448.401 34.3279 452.108 30.541C452.108 23.9016 452.108 19.7213 454.382 16.8689L449.884 20.5082C447.461 24.0984 447.461 26.8525 447.461 29.5574C444.644 32.8525 440.491 33.9836 437.031 33.9836C428.331 33.9836 423.24 26.6557 423.24 18.2459C423.24 9.09836 429.27 2.06557 438.119 2.06557C442.667 2.06557 446.374 3.88525 449.192 7.37705L450.971 5.06557C447.066 1.47541 441.826 0 437.229 0C427.095 0 417.802 7.22951 417.802 18.2459C417.802 29.0656 426.7 35.9508 437.13 35.9508ZM446.868 21.4918C449.587 21.4918 452.009 19.6721 454.333 16.8689C448.648 19.4262 445.237 16.4262 441.085 16.4262C437.723 16.4262 434.757 18.3934 432.582 21.1475C434.856 20.1639 437.031 19.6229 439.058 19.6721C442.469 19.7705 444.248 21.4918 446.868 21.4918Z" fill="currentColor" />
+        </svg>
       {%- endif -%}
     </a>
-
-    <div class="header-right">
-      <button type="button" class="header-icon" aria-label="{{ 'header.search' | t }}" aria-controls="search-drawer" aria-expanded="false">
-        {% render 'icon-search' %}
-      </button>
-      <cart-icon data-aria-template="{{ 'accessibility.cart_count' | t: count: '__COUNT__' }}">
-        <a
-          href="{{ routes.cart_url }}"
-          class="header-icon"
-          aria-label="{{ 'accessibility.cart_count' | t: count: cart.item_count }}"
-        >
-          {% render 'icon-cart' %}
-          <span class="cart-count">{{ cart.item_count }}</span>
-        </a>
-      </cart-icon>
-    </div>
   </div>
 </header>
 
 <mobile-menu id="mobile-menu" aria-hidden="true" aria-label="{{ 'header.menu' | t }}">
-  <div class="mobile-menu-overlay" data-overlay></div>
   <div class="mobile-menu-panel">
-    <div class="mobile-menu-header">
-      <h2 class="mobile-menu-title">{{ shop.name }}</h2>
-      <button class="mobile-menu-close" aria-label="{{ 'header.close_menu' | t }}" data-close>
-        {% render 'icon-close' %}
-      </button>
-    </div>
-    <div class="mobile-menu-body">
-      <nav class="mobile-menu-nav" aria-label="{{ 'header.mobile_navigation' | t }}">
-        {%- for link in linklists[section.settings.menu].links -%}
-          <a href="{{ link.url }}" class="mobile-menu-link">
-            {{ link.title }}
-          </a>
-        {%- endfor -%}
-      </nav>
-    </div>
+    <button class="mobile-menu-close text-cap" data-close aria-label="{{ 'header.close_menu' | t }}">
+      {{ 'general.close' | t }}
+    </button>
+    <nav class="mobile-menu-nav" aria-label="{{ 'header.mobile_navigation' | t }}">
+      {%- for link in linklists[section.settings.menu].links -%}
+        <a href="{{ link.url }}" class="mobile-menu-link text-cap">{{ link.title }}</a>
+      {%- endfor -%}
+    </nav>
   </div>
 </mobile-menu>
 
 <script src="{{ 'cart-icon.js' | asset_url }}" defer></script>
 <script src="{{ 'mobile-menu.js' | asset_url }}" defer></script>
 
-<script>
-  (function () {
-    var group = document.querySelector('.shopify-section-group-header-group');
-    if (!group || group.children.length < 2) return;
+{% javascript %}
+  // Nav collapse on scroll + hero overlap detection
+  var header = document.querySelector('.header');
+  var container = header && header.querySelector('.header-container');
+  if (!header || !container) return;
 
-    var firstSection = group.firstElementChild;
-    function measure() {
-      var h = firstSection.offsetHeight;
-      group.style.setProperty('--header-group-offset', h + 'px');
+  var lastScrollY = 0;
+
+  function handleScroll() {
+    var currentScrollY = window.scrollY;
+
+    var hero = document.querySelector('.hero-banner');
+    if (hero) {
+      var heroBottom = hero.offsetTop + hero.offsetHeight;
+      if (currentScrollY < heroBottom - 100) {
+        header.classList.add('over-hero');
+      } else {
+        header.classList.remove('over-hero');
+      }
     }
 
-    measure();
+    if (currentScrollY > 50) {
+      if (currentScrollY > lastScrollY) {
+        container.classList.add('nav-hidden');
+      } else {
+        container.classList.remove('nav-hidden');
+      }
+    } else {
+      container.classList.remove('nav-hidden');
+    }
 
-    var ro = new ResizeObserver(measure);
-    ro.observe(firstSection);
-  })();
-</script>
-
-{% stylesheet %}
-
-  :root {
-    --header-height: 52px;
+    lastScrollY = currentScrollY;
   }
 
-  /* Header layout */
+  window.addEventListener('scroll', handleScroll, { passive: true });
+  handleScroll();
+{% endjavascript %}
+
+{% stylesheet %}
+  /* Header — transparent, two-row layout */
   .header {
-    background-color: var(--color-bg);
-    color: var(--color-text);
-    border-bottom: 1px solid hsla(0, 0%, 0%, 0.1);
+    /* No background — transparent over page content */
   }
 
   .header-container {
     display: grid;
-    grid-template-columns: 1fr auto 1fr;
+    grid-template-rows: 1fr auto;
     align-items: center;
-    padding: var(--spacing-base);
-    gap: var(--spacing-base);
+    justify-items: center;
+    padding: var(--spacing-2);
+    gap: var(--spacing-2);
+    transition:
+      grid-template-rows var(--transition-base),
+      gap var(--transition-base);
   }
 
-  /* Left column: nav + hamburger */
-  .header-left {
+  .header-container.nav-hidden {
+    grid-template-rows: 0fr auto;
+    gap: 0;
+  }
+
+  /* Collapsible nav row */
+  .header-nav-row {
+    overflow: hidden;
+    min-height: 0;
     display: flex;
-    align-items: center;
-    gap: var(--spacing-base);
-    justify-self: start;
+    justify-content: center;
+    opacity: 1;
+    transition: opacity 0.2s ease;
   }
 
-  /* Logo (center column) */
-  .header-logo {
-    display: flex;
-    align-items: center;
-    justify-self: center;
+  .header-container.nav-hidden .header-nav-row {
+    opacity: 0;
+    pointer-events: none;
   }
 
-  .header-logo img {
-    height: auto;
-    max-height: 40px;
+  /* Re-expand nav on header hover */
+  .header:hover .header-container.nav-hidden {
+    grid-template-rows: 1fr auto;
+    gap: var(--spacing-2);
+  }
+
+  .header:hover .header-container.nav-hidden .header-nav-row {
+    opacity: 1;
+    pointer-events: auto;
+  }
+
+  /* Logo */
+  .header-logo svg {
+    height: 32px;
     width: auto;
   }
 
-  /* Desktop navigation */
-  .header-nav {
-    display: none;
-    align-items: center;
-    gap: var(--spacing-base);
+  .header-logo img {
+    height: 32px;
+    width: auto;
   }
 
-  @media (min-width: 900px) {
-    .header-nav {
-      display: flex;
-    }
-  }
-
-  /* Right column: search + cart */
-  .header-right {
+  /* Mobile nav — visible below 750px */
+  .header-nav-mobile {
     display: flex;
     align-items: center;
-    gap: var(--spacing-base);
-    justify-self: end;
-  }
-
-  .header-icon {
-    display: flex;
-    align-items: center;
-    position: relative;
-  }
-
-  /* Cart count badge */
-  .cart-count {
-    position: absolute;
-    top: -4px;
-    right: -6px;
-    min-width: 16px;
-    height: 16px;
-    display: flex;
-    align-items: center;
+    gap: var(--spacing-2);
     justify-content: center;
-    font-size: 10px;
-    font-weight: 600;
-    background-color: var(--color-text);
-    color: var(--color-bg);
-    border-radius: 50%;
-    padding: 0 4px;
-    line-height: 1;
+    width: 100%;
   }
 
-  /* Mobile menu toggle */
-  .header-menu-toggle {
-    display: flex;
-    align-items: center;
-  }
-
-  @media (min-width: 900px) {
-    .header-menu-toggle {
+  @media (min-width: 750px) {
+    .header-nav-mobile {
       display: none;
     }
   }
 
-  /* Mobile menu */
+  /* Desktop nav — visible at 750px+ */
+  .header-nav-desktop {
+    display: none;
+    align-items: center;
+    gap: var(--spacing-2);
+  }
+
+  @media (min-width: 750px) {
+    .header-nav-desktop {
+      display: flex;
+    }
+  }
+
+  /* Nav links */
+  .header-nav-link {
+    color: var(--color-text);
+    transition: color var(--transition-base);
+  }
+
+  .header-nav-link:hover {
+    color: var(--color-accent);
+  }
+
+  .header-nav-link:active {
+    color: var(--color-accent-dark);
+  }
+
+  /* Over-hero: light text for dark hero images */
+  .header.over-hero .header-nav-link {
+    color: var(--color-background);
+  }
+
+  .header.over-hero .header-nav-link:hover {
+    color: var(--color-accent);
+  }
+
+  /* Mobile menu — full-screen overlay */
   mobile-menu {
     position: fixed;
     inset: 0;
-    z-index: 99;
+    z-index: var(--z-modal);
     pointer-events: none;
+    background: var(--color-background);
+    opacity: 0;
+    transition: opacity var(--transition-base);
   }
 
   mobile-menu.is-open {
     pointer-events: auto;
-  }
-
-  .mobile-menu-overlay {
-    position: absolute;
-    inset: 0;
-    background: rgba(0, 0, 0, 0.5);
-    opacity: 0;
-    transition: opacity var(--transition-slow);
-  }
-
-  mobile-menu.is-open .mobile-menu-overlay {
     opacity: 1;
   }
 
   .mobile-menu-panel {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    max-width: 320px;
-    height: 100%;
-    background: var(--color-bg);
-    color: var(--color-text);
-    transform: translateX(-100%);
-    transition: transform var(--transition-slow);
     display: flex;
     flex-direction: column;
-  }
-
-  mobile-menu.is-open .mobile-menu-panel {
-    transform: translateX(0);
-  }
-
-  .mobile-menu-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: var(--spacing-base);
-    border-bottom: 1px solid hsla(0, 0%, 0%, 0.1);
-  }
-
-  .mobile-menu-title {
-    margin: 0;
+    height: 100%;
+    padding: var(--spacing-2);
   }
 
   .mobile-menu-close {
-    display: block;
-    background: none;
-    border: none;
-    cursor: pointer;
-    line-height: 0;
+    align-self: flex-end;
+    color: var(--color-text);
+    transition: color var(--transition-fast);
   }
 
-  .mobile-menu-body {
-    flex: 1;
-    overflow-y: auto;
-    padding: var(--spacing-base);
+  .mobile-menu-close:hover {
+    color: var(--color-accent);
   }
 
   .mobile-menu-nav {
     display: flex;
     flex-direction: column;
-    gap: var(--spacing-s);
+    align-items: center;
+    justify-content: center;
+    flex: 1;
+    gap: var(--spacing-3);
   }
 
   .mobile-menu-link {
-    display: block;
-    padding: var(--spacing-s) 0;
-    font-size: var(--type-medium-size);
-    line-height: var(--type-medium-height);
+    font-size: var(--font-medium-size);
+    color: var(--color-text);
+    transition: color var(--transition-fast);
+  }
+
+  .mobile-menu-link:hover {
+    color: var(--color-accent);
   }
 
   /* Prevent body scroll when menu open */
@@ -272,8 +277,9 @@
   }
 
   @media (prefers-reduced-motion: reduce) {
-    .mobile-menu-overlay,
-    .mobile-menu-panel {
+    .header-container,
+    .header-nav-row,
+    mobile-menu {
       transition: none;
     }
   }

@@ -3,7 +3,7 @@
  * Cart event protocol: .claude/conventions/commerce.md
  * Accessibility (focus trap, ARIA): .claude/conventions/accessibility.md
  *
- * Slide-from-right drawer that displays the cart contents. Opens automatically
+ * Top-slide drawer that displays the cart contents. Opens automatically
  * on add-to-cart and via the cart icon. On 'cart:updated', uses the pre-rendered
  * section HTML from the event (bundled section rendering, zero extra fetches).
  * On 'cart:item-added', falls back to a standalone section fetch since the
@@ -11,33 +11,35 @@
  * keyboard navigation.
  *
  * Expected markup:
- *   <cart-drawer id="cart-drawer" class="cart-drawer" aria-hidden="true" role="dialog"
+ *   <cart-drawer id="cart-drawer" aria-hidden="true" role="dialog"
  *     aria-modal="true" aria-label="Cart">
- *     <div class="cart-drawer-overlay" data-overlay></div>
- *     <div class="cart-drawer-panel">
- *       <div class="cart-drawer-header">
- *         <h2 class="cart-drawer-title">Cart <span class="cart-drawer-count">(0)</span></h2>
- *         <button class="cart-drawer-close" data-close aria-label="Close cart">X</button>
+ *     <button class="cart-close" data-close>Close</button>
+ *     <div class="cart-drawer-inner">
+ *       <div class="cart-items-section">
+ *         <div class="cart-items-header">...</div>
+ *         <div class="cart-items-list" data-items>...</div>
  *       </div>
- *       <div class="cart-drawer-body">...</div>
- *       <div class="cart-drawer-footer">...</div>
+ *       <div class="cart-checkout-section" data-checkout>...</div>
  *     </div>
  *   </cart-drawer>
+ *   <button class="cart-backdrop" id="cart-backdrop"></button>
  */
 class CartDrawer extends HTMLElement {
   connectedCallback() {
-    this.overlay = this.querySelector('[data-overlay]');
     this.closeBtn = this.querySelector('[data-close]');
+    this.backdrop = document.getElementById('cart-backdrop');
     this.previouslyFocused = null;
     this.stale = false;
 
     this.handleKeydown = this.handleKeydown.bind(this);
 
-    // Close button and overlay clicks
+    // Close button click
     this.closeBtn?.addEventListener('click', () => this.close());
-    this.overlay?.addEventListener('click', () => this.close());
 
-    // Listen for cart events (named functions for disconnectedCallback)
+    // Backdrop click closes drawer
+    this.backdrop?.addEventListener('click', () => this.close());
+
+    // Listen for cart events
     this._onItemAdded = () => this.refresh().then(() => this.open());
     this._onCartUpdated = (e) => {
       const html = e.detail?.sections?.['cart-drawer'];
@@ -68,8 +70,8 @@ class CartDrawer extends HTMLElement {
   }
 
   /**
-   * Open the cart drawer. Adds the is-open class, locks body scroll,
-   * traps focus inside the drawer, and listens for Escape key.
+   * Open the cart drawer. Adds the is-open class, shows backdrop,
+   * locks body scroll, traps focus, and listens for Escape key.
    */
   open() {
     if (this.stale) {
@@ -81,26 +83,25 @@ class CartDrawer extends HTMLElement {
 
     this.classList.add('is-open');
     this.setAttribute('aria-hidden', 'false');
+    this.backdrop?.classList.add('is-visible');
     document.body.classList.add('drawer-open');
 
-    // Set up focus trap and keyboard listener
     document.addEventListener('keydown', this.handleKeydown);
     this.trapFocus();
   }
 
   /**
-   * Close the cart drawer. Removes is-open class, unlocks body scroll,
-   * releases focus trap, and returns focus to the previously focused element.
+   * Close the cart drawer. Removes is-open class, hides backdrop,
+   * unlocks body scroll, and returns focus to the trigger element.
    */
   close() {
     this.classList.remove('is-open');
     this.setAttribute('aria-hidden', 'true');
+    this.backdrop?.classList.remove('is-visible');
     document.body.classList.remove('drawer-open');
 
-    // Remove keyboard listener
     document.removeEventListener('keydown', this.handleKeydown);
 
-    // Return focus to the element that triggered the drawer
     if (this.previouslyFocused) {
       this.previouslyFocused.focus();
       this.previouslyFocused = null;
@@ -109,8 +110,7 @@ class CartDrawer extends HTMLElement {
 
   /**
    * Swap drawer DOM from a rendered section HTML string.
-   * Replaces body, footer, and count. Handles the empty-cart transition
-   * (footer is absent when cart has no items).
+   * Replaces the items list and checkout section content.
    * @param {string} html - Full rendered section HTML.
    */
   renderFromHTML(html) {
@@ -118,34 +118,18 @@ class CartDrawer extends HTMLElement {
     const newDrawer = doc.querySelector('cart-drawer');
     if (!newDrawer) return;
 
-    // Replace body content (items + upsells, or empty state)
-    const currentBody = this.querySelector('.cart-drawer-body');
-    const newBody = newDrawer.querySelector('.cart-drawer-body');
-    if (currentBody && newBody) {
-      currentBody.innerHTML = newBody.innerHTML;
+    // Replace items list content
+    const currentItems = this.querySelector('[data-items]');
+    const newItems = newDrawer.querySelector('[data-items]');
+    if (currentItems && newItems) {
+      currentItems.innerHTML = newItems.innerHTML;
     }
 
-    // Replace or toggle footer (absent when cart is empty)
-    const panel = this.querySelector('.cart-drawer-panel');
-    const currentFooter = this.querySelector('.cart-drawer-footer');
-    const newFooter = newDrawer.querySelector('.cart-drawer-footer');
-
-    if (newFooter) {
-      if (currentFooter) {
-        currentFooter.innerHTML = newFooter.innerHTML;
-        currentFooter.hidden = false;
-      } else if (panel) {
-        panel.insertAdjacentHTML('beforeend', newFooter.outerHTML);
-      }
-    } else if (currentFooter) {
-      currentFooter.hidden = true;
-    }
-
-    // Update the item count display
-    const currentCount = this.querySelector('.cart-drawer-count');
-    const newCount = newDrawer.querySelector('.cart-drawer-count');
-    if (currentCount && newCount) {
-      currentCount.textContent = newCount.textContent;
+    // Replace checkout section content
+    const currentCheckout = this.querySelector('[data-checkout]');
+    const newCheckout = newDrawer.querySelector('[data-checkout]');
+    if (currentCheckout && newCheckout) {
+      currentCheckout.innerHTML = newCheckout.innerHTML;
     }
   }
 
@@ -184,7 +168,6 @@ class CartDrawer extends HTMLElement {
 
     if (e.key !== 'Tab') return;
 
-    // Get all currently focusable elements within the drawer
     const focusableElements = this.querySelectorAll(
       'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])'
     );
@@ -194,7 +177,6 @@ class CartDrawer extends HTMLElement {
     const firstFocusable = focusableElements[0];
     const lastFocusable = focusableElements[focusableElements.length - 1];
 
-    // Wrap focus when tabbing past the last or before the first element
     if (e.shiftKey && document.activeElement === firstFocusable) {
       e.preventDefault();
       lastFocusable.focus();

@@ -101,6 +101,29 @@ Section-specific CSS lives inside section files using `{% stylesheet %}` (not `<
 
 **Why `{% stylesheet %}`:** Shopify deduplicates when sections repeat on a page and extracts styles for optimization. Section styles handle layout, positioning, grid/flex structure, responsive behavior, and section-specific overrides.
 
+### Section Scripts
+
+Section-scoped JavaScript that isn't a Web Component goes in `{% javascript %}` (not inline `<script>`):
+
+```liquid
+{% javascript %}
+  // Scroll behavior for this section
+  var el = document.querySelector('.my-section');
+  if (!el) return;
+  window.addEventListener('scroll', function() { /* ... */ }, { passive: true });
+{% endjavascript %}
+```
+
+**Rules:**
+- One `{% javascript %}` tag per file — multiple tags cause a syntax error
+- **No Liquid inside** — Liquid isn't rendered inside `{% javascript %}` tags. Use JS comments, not Liquid comments. If you need Liquid data, pass it via `data-` attributes on the HTML and read them in JS.
+- Shopify bundles all `{% javascript %}` content into a single deferred file and wraps each in an IIFE — no need to write your own IIFE wrapper
+- Content is injected once per section file, not per instance — use `data-` attributes for instance-specific behavior
+
+**When to use `{% javascript %}` vs external files:**
+- `{% javascript %}`: Small, section-specific scripts (scroll handlers, intersection observers, visual polish)
+- External `assets/*.js` + Web Components: Reusable interactive elements, complex logic, anything with event communication
+
 ### Base Styles (`base.css`)
 
 Contains: CSS reset, `:root` token definitions, typography defaults, button styles, component styles (nav-link, photograph, grids), and `.visually-hidden`. This is the single global CSS file. Design tokens are defined here — read `base.css` directly for current values.

@@ -1,0 +1,151 @@
+{%- comment -%} Journal grid: 1/2/3 column article cards with 1:1 images and border-top. {%- endcomment -%}
+
+{%- if section.settings.blog != blank -%}
+  {%- assign blog = section.settings.blog -%}
+  <div class="journal-grid-section color-{{ section.settings.color_scheme }}">
+    {%- if blog.articles.size > 0 -%}
+      <div class="journal-grid">
+        {%- for article in blog.articles limit: section.settings.limit -%}
+          <a href="{{ article.url }}" class="journal-card">
+            <div class="journal-card-body">
+              {%- if article.image -%}
+                <div class="journal-card-image-wrapper">
+                  {{
+                    article.image
+                    | image_url: width: 800
+                    | image_tag:
+                      loading: 'lazy',
+                      width: article.image.width,
+                      height: article.image.height
+                  }}
+                </div>
+              {%- endif -%}
+
+              <div class="journal-card-content">
+                <span class="journal-date">
+                  {{ article.published_at | date: format: 'abbreviated' }}
+                  {%- if article.metafields.custom.intro != blank %} — {{ article.metafields.custom.intro }}{%- endif -%}
+                </span>
+                <div class="journal-card-lower">
+                  <h3 class="text-medium">{{ article.title }}</h3>
+                  <span class="text-cap inline-link">{{ 'blogs.article.read_more' | t }}</span>
+                </div>
+              </div>
+            </div>
+          </a>
+        {%- endfor -%}
+      </div>
+    {%- endif -%}
+  </div>
+{%- endif -%}
+
+{% stylesheet %}
+  .journal-grid-section {
+    padding: 0 var(--spacing-2) var(--spacing-5);
+  }
+
+  .journal-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    column-gap: var(--spacing-2);
+    row-gap: var(--spacing-2);
+  }
+
+  @media (min-width: 750px) {
+    .journal-grid {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+
+  @media (min-width: 1024px) {
+    .journal-grid {
+      grid-template-columns: repeat(3, 1fr);
+    }
+  }
+
+  .journal-card {
+    display: grid;
+    gap: var(--spacing-1);
+    text-decoration: none;
+    color: inherit;
+    cursor: pointer;
+  }
+
+  .journal-card:hover .inline-link {
+    color: var(--color-accent);
+  }
+
+  .journal-card-body {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: var(--spacing-1);
+    border-top: 1px solid black;
+    padding-block: var(--spacing-1);
+  }
+
+  .journal-card-image-wrapper {
+    overflow: hidden;
+  }
+
+  .journal-card-image-wrapper img {
+    width: 100%;
+    aspect-ratio: 1 / 1;
+    object-fit: cover;
+    transition: transform var(--transition-base);
+  }
+
+  .journal-card:hover img {
+    transform: scale(1.03);
+  }
+
+  .journal-card-content {
+    display: grid;
+    grid-template-rows: auto 1fr;
+  }
+
+  .journal-card-lower {
+    display: grid;
+    gap: var(--spacing-1);
+    align-content: center;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .journal-card-image-wrapper img {
+      transition: none;
+    }
+  }
+{% endstylesheet %}
+
+{% schema %}
+{
+  "name": "Journal grid",
+  "tag": "section",
+  "class": "journal-grid-section",
+  "settings": [
+    {
+      "type": "blog",
+      "id": "blog",
+      "label": "Blog"
+    },
+    {
+      "type": "range",
+      "id": "limit",
+      "label": "Maximum articles",
+      "min": 2,
+      "max": 12,
+      "step": 1,
+      "default": 6
+    },
+    {
+      "type": "color_scheme",
+      "id": "color_scheme",
+      "label": "Color scheme"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Journal grid"
+    }
+  ]
+}
+{% endschema %}

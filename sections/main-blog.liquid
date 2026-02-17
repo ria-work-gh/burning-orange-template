@@ -1,34 +1,95 @@
-<div class="blog color-{{ section.settings.color_scheme }}">
-  <header class="blog-header">
-    <h1 class="blog-title text-large">{{ blog.title }}</h1>
+{%- comment -%} Journal-style blog layout: intro, featured article, article grid. {%- endcomment -%}
 
-    {%- if blog.all_tags.size > 0 -%}
-      <nav class="blog-tags filter-bar" aria-label="{{ 'blogs.article.tags' | t }}">
-        <a
-          href="{{ blog.url }}"
-          class="tab-button {% if current_tags == blank %}current{% endif %}"
-        >
-          {{ 'blogs.general.all_tags' | t }}
-        </a>
-        {%- for tag in blog.all_tags -%}
-          <a
-            href="{{ blog.url }}/tagged/{{ tag | handle }}"
-            class="tab-button {% if current_tags contains tag %}current{% endif %}"
-          >
-            {{ tag }}
-          </a>
-        {%- endfor -%}
-      </nav>
+<div class="blog color-{{ section.settings.color_scheme }}">
+  <div class="journal-intro">
+    <h1 class="text-large">{{ blog.title }}</h1>
+    {%- if section.settings.description != blank -%}
+      <div class="journal-intro-description">{{ section.settings.description }}</div>
     {%- endif -%}
-  </header>
+  </div>
 
   {%- paginate blog.articles by section.settings.articles_per_page -%}
     {%- if blog.articles.size > 0 -%}
-      <div class="blog-grid grid grid-{{ section.settings.grid_columns }}">
-        {%- for article in blog.articles -%}
-          {% render 'article-card', article: article %}
-        {%- endfor -%}
-      </div>
+
+      {%- if paginate.current_page == 1 -%}
+        {%- assign featured_article = blog.articles[0] -%}
+        <a href="{{ featured_article.url }}" class="journal-feature">
+          <div class="journal-feature-image-wrapper">
+            {%- if featured_article.image -%}
+              {{ featured_article.image | image_url: width: 1200 | image_tag:
+                loading: 'eager',
+                sizes: '(min-width: 750px) 50vw, 100vw',
+                width: featured_article.image.width,
+                height: featured_article.image.height
+              }}
+            {%- endif -%}
+          </div>
+          <div class="journal-feature-content">
+            <span class="journal-date">
+              {{ featured_article.published_at | date: '%B %d, %Y' }}
+              {%- if featured_article.tags.size > 0 -%}
+                {{ ' — ' }}{{ featured_article.tags | first }}
+              {%- endif -%}
+            </span>
+            <h2 class="text-large">{{ featured_article.title }}</h2>
+            {%- if featured_article.excerpt_or_content != blank -%}
+              <p class="journal-feature-excerpt">{{ featured_article.excerpt_or_content | strip_html | truncate: 200 }}</p>
+            {%- endif -%}
+            <span class="text-cap inline-link">{{ 'blogs.article.read_more' | t }}</span>
+          </div>
+        </a>
+      {%- endif -%}
+
+      {%- if paginate.current_page == 1 -%}
+        {%- assign grid_start = 1 -%}
+      {%- else -%}
+        {%- assign grid_start = 0 -%}
+      {%- endif -%}
+
+      {%- assign has_grid_articles = false -%}
+      {%- for article in blog.articles -%}
+        {%- if forloop.index0 >= grid_start -%}
+          {%- assign has_grid_articles = true -%}
+          {%- break -%}
+        {%- endif -%}
+      {%- endfor -%}
+
+      {%- if has_grid_articles -%}
+        <div class="journal-grid-section">
+          <div class="journal-grid">
+            {%- for article in blog.articles -%}
+              {%- if forloop.index0 >= grid_start -%}
+                <a href="{{ article.url }}" class="journal-card">
+                  <div class="journal-card-body">
+                    <div class="journal-card-image-wrapper">
+                      {%- if article.image -%}
+                        {{ article.image | image_url: width: 600 | image_tag:
+                          loading: 'lazy',
+                          sizes: '(min-width: 1024px) 33vw, (min-width: 750px) 50vw, 100vw',
+                          width: article.image.width,
+                          height: article.image.height
+                        }}
+                      {%- endif -%}
+                    </div>
+                    <div class="journal-card-content">
+                      <span class="journal-date">
+                        {{ article.published_at | date: '%B %d, %Y' }}
+                        {%- if article.tags.size > 0 -%}
+                          {{ ' — ' }}{{ article.tags | first }}
+                        {%- endif -%}
+                      </span>
+                      <div class="journal-card-lower">
+                        <h3 class="text-medium">{{ article.title }}</h3>
+                        <span class="text-cap inline-link">{{ 'blogs.article.read_more' | t }}</span>
+                      </div>
+                    </div>
+                  </div>
+                </a>
+              {%- endif -%}
+            {%- endfor -%}
+          </div>
+        </div>
+      {%- endif -%}
 
       {% render 'pagination', paginate: paginate %}
     {%- else -%}
@@ -41,26 +102,156 @@
 
 {% stylesheet %}
   .blog {
-    padding: var(--spacing-l) var(--spacing-base);
+    padding-top: var(--spacing-5);
   }
 
-  @media (min-width: 600px) {
-    .blog {
-      padding: var(--spacing-xl) var(--spacing-m);
+  .journal-intro {
+    text-align: left;
+    max-width: 75ch;
+    margin-inline: auto;
+    padding: var(--spacing-5) var(--spacing-2) var(--spacing-4);
+    display: grid;
+    gap: var(--spacing-2);
+  }
+
+  @media (min-width: 750px) {
+    .journal-intro {
+      text-align: center;
     }
   }
 
-  .blog-header {
-    margin-bottom: var(--spacing-m);
+  .journal-feature {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: var(--spacing-2);
+    padding: 0 var(--spacing-2) var(--spacing-4);
+    text-decoration: none;
+    color: inherit;
+    cursor: pointer;
+    align-items: center;
   }
 
-  .blog-tags {
-    margin-top: var(--spacing-base);
+  @media (min-width: 750px) {
+    .journal-feature {
+      grid-template-columns: 1fr 1fr;
+    }
+  }
+
+  .journal-feature:hover .inline-link {
+    color: var(--color-accent);
+  }
+
+  .journal-feature-image-wrapper {
+    overflow: hidden;
+  }
+
+  .journal-feature-image-wrapper img {
+    width: 100%;
+    aspect-ratio: 3 / 2;
+    object-fit: cover;
+    display: block;
+    transition: transform var(--transition-slow);
+  }
+
+  .journal-feature:hover img {
+    transform: scale(1.03);
+  }
+
+  .journal-feature-content {
+    display: grid;
+    gap: var(--spacing-2);
+  }
+
+  .journal-feature-excerpt {
+    color: var(--color-text-muted);
+    max-width: 80ch;
+  }
+
+  .journal-date {
+    font-size: var(--font-base-size);
+    color: var(--color-text);
+  }
+
+  .journal-grid-section {
+    padding: 0 var(--spacing-2) var(--spacing-5);
+  }
+
+  .journal-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    column-gap: var(--spacing-2);
+    row-gap: var(--spacing-2);
+  }
+
+  @media (min-width: 750px) {
+    .journal-grid {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+
+  @media (min-width: 1024px) {
+    .journal-grid {
+      grid-template-columns: repeat(3, 1fr);
+    }
+  }
+
+  .journal-card {
+    display: grid;
+    gap: var(--spacing-1);
+    text-decoration: none;
+    color: inherit;
+    cursor: pointer;
+  }
+
+  .journal-card:hover .inline-link {
+    color: var(--color-accent);
+  }
+
+  .journal-card-body {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: var(--spacing-1);
+    border-top: 1px solid var(--color-text);
+    padding-block: var(--spacing-1);
+  }
+
+  .journal-card-image-wrapper {
+    overflow: hidden;
+  }
+
+  .journal-card-image-wrapper img {
+    width: 100%;
+    aspect-ratio: 1 / 1;
+    object-fit: cover;
+    display: block;
+    transition: transform var(--transition-slow);
+  }
+
+  .journal-card:hover img {
+    transform: scale(1.03);
+  }
+
+  .journal-card-content {
+    display: grid;
+    grid-template-rows: auto 1fr;
+  }
+
+  .journal-card-lower {
+    display: grid;
+    gap: var(--spacing-1);
+    align-content: center;
   }
 
   .blog-empty {
     text-align: center;
     padding: var(--spacing-xl) 0;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .journal-feature-image-wrapper img,
+    .journal-card-image-wrapper img {
+      transition: none !important;
+    }
   }
 {% endstylesheet %}
 
@@ -69,6 +260,11 @@
   "name": "Blog",
   "settings": [
     {
+      "type": "richtext",
+      "id": "description",
+      "label": "Description"
+    },
+    {
       "type": "range",
       "id": "articles_per_page",
       "label": "Articles per page",
@@ -76,16 +272,6 @@
       "max": 24,
       "step": 3,
       "default": 9
-    },
-    {
-      "type": "select",
-      "id": "grid_columns",
-      "label": "Grid columns (desktop)",
-      "options": [
-        { "value": "2", "label": "2 columns" },
-        { "value": "3", "label": "3 columns" }
-      ],
-      "default": "3"
     },
     {
       "type": "color_scheme",

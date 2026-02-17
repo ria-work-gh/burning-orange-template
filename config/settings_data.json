@@ -14,20 +14,17 @@
     "sections": {
       "cart-drawer": {
         "type": "cart-drawer",
-        "settings": {
-          "upsell_heading": "You may also like",
-          "upsell_collection": ""
-        }
+        "settings": {}
       }
     },
     "content_for_index": [],
     "color_schemes": {
       "scheme-1": {
         "settings": {
-          "background": "#ffffff",
+          "background": "#fdfdf4",
           "text": "#000000",
-          "text_light": "#666666",
-          "button_background": "#000000",
+          "text_light": "#808080",
+          "button_background": "#c57459",
           "button_text": "#ffffff"
         }
       },

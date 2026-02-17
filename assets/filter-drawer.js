@@ -1,33 +1,25 @@
 /**
  * Filter Drawer Web Component
  *
- * Slide-from-left drawer for collection filtering. Intercepts the filter form
- * submit and active-filter pill clicks, fetches updated HTML via Shopify's
- * Section Rendering API, and swaps the product grid + filter UI without a full
- * page reload. Falls back to normal form submission when JS is unavailable.
+ * Left-slide drawer for collection filtering. Uses Shopify's native storefront
+ * filtering with navigation-based filter URLs. Fetches updated HTML via the
+ * Section Rendering API and swaps the product grid + filter UI without a full
+ * page reload. Falls back to normal link navigation when JS is unavailable.
  *
  * Expected markup:
- *   <filter-drawer id="filter-drawer" class="filter-drawer" aria-hidden="true"
- *     role="dialog" aria-modal="true" aria-label="Filters">
- *     <div class="filter-drawer-overlay" data-overlay></div>
- *     <div class="filter-drawer-panel">
- *       <div class="filter-drawer-header">
- *         <h2 class="filter-drawer-title">Filters</h2>
- *         <button class="filter-drawer-close" data-close aria-label="Close filters">X</button>
- *       </div>
- *       <div class="filter-drawer-body">
- *         <form data-filters class="filter-form" action="/collections/foo" method="get">
- *           ...filter inputs...
- *           <button type="submit">Apply</button>
- *         </form>
- *       </div>
- *     </div>
+ *   <filter-drawer id="filter-drawer" aria-hidden="true" role="dialog"
+ *     aria-modal="true" aria-label="Filter & Sort">
+ *     <div class="filter-overlay" data-overlay></div>
+ *     <aside class="filter-panel">
+ *       <div class="filter-header">...</div>
+ *       <div class="filter-body">...</div>
+ *       <div class="filter-footer">...</div>
+ *     </aside>
  *   </filter-drawer>
  */
 class FilterDrawer extends HTMLElement {
   connectedCallback() {
     this.overlay = this.querySelector('[data-overlay]');
-    this.closeBtn = this.querySelector('[data-close]');
     this.previouslyFocused = null;
 
     this.section = this.closest('[data-section-id]');
@@ -37,13 +29,18 @@ class FilterDrawer extends HTMLElement {
     this.handleKeydown = this.handleKeydown.bind(this);
     this._onPopState = () => this.applyFilters(location.href);
 
-    this.closeBtn?.addEventListener('click', () => this.close());
+    // Close buttons (both header close and footer apply use data-close)
+    this.querySelectorAll('[data-close]').forEach((btn) => {
+      btn.addEventListener('click', () => this.close());
+    });
+
     this.overlay?.addEventListener('click', () => this.close());
     this.trigger?.addEventListener('click', () => this.open());
 
-    this.bindForm();
+    this.bindFilterLinks();
     this.bindPills();
     this.bindSort();
+    this.bindClear();
 
     window.addEventListener('popstate', this._onPopState);
   }
@@ -116,23 +113,12 @@ class FilterDrawer extends HTMLElement {
     }
   }
 
-  bindForm() {
-    const form = this.querySelector('[data-filters]');
-    if (!form) return;
-
-    form.addEventListener('submit', (e) => {
+  bindFilterLinks() {
+    this.addEventListener('click', (e) => {
+      const link = e.target.closest('[data-filter-link]');
+      if (!link) return;
       e.preventDefault();
-      const params = new URLSearchParams(new FormData(form));
-      const sortBy = new URL(location.href).searchParams.get('sort_by');
-      if (sortBy) params.set('sort_by', sortBy);
-      const url = `${form.action}?${params}`;
-      this.applyFilters(url);
-    });
-
-    const clearLink = this.querySelector('[data-clear-filters]');
-    clearLink?.addEventListener('click', (e) => {
-      e.preventDefault();
-      this.applyFilters(clearLink.href);
+      this.applyFilters(link.href);
     });
   }
 
@@ -153,6 +139,15 @@ class FilterDrawer extends HTMLElement {
       const sortUrl = new URL(select.value, location.origin);
       currentUrl.searchParams.set('sort_by', sortUrl.searchParams.get('sort_by'));
       this.applyFilters(currentUrl.href);
+    });
+  }
+
+  bindClear() {
+    this.addEventListener('click', (e) => {
+      const clearLink = e.target.closest('[data-clear-filters]');
+      if (!clearLink) return;
+      e.preventDefault();
+      this.applyFilters(clearLink.href);
     });
   }
 
@@ -177,7 +172,7 @@ class FilterDrawer extends HTMLElement {
       this.swap('[data-active-filters]', doc);
       this.swap('[data-sorting]', doc);
       this.swap('.filter-count', doc);
-      this.swapForm(doc);
+      this.swapDrawer(doc);
 
       const cleanUrl = new URL(url, location.origin);
       cleanUrl.searchParams.delete('section_id');
@@ -205,12 +200,17 @@ class FilterDrawer extends HTMLElement {
     }
   }
 
-  swapForm(doc) {
-    const currentBody = this.querySelector('.filter-drawer-body');
-    const newBody = doc.querySelector('.filter-drawer-body');
+  swapDrawer(doc) {
+    const currentBody = this.querySelector('.filter-body');
+    const newBody = doc.querySelector('.filter-body');
     if (currentBody && newBody) {
       currentBody.innerHTML = newBody.innerHTML;
-      this.bindForm();
+    }
+
+    const currentFooter = this.querySelector('.filter-footer');
+    const newFooter = doc.querySelector('.filter-footer');
+    if (currentFooter && newFooter) {
+      currentFooter.innerHTML = newFooter.innerHTML;
     }
   }
 }

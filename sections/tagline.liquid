@@ -1,0 +1,78 @@
+{%- comment -%} Tagline: centered decorative SVG wordmark. {%- endcomment -%}
+<div class="tagline{% if section.settings.color_scheme != blank %} color-{{ section.settings.color_scheme }}{% endif %}">
+  {%- if section.settings.svg_code != blank -%}
+    {{ section.settings.svg_code }}
+  {%- elsif section.settings.image != blank -%}
+    {{
+      section.settings.image
+      | image_url: width: 1600
+      | image_tag:
+        loading: 'lazy',
+        class: 'tagline-image',
+        width: section.settings.image.width,
+        height: section.settings.image.height
+    }}
+  {%- endif -%}
+</div>
+
+{% stylesheet %}
+  .tagline {
+    padding: calc(var(--spacing-2) * 2) var(--spacing-2);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .tagline svg {
+    width: 50%;
+    max-width: 800px;
+    height: auto;
+    color: black;
+  }
+
+  .tagline-image {
+    width: 50%;
+    max-width: 800px;
+    height: auto;
+  }
+
+  @media (max-width: 1023px) {
+    .tagline svg,
+    .tagline-image {
+      width: 100%;
+      max-width: none;
+    }
+  }
+{% endstylesheet %}
+
+{% schema %}
+{
+  "name": "Tagline",
+  "tag": "section",
+  "class": "tagline-section",
+  "settings": [
+    {
+      "type": "html",
+      "id": "svg_code",
+      "label": "SVG code",
+      "info": "Paste an inline SVG element. Falls back to the image below if empty."
+    },
+    {
+      "type": "image_picker",
+      "id": "image",
+      "label": "Image",
+      "info": "Fallback if no SVG code is provided."
+    },
+    {
+      "type": "color_scheme",
+      "id": "color_scheme",
+      "label": "Color scheme"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Tagline"
+    }
+  ]
+}
+{% endschema %}

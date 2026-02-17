@@ -1,0 +1,51 @@
+{%- comment -%} Quote: centered subheading + large body text. {%- endcomment -%}
+<div class="quote{% if section.settings.color_scheme != blank %} color-{{ section.settings.color_scheme }}{% endif %}">
+  {%- if section.settings.subheading != blank -%}
+    <span class="text-cap">{{ section.settings.subheading }}</span>
+  {%- endif -%}
+  {%- if section.settings.body != blank -%}
+    <p class="text-large">{{ section.settings.body }}</p>
+  {%- endif -%}
+</div>
+
+{% stylesheet %}
+  .quote {
+    padding: var(--spacing-5) var(--spacing-2);
+    display: grid;
+    gap: var(--spacing-3);
+    max-width: 80ch;
+    margin-inline: auto;
+    text-align: center;
+    justify-items: center;
+  }
+{% endstylesheet %}
+
+{% schema %}
+{
+  "name": "Quote",
+  "tag": "section",
+  "class": "quote-section",
+  "settings": [
+    {
+      "type": "text",
+      "id": "subheading",
+      "label": "Subheading"
+    },
+    {
+      "type": "textarea",
+      "id": "body",
+      "label": "Body"
+    },
+    {
+      "type": "color_scheme",
+      "id": "color_scheme",
+      "label": "Color scheme"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Quote"
+    }
+  ]
+}
+{% endschema %}

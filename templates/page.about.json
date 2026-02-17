@@ -1,0 +1,126 @@
+{
+  "sections": {
+    "hero_banner": {
+      "type": "hero-banner",
+      "settings": {
+        "text": "",
+        "height": "compact"
+      }
+    },
+    "quote": {
+      "type": "quote",
+      "settings": {
+        "subheading": "Our philosophy",
+        "body": ""
+      }
+    },
+    "image_text_split_story": {
+      "type": "image-text",
+      "blocks": {
+        "body_block": {
+          "type": "body",
+          "settings": {
+            "content": ""
+          }
+        }
+      },
+      "block_order": [
+        "body_block"
+      ],
+      "settings": {
+        "image_position": "right",
+        "image_width": "half",
+        "color_scheme": "scheme-1"
+      }
+    },
+    "image_gallery": {
+      "type": "image-gallery",
+      "blocks": {
+        "image_1": {
+          "type": "image",
+          "settings": {
+            "alt": "",
+            "caption": "",
+            "narrow": false
+          }
+        },
+        "image_2": {
+          "type": "image",
+          "settings": {
+            "alt": "",
+            "caption": "",
+            "narrow": false
+          }
+        },
+        "image_3": {
+          "type": "image",
+          "settings": {
+            "alt": "",
+            "caption": "",
+            "narrow": false
+          }
+        },
+        "image_4": {
+          "type": "image",
+          "settings": {
+            "alt": "",
+            "caption": "",
+            "narrow": false
+          }
+        }
+      },
+      "block_order": [
+        "image_1",
+        "image_2",
+        "image_3",
+        "image_4"
+      ],
+      "settings": {
+        "color_scheme": "scheme-1"
+      }
+    },
+    "image_text_split_founders": {
+      "type": "image-text",
+      "blocks": {
+        "body_block": {
+          "type": "body",
+          "settings": {
+            "content": ""
+          }
+        }
+      },
+      "block_order": [
+        "body_block"
+      ],
+      "settings": {
+        "image_position": "left",
+        "image_width": "half",
+        "color_scheme": "scheme-1"
+      }
+    },
+    "featured_collection": {
+      "type": "featured-collection",
+      "settings": {
+        "heading": "Featured pieces",
+        "collection": "",
+        "products_to_show": 4,
+        "color_scheme": "scheme-1"
+      }
+    },
+    "tagline": {
+      "type": "tagline",
+      "settings": {
+        "color_scheme": "scheme-1"
+      }
+    }
+  },
+  "order": [
+    "hero_banner",
+    "quote",
+    "image_text_split_story",
+    "image_gallery",
+    "image_text_split_founders",
+    "featured_collection",
+    "tagline"
+  ]
+}

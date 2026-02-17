@@ -1,11 +1,22 @@
 {%- comment -%}
   Renders a product card for collection grids and featured collections.
   Expects: product (product object)
+
+  Layout: thumbnail → meta row (collection + variant swatch) → title + price
+  Sold-out state: thumbnail at 50% opacity, price struck through, "SOLD OUT" label.
 {%- endcomment -%}
 
-<article class="product-card">
-  <div class="product-card-image aspect-{{ settings.product_card_aspect_ratio }}">
-    <a href="{{ product.url }}" class="product-card-image-link" tabindex="-1" aria-hidden="true">
+{%- liquid
+  assign current_variant = product.selected_or_first_available_variant
+  assign is_bundle = false
+  if product.tags contains 'bundle' or product.type == 'Bundle'
+    assign is_bundle = true
+  endif
+-%}
+
+<article class="product-card{% unless product.available %} sold-out{% endunless %}">
+  <a href="{{ product.url }}" class="product-card-link">
+    <div class="product-card-thumbnail">
       {%- if product.featured_image -%}
         {{
           product.featured_image
@@ -26,148 +37,191 @@
               sizes: '(min-width: 1200px) 25vw, (min-width: 900px) 33vw, (min-width: 600px) 50vw, 100vw',
               width: product.media[1].width,
               height: product.media[1].height,
-              class: 'product-card-image-hover'
+              class: 'product-card-hover-image'
           }}
         {%- endif -%}
       {%- else -%}
         <div class="product-card-placeholder"></div>
       {%- endif -%}
-    </a>
 
-    {%- comment -%}
-      Badge priority: Sold out > Sale > New. Only one badge renders.
+      {%- comment -%}
+        Badge priority: Sale > New. Only one badge renders.
+        Sold-out state is handled via the label in the price row, not a badge.
+      {%- endcomment -%}
+      {%- liquid
+        assign badge_text = ''
+        assign badge_type = ''
 
-      Merchant-controlled badges (future):
-      Add a product metafield `custom.badge` (single_line_text_field) in
-      Shopify Admin > Settings > Custom data > Products. Merchants type
-      free text like "Limited edition" or "Pre-order". To implement:
-        1. Check `product.metafields.custom.badge` first in the priority
-           chain below (before sold-out, or after — your call).
-        2. Optionally pair with a `custom.badge_color` metafield or a
-           fixed list of values via metafield validation to control style.
-        3. Add a `.product-card-badge.custom` CSS modifier if needed.
-    {%- endcomment -%}
-
-    {%- liquid
-      assign badge_text = ''
-      assign badge_type = ''
-
-      unless product.available
-        assign badge_text = 'products.product.sold_out' | t
-        assign badge_type = 'sold-out'
-      endunless
-
-      if badge_text == '' and product.compare_at_price > product.price
-        assign badge_text = 'products.product.sale' | t
-        assign badge_type = 'sale'
-      endif
-
-      if badge_text == ''
-        assign now_s = 'now' | date: '%s' | plus: 0
-        assign created_s = product.created_at | date: '%s' | plus: 0
-        assign age_days = now_s | minus: created_s | divided_by: 86400
-        if age_days <= 30
-          assign badge_text = 'products.product.new' | t
-          assign badge_type = 'new'
+        if product.available and product.compare_at_price > product.price
+          assign badge_text = 'products.product.sale' | t
+          assign badge_type = 'sale'
         endif
-      endif
-    -%}
 
-    {%- if badge_text != '' -%}
-      <span class="product-card-badge {{ badge_type }}">{{ badge_text }}</span>
-    {%- endif -%}
+        if badge_text == '' and product.available
+          assign now_s = 'now' | date: '%s' | plus: 0
+          assign created_s = product.created_at | date: '%s' | plus: 0
+          assign age_days = now_s | minus: created_s | divided_by: 86400
+          if age_days <= 30
+            assign badge_text = 'products.product.new' | t
+            assign badge_type = 'new'
+          endif
+        endif
+      -%}
 
-    {%- if product.available -%}
-      <div class="product-card-quick-add">
-        {%- if product.has_only_default_variant -%}
-          <quick-add>
-            <button
-              type="button"
-              class="button product-card-quick-add-button"
-              data-variant-id="{{ product.selected_or_first_available_variant.id }}"
-            >
-              {{ 'products.product.quick_add' | t }}
-            </button>
-          </quick-add>
+      {%- if badge_text != '' -%}
+        <span class="product-card-badge {{ badge_type }}">{{ badge_text }}</span>
+      {%- endif -%}
+    </div>
+
+    <div class="product-card-meta">
+      <span class="product-card-collection">
+        {%- if is_bundle -%}
+          Set
+        {%- elsif product.metafields.custom.color_collection != blank -%}
+          {{ product.metafields.custom.color_collection }}
         {%- else -%}
-          <a href="{{ product.url }}" class="button product-card-quick-add-button">
-            {{ 'products.product.choose_options' | t }}
-          </a>
+          {{ product.collections.first.title | default: product.type }}
         {%- endif -%}
-      </div>
-    {%- endif -%}
-  </div>
+      </span>
+      {%- unless is_bundle -%}
+        {%- if current_variant.title != 'Default Title' -%}
+          <span class="product-card-variant">
+            {%- assign hex_color = current_variant.metafields.custom.hex_color.value -%}
+            {%- if hex_color != blank -%}
+              <span class="product-card-swatch" style="--hex: {{ hex_color }}"></span>
+            {%- endif -%}
+            {{ current_variant.title | downcase }}
+          </span>
+        {%- endif -%}
+      {%- endunless -%}
+    </div>
 
-  <a href="{{ product.url }}" class="product-card-info">
-    <h3 class="text-cap">{{ product.title }}</h3>
-    <div class="product-card-price">
+    <div class="product-card-info">
+      <h3 class="product-card-title">{{ product.title }}</h3>
       {% render 'product-price', product: product %}
     </div>
   </a>
 </article>
 
-<script type="module" src="{{ 'quick-add.js' | asset_url }}"></script>
-
 {% stylesheet %}
-  .product-card-info {
-    padding-top: var(--spacing-s);
+  .product-card {
     display: grid;
-    gap: var(--spacing-xs);
+    gap: var(--spacing-1);
+    align-content: start;
   }
 
-  .product-card-image {
+  .product-card-link {
+    display: grid;
+    gap: var(--spacing-1);
+    align-content: start;
+  }
+
+  /* Thumbnail */
+  .product-card-thumbnail {
     position: relative;
     overflow: hidden;
+    aspect-ratio: 3 / 4;
+    background-color: var(--color-input-bg);
+    transition: background-color var(--transition-base);
+  }
+
+  .product-card-thumbnail:hover {
+    background-color: var(--color-input-bg-hover);
+  }
+
+  .product-card-thumbnail:active {
+    background-color: var(--color-input-bg-pressed);
+  }
+
+  .product-card-thumbnail img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  .product-card-hover-image {
+    position: absolute;
+    inset: 0;
+    opacity: 0;
+    transition: opacity var(--transition-base);
+  }
+
+  @media (hover: hover) {
+    .product-card:hover .product-card-hover-image {
+      opacity: 1;
+    }
   }
 
   .product-card-placeholder {
     width: 100%;
     height: 100%;
-    background: #e5e5e5;
+    background: var(--color-input-bg);
   }
 
+  /* Badge */
   .product-card-badge {
     position: absolute;
-    top: var(--spacing-s);
-    right: var(--spacing-s);
-    background: var(--color-black);
-    color: var(--color-white);
-    font-size: var(--font-size-mini);
-    line-height: var(--line-height-mini);
-    padding: var(--spacing-xxs) var(--spacing-xs);
+    top: var(--spacing-1);
+    right: var(--spacing-1);
+    background: black;
+    color: white;
+    font-size: var(--font-detail-size);
+    padding: 2px 4px;
   }
 
   .product-card-badge.sale {
-    background: var(--color-green);
-    color: var(--color-black);
+    background: var(--color-accent);
   }
 
-  .product-card-quick-add {
-    position: absolute;
-    bottom: 0;
-    left: 0;
-    right: 0;
-    padding: var(--spacing-s);
-    opacity: 0;
-    transform: translateY(8px);
-    transition: opacity var(--transition-fast), transform var(--transition-fast);
-    pointer-events: none;
+  /* Meta row: collection + variant swatch */
+  .product-card-meta {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
   }
 
-  @media (hover: hover) {
-    .product-card:hover .product-card-quick-add {
-      opacity: 1;
-      transform: translateY(0);
-      pointer-events: auto;
-    }
+  .product-card-collection {
+    color: var(--color-text-muted);
+    font-size: var(--font-detail-size);
   }
 
-  .product-card-quick-add-button {
-    width: 100%;
+  .product-card-variant {
+    color: var(--color-text-muted);
+    font-size: var(--font-detail-size);
+    display: flex;
+    align-items: center;
+  }
+
+  .product-card-swatch {
+    background-color: var(--hex);
+    height: 8px;
+    width: 8px;
+    margin-right: 6px;
+    border: 1px solid hsla(0, 0%, 0%, 0.1);
+    display: inline-block;
+    flex-shrink: 0;
+  }
+
+  /* Info: title + price */
+  .product-card-info {
+    display: grid;
+    gap: var(--spacing-1);
+  }
+
+  .product-card-title {
+    font-size: var(--font-base-size);
+  }
+
+  /* Sold-out state */
+  .product-card.sold-out .product-card-thumbnail {
+    opacity: 0.5;
   }
 
   @media (prefers-reduced-motion: reduce) {
-    .product-card-quick-add {
+    .product-card-hover-image {
+      transition: none;
+    }
+    .product-card-thumbnail {
       transition: none;
     }
   }

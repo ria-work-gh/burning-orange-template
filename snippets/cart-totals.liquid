@@ -1,61 +1,38 @@
-{% comment %}
-  Renders cart totals: discounts, subtotal, taxes note, and checkout button.
+{%- comment -%}
+  Cart checkout summary: discounts, subtotal, shipping note, terms, checkout button.
 
   Usage:
     {% render 'cart-totals', cart: cart %}
-{% endcomment %}
+{%- endcomment -%}
 
-{% stylesheet %}
-  .cart-totals-discount,
-  .cart-totals-subtotal {
-    display: flex;
-    justify-content: space-between;
-    align-items: baseline;
-  }
-
-  .cart-totals-discount {
-    color: var(--color-text-light);
-    margin-bottom: var(--spacing-xs);
-  }
-
-  .cart-totals-note {
-    color: var(--color-text-light);
-    font-size: var(--type-mini-size);
-    line-height: var(--type-mini-height);
-    margin-top: var(--spacing-xs);
-    margin-bottom: var(--spacing-s);
-  }
-
-  .cart-totals .button {
-    width: 100%;
-    text-align: center;
-  }
-{% endstylesheet %}
-
-<div class="cart-totals">
+<div class="cart-summary">
   {%- if cart.cart_level_discount_applications.size > 0 -%}
-    <div class="cart-totals-discounts">
-      {%- for discount in cart.cart_level_discount_applications -%}
-        <div class="cart-totals-discount">
+    {%- for discount in cart.cart_level_discount_applications -%}
+      <div class="cart-discount-block">
+        <div class="cart-discount-row">
           <span>{{ discount.title }}</span>
           <span>-{{ discount.total_allocated_amount | money }}</span>
         </div>
-      {%- endfor -%}
-    </div>
+      </div>
+    {%- endfor -%}
   {%- endif -%}
 
-  <div class="cart-totals-subtotal">
-    <span>{{ 'cart.general.subtotal' | t }}</span>
+  <div class="cart-summary-row cart-subtotal">
+    <span class="text-cap">{{ 'cart.general.subtotal' | t }}</span>
     <span>{{ cart.total_price | money }}</span>
   </div>
 
-  <p class="cart-totals-note">
-    {{ 'cart.general.taxes_note' | t }}
-  </p>
+  <p class="cart-shipping-note">{{ 'cart.general.taxes_note' | t }}</p>
 
-  <a href="/checkout" class="button">{{ 'cart.general.checkout' | t }}</a>
-
-  <noscript>
-    <button type="submit" class="button secondary">{{ 'cart.general.update' | t }}</button>
-  </noscript>
+  <label class="cart-checkbox">
+    <input type="checkbox" />
+    <span class="checkbox-custom"></span>
+    <span class="checkbox-label">{{ 'cart.drawer.terms_label' | t }}</span>
+  </label>
 </div>
+
+<a href="/checkout" class="cart-checkout-btn">{{ 'cart.general.checkout' | t }}</a>
+
+<noscript>
+  <button type="submit" class="button secondary">{{ 'cart.general.update' | t }}</button>
+</noscript>

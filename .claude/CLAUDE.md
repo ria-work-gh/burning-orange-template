@@ -88,20 +88,25 @@ HTML — always use the `color-` prefix:
 
 Three default schemes: scheme-1 (white/black), scheme-2 (black/white), scheme-3 (light gray/black).
 
-### Section Styles
+### Section Styles & Scripts
 
-Co-located in section files using `{% stylesheet %}` (not `<style>`):
+Co-located in section files using `{% stylesheet %}` and `{% javascript %}` (not `<style>` or `<script>`):
 ```liquid
 {% stylesheet %}
   .hero-banner {
     min-height: 60vh;
     padding: var(--spacing-xl) var(--spacing-base);
   }
-  @media (min-width: 600px) {
-    .hero-banner { min-height: 80vh; }
-  }
 {% endstylesheet %}
+
+{% javascript %}
+  // Section-scoped JS — no Liquid inside, Shopify wraps in IIFE automatically
+  var el = document.querySelector('.hero-banner');
+  if (!el) return;
+{% endjavascript %}
 ```
+
+One `{% javascript %}` tag per file. No Liquid inside — pass data via `data-` attributes instead.
 
 ### CSS
 
@@ -232,6 +237,7 @@ Authoritative values live in `assets/base.css` `:root` block.
 - No `@font-face` in base.css — font faces go in theme.liquid via Liquid `asset_url`
 - No hardcoded user-facing strings — always `{{ 'key' | t }}`
 - No bare `{{ section.settings.color_scheme }}` — always prefix with `color-`
+- No inline `<script>` tags in sections — use `{% javascript %}` or external asset files
 
 ## Accessibility Checklist
 

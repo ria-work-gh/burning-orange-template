@@ -1,194 +1,325 @@
-{% comment %}
-  Renders the filter drawer for collection pages.
+{%- comment -%}
+  Filter drawer: left-slide panel with accordion filter groups, radio dot options,
+  colour swatches, and a "View results" button.
+
+  Uses Shopify's native collection.filters for storefront filtering.
+  Each filter option links via value.url for navigation-based filtering.
 
   Expects:
     - collection: the current collection object
 
   Usage:
     {% render 'filter-drawer', collection: collection %}
-{% endcomment %}
+{%- endcomment -%}
 
-<filter-drawer id="filter-drawer" class="filter-drawer"
-  aria-hidden="true" role="dialog" aria-modal="true"
-  aria-label="{{ 'collections.filtering.filters' | t }}">
-  <div class="filter-drawer-overlay" data-overlay></div>
-  <div class="filter-drawer-panel">
-    <div class="filter-drawer-header">
-      <h2 class="filter-drawer-title">{{ 'collections.filtering.filters' | t }}</h2>
-      <button class="filter-drawer-close" data-close
-        aria-label="{{ 'collections.filtering.close' | t }}">
-        {% render 'icon-close' %}
+{%- liquid
+  assign active_filter_count = 0
+  for filter in collection.filters
+    assign active_filter_count = active_filter_count | plus: filter.active_values.size
+  endfor
+-%}
+
+<filter-drawer id="filter-drawer" aria-hidden="true" role="dialog" aria-modal="true" aria-label="{{ 'collections.filtering.filter_and_sort' | t }}">
+  <div class="filter-overlay" data-overlay></div>
+
+  <aside class="filter-panel">
+    <div class="filter-header">
+      <span class="filter-title text-cap">{{ 'collections.filtering.filter_and_sort' | t }}</span>
+      <button class="filter-close" data-close aria-label="{{ 'collections.filtering.close' | t }}">
+        {{ 'general.close' | t }}
       </button>
     </div>
-    <div class="filter-drawer-body">
-      {% render 'collection-filters', collection: collection %}
+
+    <div class="filter-body">
+      {%- for filter in collection.filters -%}
+        {%- if filter.type == 'price_range' -%}
+          <details class="filter-dropdown">
+            <summary class="filter-dropdown-summary text-medium">{{ filter.label }}</summary>
+            <div class="filter-dropdown-content">
+              <form class="filter-price-range" data-price-filter action="{{ collection.url }}" method="get">
+                <div class="filter-price-field">
+                  <input
+                    class="input"
+                    type="number"
+                    name="{{ filter.min_value.param_name }}"
+                    value="{{ filter.min_value.value }}"
+                    placeholder="{{ 'collections.filtering.min' | t }}"
+                    min="0"
+                    max="{{ filter.range_max | money_without_currency }}"
+                  >
+                </div>
+                <div class="filter-price-field">
+                  <input
+                    class="input"
+                    type="number"
+                    name="{{ filter.max_value.param_name }}"
+                    value="{{ filter.max_value.value }}"
+                    placeholder="{{ 'collections.filtering.max' | t }}"
+                    min="0"
+                    max="{{ filter.range_max | money_without_currency }}"
+                  >
+                </div>
+              </form>
+            </div>
+          </details>
+        {%- else -%}
+          <details class="filter-dropdown">
+            <summary class="filter-dropdown-summary text-medium">{{ filter.label }}</summary>
+            <div class="filter-dropdown-content">
+              {%- for value in filter.values -%}
+                <a
+                  href="{{ value.url }}"
+                  class="filter-option{% if value.active %} selected{% endif %}{% if value.count == 0 and value.active == false %} disabled{% endif %}"
+                  data-filter-link
+                >
+                  <span class="radio-custom"></span>
+                  {%- if value.swatch.color -%}
+                    <span class="filter-swatch" style="background-color: {{ value.swatch.color }};"></span>
+                  {%- endif -%}
+                  <span class="filter-option-label">{{ value.label }}</span>
+                </a>
+              {%- endfor -%}
+            </div>
+          </details>
+        {%- endif -%}
+      {%- endfor -%}
     </div>
-    <div class="filter-drawer-footer">
-      <button type="submit" form="filter-form" class="button">{{ 'collections.filtering.apply' | t }}</button>
-      <a href="{{ collection.url }}" class="button secondary" data-clear-filters>{{ 'collections.filtering.clear' | t }}</a>
+
+    <div class="filter-footer">
+      {%- if active_filter_count > 0 -%}
+        <a href="{{ collection.url }}" class="filter-clear text-cap" data-clear-filters>{{ 'collections.filtering.clear' | t }}</a>
+      {%- endif -%}
+      <button class="filter-apply text-cap" data-close>
+        {{ 'collections.filtering.view_results' | t: count: collection.products_count }}
+      </button>
     </div>
-  </div>
+  </aside>
 </filter-drawer>
+
 <script type="module" src="{{ 'filter-drawer.js' | asset_url }}"></script>
 
 {% stylesheet %}
-  /* Filter drawer — slides from left */
-  .filter-drawer {
+  /* Filter drawer overlay */
+  filter-drawer {
     position: fixed;
     inset: 0;
-    z-index: 99;
+    z-index: var(--z-drawer);
     pointer-events: none;
   }
 
-  .filter-drawer.is-open {
+  filter-drawer.is-open {
     pointer-events: auto;
   }
 
-  .filter-drawer-overlay {
+  .filter-overlay {
     position: absolute;
     inset: 0;
-    background: rgba(0, 0, 0, 0.5);
+    background-color: var(--color-overlay);
     opacity: 0;
-    transition: opacity var(--transition-slow);
+    transition: opacity var(--transition-base);
   }
 
-  .filter-drawer.is-open .filter-drawer-overlay {
+  filter-drawer.is-open .filter-overlay {
     opacity: 1;
   }
 
-  .filter-drawer-panel {
+  /* Panel */
+  .filter-panel {
     position: absolute;
     top: 0;
     left: 0;
-    width: 100%;
-    max-width: 420px;
-    height: 100%;
-    background: var(--color-bg);
-    transform: translateX(-100%);
-    transition: transform var(--transition-slow);
+    height: 100vh;
+    width: 480px;
+    max-width: 90vw;
+    background: var(--color-background);
     display: flex;
     flex-direction: column;
+    transform: translateX(-100%);
+    transition: transform var(--transition-base);
   }
 
-  .filter-drawer.is-open .filter-drawer-panel {
+  filter-drawer.is-open .filter-panel {
     transform: translateX(0);
   }
 
-  .filter-drawer-header {
+  /* Header */
+  .filter-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: var(--spacing-1);
+  }
+
+  .filter-title {
+    font-size: var(--font-base-size);
+  }
+
+  .filter-close {
+    font-size: var(--font-detail-size);
+    color: var(--color-text);
+    opacity: 0.6;
+    transition: opacity var(--transition-fast);
+  }
+
+  .filter-close:hover {
+    opacity: 1;
+  }
+
+  /* Body */
+  .filter-body {
+    flex: 1;
+    overflow-y: auto;
+    padding: var(--spacing-3) var(--spacing-1) 0;
+  }
+
+  /* Dropdown accordion */
+  .filter-dropdown + .filter-dropdown {
+    border-top: 1px solid var(--color-text);
+  }
+
+  .filter-dropdown-summary {
+    padding: var(--spacing-2) 0;
+    cursor: pointer;
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: var(--spacing-base);
-    border-bottom: 1px solid hsla(0, 0%, 0%, 0.1);
+    width: 100%;
+    text-align: left;
   }
 
-  .filter-drawer-title {
-    margin: 0;
+  .filter-dropdown-summary::after {
+    content: '+';
+    font-size: var(--font-control-size);
   }
 
-  .filter-drawer-close {
-    display: block;
-    background: none;
-    border: none;
-    cursor: pointer;
-    line-height: 0;
+  .filter-dropdown[open] .filter-dropdown-summary::after {
+    content: '\2212';
   }
 
-  .filter-drawer-body {
-    flex: 1;
-    overflow-y: auto;
-    padding: var(--spacing-base);
+  /* Filter options grid */
+  .filter-dropdown-content {
+    padding: 0 0 var(--spacing-2);
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: var(--spacing-1);
+    font-size: var(--font-base-size);
+    line-height: var(--font-base-height);
   }
 
-  body.filter-drawer-open {
-    overflow: hidden;
-  }
-
-  /* Filter form spacing */
-  .filter-form details + details {
-    margin-top: var(--spacing-base);
-  }
-
-  .filter-form summary {
-    font-weight: 600;
-    cursor: pointer;
-    padding: var(--spacing-s) 0;
-  }
-
-  .filter-form .filter-options {
+  /* Individual filter option */
+  .filter-option {
     display: flex;
-    flex-wrap: wrap;
-    gap: var(--spacing-xs);
-    padding-top: var(--spacing-s);
+    align-items: center;
+    gap: var(--spacing-1);
+    padding: var(--spacing-1);
+    transition: background-color var(--transition-base);
+    color: inherit;
   }
 
-  /* Filter pills — hidden checkbox with styled span */
-  .filter-pill {
-    cursor: pointer;
+  .filter-option:hover {
+    background-color: var(--color-input-bg);
   }
 
-  .filter-pill input {
-    position: absolute;
-    opacity: 0;
-    pointer-events: none;
+  .filter-option.selected {
+    background-color: var(--color-input-bg);
   }
 
-  .filter-pill span {
-    display: block;
-    padding: var(--spacing-s) var(--spacing-base);
-    border-radius: 2px;
-    background-color: var(--color-white);
-    box-shadow: 1px 2px 8px hsla(0, 0%, 0%, 0.1);
-    transition: transform 0.2s ease, box-shadow 0.2s ease;
-  }
-
-  .filter-pill:hover span {
-    transform: translateY(-2px);
-    box-shadow: 1px 4px 8px hsla(0, 0%, 0%, 0.1);
-  }
-
-  .filter-pill:active span {
-    transform: translateY(1px);
-    background-color: hsl(0, 0%, 95%);
-    box-shadow: 1px 1px 5px hsla(0, 0%, 0%, 0.05);
-  }
-
-  .filter-pill input:checked + span {
-    background-color: black;
-    color: white;
-    box-shadow: 1px 2px 8px hsla(0, 0%, 0%, 0.1);
-  }
-
-  .filter-pill input:disabled + span {
+  .filter-option.disabled {
     opacity: 0.4;
     pointer-events: none;
   }
 
-  .filter-form .filter-price-range {
+  /* Radio dot */
+  .radio-custom {
+    width: 10px;
+    height: 10px;
+    border: 1px solid black;
+    border-radius: 50%;
+    flex-shrink: 0;
     display: flex;
-    gap: var(--spacing-s);
+    align-items: center;
+    justify-content: center;
   }
 
-  .filter-form .filter-price-range .form-group {
+  .radio-custom::after {
+    content: '';
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: transparent;
+    transition: background var(--transition-fast);
+  }
+
+  .filter-option.selected .radio-custom::after {
+    background: black;
+  }
+
+  /* Colour swatch */
+  .filter-swatch {
+    width: 12px;
+    height: 12px;
+    border: 1px solid hsla(0, 0%, 0%, 0.1);
+    flex-shrink: 0;
+  }
+
+  /* Price range */
+  .filter-price-range {
+    display: flex;
+    gap: var(--spacing-1);
+  }
+
+  .filter-price-field {
     flex: 1;
   }
 
-  /* Filter drawer footer */
-  .filter-drawer-footer {
-    display: flex;
-    gap: var(--spacing-s);
-    padding: var(--spacing-base);
-    border-top: 1px solid hsla(0, 0%, 0%, 0.1);
+  .filter-price-field input {
+    width: 100%;
+    border-top: 1px solid black;
+    border-bottom: 1px solid black;
+    background-color: var(--color-input-bg);
+    padding: var(--spacing-1);
   }
 
-  .filter-drawer-footer .button {
-    flex: 1;
+  /* Footer */
+  .filter-footer {
+    display: grid;
+    gap: var(--spacing-1);
+    padding: var(--spacing-1);
+  }
+
+  .filter-clear {
+    font-size: var(--font-detail-size);
+    color: var(--color-text);
+    opacity: 0.6;
+    transition: opacity var(--transition-fast);
+  }
+
+  .filter-clear:hover {
+    opacity: 1;
+  }
+
+  .filter-apply {
+    padding: var(--button-padding);
+    background: var(--color-accent);
+    color: white;
+    width: 100%;
+    text-align: center;
+    transition: background var(--transition-fast);
+  }
+
+  .filter-apply:hover {
+    background: var(--color-accent-dark);
+  }
+
+  /* Body scroll lock */
+  body.filter-drawer-open {
+    overflow: hidden;
   }
 
   /* Reduced motion */
   @media (prefers-reduced-motion: reduce) {
-    .filter-drawer-overlay,
-    .filter-drawer-panel {
+    .filter-overlay,
+    .filter-panel {
       transition: none;
     }
   }

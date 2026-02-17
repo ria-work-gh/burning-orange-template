@@ -1,49 +1,44 @@
-{%- if section.settings.image or section.settings.video or section.blocks.size > 0 -%}
-  <div class="image-text image-text-{{ section.settings.layout }} color-{{ section.settings.color_scheme }}">
-    <div class="image-text-media">
-      {%- if section.settings.media_type == 'video' and section.settings.video -%}
-        {{ section.settings.video | video_tag:
-          controls: true,
-          playsinline: true,
-          preload: 'metadata',
-          class: 'image-text-video'
-        }}
-      {%- elsif section.settings.image -%}
-        {{ section.settings.image | image_url: width: 1200 | image_tag:
-          loading: 'lazy',
-          sizes: '(min-width: 600px) 50vw, 100vw',
-          widths: '375, 550, 750, 1100',
-          width: section.settings.image.width,
-          height: section.settings.image.height,
-          class: 'image-text-image'
+{%- comment -%} Image text split: flexible image + content layout, max-height 90vh. {%- endcomment -%}
+{%- if section.settings.image != blank or section.blocks.size > 0 -%}
+  <div class="split{% if section.settings.image_position == 'right' %} image-right{% endif %}{% if section.settings.image_width == 'half' %} image-half{% endif %}{% if section.settings.color_scheme != blank %} color-{{ section.settings.color_scheme }}{% endif %}">
+    <figure class="split-image-wrapper">
+      {%- if section.settings.image != blank -%}
+        {{
+          section.settings.image
+          | image_url: width: 1800
+          | image_tag:
+            loading: 'lazy',
+            sizes: '(min-width: 1024px) 75vw, 100vw',
+            class: 'split-image',
+            width: section.settings.image.width,
+            height: section.settings.image.height
         }}
       {%- endif -%}
-    </div>
+      {%- if section.settings.caption != blank -%}
+        <figcaption class="split-caption">{{ section.settings.caption }}</figcaption>
+      {%- endif -%}
+    </figure>
 
-    <div class="image-text-content align-{{ section.settings.vertical_alignment }}">
+    <div class="split-content">
       {%- for block in section.blocks -%}
         {%- case block.type -%}
           {%- when 'heading' -%}
             {%- if block.settings.heading != blank -%}
-              <h2 class="image-text-heading text-large" {{ block.shopify_attributes }}>
+              <h2 class="text-large" {{ block.shopify_attributes }}>
                 {{ block.settings.heading }}
               </h2>
             {%- endif -%}
 
-          {%- when 'text' -%}
+          {%- when 'body' -%}
             {%- if block.settings.content != blank -%}
-              <div class="image-text-body typeset" {{ block.shopify_attributes }}>
+              <div class="typeset" {{ block.shopify_attributes }}>
                 {{ block.settings.content }}
               </div>
             {%- endif -%}
 
-          {%- when 'button' -%}
+          {%- when 'link' -%}
             {%- if block.settings.url != blank and block.settings.label != blank -%}
-              <a
-                href="{{ block.settings.url }}"
-                class="button{% if block.settings.style == 'secondary' %} secondary{% endif %} image-text-button"
-                {{ block.shopify_attributes }}
-              >
+              <a href="{{ block.settings.url }}" class="inline-link text-cap" {{ block.shopify_attributes }}>
                 {{ block.settings.label }}
               </a>
             {%- endif -%}
@@ -54,54 +49,75 @@
 {%- endif -%}
 
 {% stylesheet %}
-  .image-text {
-    background-color: var(--color-bg);
-    color: var(--color-text);
-    display: grid;
-    gap: var(--spacing-m);
-    padding: var(--spacing-l) var(--spacing-base);
+  .split {
+    padding: var(--spacing-4) var(--spacing-2);
+    display: flex;
+    gap: var(--spacing-2);
+    align-items: center;
+    max-height: 90vh;
+    overflow: hidden;
   }
 
-  @media (min-width: 600px) {
-    .image-text {
-      grid-template-columns: 1fr 1fr;
-      padding: var(--spacing-xl) var(--spacing-m);
-    }
-
-    .image-text-image-right .image-text-media {
-      order: 2;
-    }
+  .split.image-right {
+    flex-direction: row-reverse;
   }
 
-  .image-text-media img,
-  .image-text-media video {
+  .split-image-wrapper {
+    width: 75%;
+    flex-shrink: 0;
+  }
+
+  .split.image-half .split-image-wrapper {
+    width: 50%;
+  }
+
+  .split-image {
     width: 100%;
     height: auto;
-    display: block;
+    object-fit: cover;
   }
 
-  .image-text-content {
-    display: flex;
-    flex-direction: column;
-    gap: var(--spacing-base);
+  .split-content {
+    max-width: 60ch;
+    display: grid;
+    gap: var(--spacing-2);
   }
 
-  .image-text-content.align-top { align-self: start; }
-  .image-text-content.align-center { align-self: center; }
-  .image-text-content.align-bottom { align-self: end; }
-
-  .image-text-heading {
-    margin: 0;
+  .split-caption {
+    font-size: var(--font-detail-size);
+    color: var(--color-text-muted);
+    margin-top: var(--spacing-1);
+    max-width: 80ch;
   }
 
-  .image-text-button {
-    align-self: flex-start;
+  @media (max-width: 1023px) {
+    .split {
+      flex-direction: column;
+      max-height: none;
+    }
+
+    .split.image-right {
+      flex-direction: column;
+    }
+
+    .split-image-wrapper {
+      width: 100%;
+    }
+
+    .split.image-half .split-image-wrapper {
+      width: 100%;
+    }
+
+    .split-content {
+      max-width: 100%;
+      width: 100%;
+    }
   }
 {% endstylesheet %}
 
 {% schema %}
 {
-  "name": "Image with text",
+  "name": "Image text split",
   "tag": "section",
   "class": "image-text-section",
   "settings": [
@@ -111,46 +127,34 @@
       "label": "Image"
     },
     {
-      "type": "video",
-      "id": "video",
-      "label": "Video"
+      "type": "select",
+      "id": "image_position",
+      "label": "Image position",
+      "options": [
+        { "value": "left", "label": "Left" },
+        { "value": "right", "label": "Right" }
+      ],
+      "default": "left"
     },
     {
       "type": "select",
-      "id": "media_type",
-      "label": "Media type",
+      "id": "image_width",
+      "label": "Image width",
       "options": [
-        { "value": "image", "label": "Image" },
-        { "value": "video", "label": "Video" }
+        { "value": "three-quarter", "label": "Three quarter" },
+        { "value": "half", "label": "Half" }
       ],
-      "default": "image"
+      "default": "three-quarter"
     },
     {
-      "type": "select",
-      "id": "layout",
-      "label": "Layout",
-      "options": [
-        { "value": "image-left", "label": "Image left, text right" },
-        { "value": "image-right", "label": "Image right, text left" }
-      ],
-      "default": "image-left"
-    },
-    {
-      "type": "select",
-      "id": "vertical_alignment",
-      "label": "Vertical alignment",
-      "options": [
-        { "value": "top", "label": "Top" },
-        { "value": "center", "label": "Center" },
-        { "value": "bottom", "label": "Bottom" }
-      ],
-      "default": "center"
+      "type": "text",
+      "id": "caption",
+      "label": "Caption"
     },
     {
       "type": "color_scheme",
       "id": "color_scheme",
-      "label": "Color scheme",
-      "default": "scheme-1"
+      "label": "Color scheme"
     }
   ],
   "blocks": [
@@ -161,59 +165,46 @@
         {
           "type": "text",
           "id": "heading",
-          "label": "Heading",
-          "default": "Image with text"
+          "label": "Heading"
         }
       ]
     },
     {
-      "type": "text",
-      "name": "Text",
+      "type": "body",
+      "name": "Body text",
       "settings": [
         {
           "type": "richtext",
           "id": "content",
-          "label": "Content",
-          "default": "<p>Pair text with an image to focus on your chosen product, collection, or blog post.</p>"
+          "label": "Content"
         }
       ]
     },
     {
-      "type": "button",
-      "name": "Button",
-      "limit": 2,
+      "type": "link",
+      "name": "Link",
+      "limit": 1,
       "settings": [
         {
           "type": "text",
           "id": "label",
-          "label": "Label",
-          "default": "Learn more"
+          "label": "Label"
         },
         {
           "type": "url",
           "id": "url",
-          "label": "Link"
-        },
-        {
-          "type": "select",
-          "id": "style",
-          "label": "Style",
-          "options": [
-            { "value": "primary", "label": "Primary" },
-            { "value": "secondary", "label": "Secondary" }
-          ],
-          "default": "primary"
+          "label": "URL"
         }
       ]
     }
   ],
   "presets": [
     {
-      "name": "Image with text",
+      "name": "Image text split",
       "blocks": [
         { "type": "heading" },
-        { "type": "text" },
-        { "type": "button" }
+        { "type": "body" },
+        { "type": "link" }
       ]
     }
   ]
