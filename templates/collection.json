@@ -12,8 +12,9 @@
     "intro": {
       "type": "intro-section",
       "settings": {
-        "heading": "Shop",
+        "heading": "All Outdoors",
         "heading_tag": "h1",
+        "description": "<p>Outdoor furniture to enjoy all year round. Loungers, parasols, chairs, and accessories made with durable materials and meticulous finishes. Long-lasting designs to create outdoor spaces where you can relax, unwind and share moments all year round.</p>",
         "color_scheme": "scheme-1"
       }
     },

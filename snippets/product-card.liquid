@@ -7,9 +7,8 @@
 {%- endcomment -%}
 
 {%- liquid
-  assign current_variant = product.selected_or_first_available_variant
   assign is_bundle = false
-  if product.tags contains 'bundle' or product.type == 'Bundle'
+  if product.type == 'Bundles'
     assign is_bundle = true
   endif
 -%}
@@ -44,53 +43,30 @@
         <div class="product-card-placeholder"></div>
       {%- endif -%}
 
-      {%- comment -%}
-        Badge priority: Sale > New. Only one badge renders.
-        Sold-out state is handled via the label in the price row, not a badge.
-      {%- endcomment -%}
-      {%- liquid
-        assign badge_text = ''
-        assign badge_type = ''
-
-        if product.available and product.compare_at_price > product.price
-          assign badge_text = 'products.product.sale' | t
-          assign badge_type = 'sale'
-        endif
-
-        if badge_text == '' and product.available
-          assign now_s = 'now' | date: '%s' | plus: 0
-          assign created_s = product.created_at | date: '%s' | plus: 0
-          assign age_days = now_s | minus: created_s | divided_by: 86400
-          if age_days <= 30
-            assign badge_text = 'products.product.new' | t
-            assign badge_type = 'new'
-          endif
-        endif
-      -%}
-
-      {%- if badge_text != '' -%}
-        <span class="product-card-badge {{ badge_type }}">{{ badge_text }}</span>
-      {%- endif -%}
     </div>
 
     <div class="product-card-meta">
       <span class="product-card-collection">
         {%- if is_bundle -%}
           Set
-        {%- elsif product.metafields.custom.color_collection != blank -%}
-          {{ product.metafields.custom.color_collection }}
+        {%- elsif product.tags contains 'saffra' -%}
+          Saffra
+        {%- elsif product.tags contains 'viridis' -%}
+          Viridis
+        {%- elsif product.tags contains 'rubra' -%}
+          Rubra
         {%- else -%}
-          {{ product.collections.first.title | default: product.type }}
+          {{ product.type }}
         {%- endif -%}
       </span>
       {%- unless is_bundle -%}
-        {%- if current_variant.title != 'Default Title' -%}
+        {%- assign color_obj = product.metafields.custom.color.value -%}
+        {%- if color_obj != blank -%}
           <span class="product-card-variant">
-            {%- assign hex_color = current_variant.metafields.custom.hex_color.value -%}
-            {%- if hex_color != blank -%}
-              <span class="product-card-swatch" style="--hex: {{ hex_color }}"></span>
+            {%- if color_obj.color != blank -%}
+              <span class="product-card-swatch" style="--hex: {{ color_obj.color }}"></span>
             {%- endif -%}
-            {{ current_variant.title | downcase }}
+            {{ color_obj.name | downcase }}
           </span>
         {%- endif -%}
       {%- endunless -%}
@@ -156,21 +132,6 @@
     width: 100%;
     height: 100%;
     background: var(--color-input-bg);
-  }
-
-  /* Badge */
-  .product-card-badge {
-    position: absolute;
-    top: var(--spacing-1);
-    right: var(--spacing-1);
-    background: black;
-    color: white;
-    font-size: var(--font-detail-size);
-    padding: 2px 4px;
-  }
-
-  .product-card-badge.sale {
-    background: var(--color-accent);
   }
 
   /* Meta row: collection + variant swatch */
