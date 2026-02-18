@@ -45,16 +45,60 @@ class HotspotImage extends HTMLElement {
     this.closeAll();
     marker.classList.add('is-active');
     const popover = marker.querySelector('.hotspot-popover');
-    if (popover) popover.setAttribute('aria-hidden', 'false');
+    if (popover) {
+      popover.setAttribute('aria-hidden', 'false');
+      this._clampPopover(popover);
+    }
     this.activeId = marker.dataset.hotspot;
   }
 
   hide(marker) {
     marker.classList.remove('is-active');
     const popover = marker.querySelector('.hotspot-popover');
-    if (popover) popover.setAttribute('aria-hidden', 'true');
+    if (popover) {
+      popover.setAttribute('aria-hidden', 'true');
+      popover.style.removeProperty('left');
+      popover.style.removeProperty('transform');
+      popover.style.removeProperty('bottom');
+      popover.style.removeProperty('top');
+      popover.style.removeProperty('margin-bottom');
+      popover.style.removeProperty('margin-top');
+    }
     if (this.activeId === marker.dataset.hotspot) {
       this.activeId = null;
+    }
+  }
+
+  _clampPopover(popover) {
+    popover.style.removeProperty('left');
+    popover.style.removeProperty('transform');
+    popover.style.removeProperty('bottom');
+    popover.style.removeProperty('top');
+    popover.style.removeProperty('margin-bottom');
+    popover.style.removeProperty('margin-top');
+
+    const rect = popover.getBoundingClientRect();
+    const bounds = this.querySelector('.hotspot-container').getBoundingClientRect();
+
+    // Flip below the marker if the popover overflows the top of the container
+    if (rect.top < bounds.top) {
+      popover.style.bottom = 'auto';
+      popover.style.top = '100%';
+      popover.style.marginBottom = '0';
+      popover.style.marginTop = 'var(--spacing-1)';
+    }
+
+    // Re-measure after potential vertical flip
+    const rect2 = popover.getBoundingClientRect();
+    const overflowRight = rect2.right - bounds.right;
+    const overflowLeft = bounds.left - rect2.left;
+
+    if (overflowRight > 0) {
+      popover.style.left = `calc(50% - ${overflowRight}px)`;
+      popover.style.transform = 'translateX(-50%)';
+    } else if (overflowLeft > 0) {
+      popover.style.left = `calc(50% + ${overflowLeft}px)`;
+      popover.style.transform = 'translateX(-50%)';
     }
   }
 
