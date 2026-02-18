@@ -68,7 +68,7 @@
             <div class="filter-dropdown-content">
               {%- for value in filter.values -%}
                 <a
-                  href="{{ value.url }}"
+                  href="{% if value.active %}{{ value.url_to_remove }}{% else %}{{ value.url_to_add }}{% endif %}"
                   class="filter-option{% if value.active %} selected{% endif %}{% if value.count == 0 and value.active == false %} disabled{% endif %}"
                   data-filter-link
                 >

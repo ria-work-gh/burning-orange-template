@@ -60,13 +60,12 @@
         {%- endif -%}
       </span>
       {%- unless is_bundle -%}
-        {%- assign color_obj = product.metafields.custom.color.value -%}
-        {%- if color_obj != blank -%}
+        {%- if product.metafields.custom.color_name != blank -%}
           <span class="product-card-variant">
-            {%- if color_obj.color != blank -%}
-              <span class="product-card-swatch" style="--hex: {{ color_obj.color }}"></span>
+            {%- if product.metafields.custom.color_hex != blank -%}
+              <span class="product-card-swatch" style="--hex: {{ product.metafields.custom.color_hex }}"></span>
             {%- endif -%}
-            {{ color_obj.name | downcase }}
+            {{ product.metafields.custom.color_name | downcase }}
           </span>
         {%- endif -%}
       {%- endunless -%}

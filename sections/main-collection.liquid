@@ -12,22 +12,19 @@
           <span class="filter-count">({{ active_filter_count }})</span>
         {%- endif -%}
       </button>
-    </div>
-  {%- endif -%}
-
-  {%- if section.settings.show_filters -%}
-    <div class="active-filters" data-active-filters>
-      {%- if active_filter_count > 0 -%}
-        {%- for filter in collection.filters -%}
-          {%- for value in filter.active_values -%}
-            <a href="{{ value.url_to_remove }}" class="active-filter">
-              {{ value.label }}
-              <span aria-hidden="true">&times;</span>
-              <span class="visually-hidden">{{ 'accessibility.remove_filter' | t: label: value.label }}</span>
-            </a>
+      <div class="active-filters" data-active-filters>
+        {%- if active_filter_count > 0 -%}
+          {%- for filter in collection.filters -%}
+            {%- for value in filter.active_values -%}
+              <a href="{{ value.url_to_remove }}" class="active-filter">
+                {{ value.label }}
+                <span class="active-filter-x" aria-hidden="true">&times;</span>
+                <span class="visually-hidden">{{ 'accessibility.remove_filter' | t: label: value.label }}</span>
+              </a>
+            {%- endfor -%}
           {%- endfor -%}
-        {%- endfor -%}
-      {%- endif -%}
+        {%- endif -%}
+      </div>
     </div>
   {%- endif -%}
 
@@ -67,6 +64,8 @@
   .collection-toolbar {
     display: flex;
     align-items: center;
+    flex-wrap: wrap;
+    gap: var(--spacing-2);
     margin-block: var(--spacing-2);
   }
 
@@ -120,27 +119,27 @@
   /* Active filter pills */
   .active-filters {
     display: flex;
+    align-items: center;
     flex-wrap: wrap;
     gap: var(--spacing-1);
-    min-height: 0;
-  }
-
-  .active-filters:not(:empty) {
-    margin-bottom: var(--spacing-2);
   }
 
   .active-filter {
     display: inline-flex;
     align-items: center;
     gap: var(--spacing-1);
-    padding: var(--spacing-1) var(--spacing-2);
     font-size: var(--font-detail-size);
-    border: 1px solid currentColor;
-    transition: border-color var(--transition-fast);
+    color: var(--color-text-muted);
+    transition: color var(--transition-fast);
   }
 
   .active-filter:hover {
-    border-color: var(--color-accent);
+    color: var(--color-text);
+  }
+
+  .active-filter-x {
+    font-size: var(--font-control-size);
+    line-height: 1;
   }
 
   .collection-empty {
