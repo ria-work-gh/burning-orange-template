@@ -1,3 +1,12 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
 {
   "sections": {
     "main": {
@@ -7,21 +16,21 @@
           "type": "accordion",
           "settings": {
             "heading": "Dimensions",
-            "content": ""
+            "content": "<p>{{ product.metafields.custom.dimensions | metafield_tag }}</p>"
           }
         },
         "accordion_material": {
           "type": "accordion",
           "settings": {
             "heading": "Material",
-            "content": ""
+            "content": "<p>{{ product.metafields.custom.material | metafield_tag }}</p>"
           }
         },
         "accordion_origin": {
           "type": "accordion",
           "settings": {
             "heading": "Origin",
-            "content": ""
+            "content": "<p>{{ product.metafields.custom.origin | metafield_tag }}</p>"
           }
         }
       },
@@ -57,6 +66,7 @@
         "image_position": "right",
         "image_width": "three-quarter",
         "image_ratio": "landscape",
+        "image_caption": "",
         "color_scheme": "scheme-1"
       }
     }

@@ -81,5 +81,21 @@
 
   {% section 'search-drawer' %}
   {% section 'newsletter-popup' %}
+
+  <script>
+    document.addEventListener('click', function (e) {
+      var summary = e.target.closest('summary');
+      if (!summary) return;
+      var details = summary.parentElement;
+      if (!details || !details.open) return;
+      e.preventDefault();
+      details.classList.add('is-closing');
+      details.addEventListener('animationend', function handler() {
+        details.classList.remove('is-closing');
+        details.open = false;
+        details.removeEventListener('animationend', handler);
+      }, { once: true });
+    });
+  </script>
 </body>
 </html>

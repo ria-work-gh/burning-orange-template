@@ -7,8 +7,8 @@
       {{ article.published_at | date: '%d.%m.%y' }}
     </time>
     <div class="entry-header-right">
-      {%- if article.tags.size > 0 -%}
-        <span class="entry-intro">{{ article.tags | first }}</span>
+      {%- if article.metafields.custom.tag != blank -%}
+        <span class="entry-intro">{{ article.metafields.custom.tag }}</span>
       {%- endif -%}
       <h1 class="text-large">{{ article.title }}</h1>
     </div>
@@ -26,57 +26,48 @@
     </div>
   {%- endif -%}
 
-  {%- comment -%} — Lead paragraph (first <p> from content) — {%- endcomment -%}
-  {%- assign content_paragraphs = article.content | split: '</p>' -%}
-  {%- if content_paragraphs.size > 0 -%}
-    {%- assign lead_raw = content_paragraphs[0] | strip_html -%}
-    {%- if lead_raw != blank -%}
-      <div class="entry-body entry-body-lead">
-        <p class="entry-lead">{{ lead_raw }}</p>
-      </div>
-    {%- endif -%}
+  {%- comment -%} — Lead paragraph (from Content field) — {%- endcomment -%}
+  {%- assign lead_text = article.content | strip_html | strip -%}
+  {%- if lead_text != blank -%}
+    <div class="entry-body entry-body-lead">
+      <p class="entry-lead">{{ lead_text }}</p>
+    </div>
   {%- endif -%}
 
-  {%- comment -%} — Gallery (from article metafields) — {%- endcomment -%}
-  {%- assign gallery_image_1 = article.metafields.custom.gallery_image_1 -%}
-  {%- assign gallery_image_2 = article.metafields.custom.gallery_image_2 -%}
-  {%- assign gallery_caption = article.metafields.custom.gallery_caption -%}
+  {%- comment -%} — Gallery (from custom.gallery list metafield) — {%- endcomment -%}
+  {%- assign gallery = article.metafields.custom.gallery.value -%}
 
-  {%- if section.settings.show_gallery and gallery_image_1 != blank -%}
+  {%- if gallery != blank and gallery.size > 0 -%}
     <div class="entry-gallery">
       <div class="entry-gallery-grid">
-        <div class="entry-gallery-item">
-          {{ gallery_image_1 | image_url: width: 800 | image_tag:
-            loading: 'lazy',
-            alt: ''
-          }}
-        </div>
-        {%- if gallery_image_2 != blank -%}
-          <figure class="entry-gallery-item entry-gallery-item-captioned">
-            {{ gallery_image_2 | image_url: width: 800 | image_tag:
-              loading: 'lazy',
-              alt: ''
-            }}
-            {%- if gallery_caption != blank -%}
-              <figcaption class="entry-gallery-caption">&uarr; {{ gallery_caption }}</figcaption>
-            {%- endif -%}
-          </figure>
-        {%- endif -%}
+        {%- for image in gallery -%}
+          {%- if image.alt != blank -%}
+            <figure class="entry-gallery-item entry-gallery-item-captioned">
+              {{ image | image_url: width: 1200 | image_tag:
+                loading: 'lazy',
+                width: image.width,
+                height: image.height
+              }}
+              <figcaption class="entry-gallery-caption">&uarr; {{ image.alt }}</figcaption>
+            </figure>
+          {%- else -%}
+            <div class="entry-gallery-item">
+              {{ image | image_url: width: 1200 | image_tag:
+                loading: 'lazy',
+                width: image.width,
+                height: image.height
+              }}
+            </div>
+          {%- endif -%}
+        {%- endfor -%}
       </div>
     </div>
   {%- endif -%}
 
-  {%- comment -%} — Body (remaining paragraphs after the first) — {%- endcomment -%}
-  {%- if content_paragraphs.size > 1 -%}
+  {%- comment -%} — Body (from Excerpt field) — {%- endcomment -%}
+  {%- if article.excerpt != blank -%}
     <div class="entry-body">
-      {%- for paragraph in content_paragraphs -%}
-        {%- if forloop.index0 > 0 -%}
-          {%- assign paragraph_text = paragraph | strip_html | strip -%}
-          {%- if paragraph_text != blank -%}
-            {{ paragraph | append: '</p>' }}
-          {%- endif -%}
-        {%- endif -%}
-      {%- endfor -%}
+      {{ article.excerpt }}
     </div>
   {%- endif -%}
 
@@ -147,6 +138,7 @@
 
   .entry-body-lead {
     padding-bottom: 0;
+    padding-top: var(--spacing-3);
   }
 
   .entry-lead {
@@ -155,8 +147,9 @@
     max-width: 100ch;
   }
 
+
   .entry-gallery {
-    padding: var(--spacing-3) var(--spacing-2);
+    padding: var(--spacing-3) var(--spacing-2) 0;
     display: flex;
     justify-content: center;
   }
@@ -220,13 +213,6 @@
 {
   "name": "Article",
   "settings": [
-    {
-      "type": "checkbox",
-      "id": "show_gallery",
-      "label": "Show gallery",
-      "default": true,
-      "info": "Upload gallery images via article metafields: custom.gallery_image_1, custom.gallery_image_2, custom.gallery_caption"
-    },
     {
       "type": "color_scheme",
       "id": "color_scheme",

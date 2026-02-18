@@ -733,6 +733,42 @@ h4 { font-family: var(--font-heading); font-size: var(--h4-size); line-height: v
   margin: 0;
 }
 
+/* ========== 16b. Details/Accordion Animation ========== */
+
+details > *:not(summary) {
+  overflow: hidden;
+}
+
+details[open] > *:not(summary) {
+  animation: details-open 250ms ease-in-out;
+}
+
+details.is-closing > *:not(summary) {
+  animation: details-close 250ms ease-in-out forwards;
+}
+
+@keyframes details-open {
+  from {
+    opacity: 0;
+    max-height: 0;
+  }
+  to {
+    opacity: 1;
+    max-height: 500px;
+  }
+}
+
+@keyframes details-close {
+  from {
+    opacity: 1;
+    max-height: 500px;
+  }
+  to {
+    opacity: 0;
+    max-height: 0;
+  }
+}
+
 /* ========== 17. Focus States ========== */
 
 :focus-visible {

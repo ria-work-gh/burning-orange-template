@@ -4,7 +4,7 @@
   {%- paginate blog.articles by section.settings.articles_per_page -%}
     {%- if blog.articles.size > 0 -%}
 
-      {%- if paginate.current_page == 1 -%}
+      {%- if section.settings.show_featured and paginate.current_page == 1 -%}
         {%- assign featured_article = blog.articles[0] -%}
         <a href="{{ featured_article.url }}" class="journal-feature">
           <div class="journal-feature-image-wrapper">
@@ -20,8 +20,8 @@
           <div class="journal-feature-content">
             <span class="journal-date">
               {{ featured_article.published_at | date: '%d.%m.%y' }}
-              {%- if featured_article.tags.size > 0 -%}
-                {{ ' — ' }}{{ featured_article.tags | first }}
+              {%- if featured_article.metafields.custom.tag != blank -%}
+                {{ ' — ' }}{{ featured_article.metafields.custom.tag }}
               {%- endif -%}
             </span>
             <h2 class="text-large">{{ featured_article.title }}</h2>
@@ -33,7 +33,7 @@
         </a>
       {%- endif -%}
 
-      {%- if paginate.current_page == 1 -%}
+      {%- if section.settings.show_featured and paginate.current_page == 1 -%}
         {%- assign grid_start = 1 -%}
       {%- else -%}
         {%- assign grid_start = 0 -%}
@@ -67,8 +67,8 @@
                     <div class="journal-card-content">
                       <span class="journal-date">
                         {{ article.published_at | date: '%d.%m.%y' }}
-                        {%- if article.tags.size > 0 -%}
-                          {{ ' — ' }}{{ article.tags | first }}
+                        {%- if article.metafields.custom.tag != blank -%}
+                          {{ ' — ' }}{{ article.metafields.custom.tag }}
                         {%- endif -%}
                       </span>
                       <div class="journal-card-lower">
@@ -233,6 +233,12 @@
 {
   "name": "Blog",
   "settings": [
+    {
+      "type": "checkbox",
+      "id": "show_featured",
+      "label": "Featured section",
+      "default": true
+    },
     {
       "type": "range",
       "id": "articles_per_page",
