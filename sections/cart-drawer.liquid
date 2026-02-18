@@ -31,7 +31,7 @@
       {%- if cart.item_count > 0 -%}
         {% render 'cart-totals', cart: cart %}
       {%- else -%}
-        <a href="{{ routes.all_products_collection_url }}" class="cart-checkout-btn">
+        <a href="{{ routes.all_products_collection_url }}" class="button text-cap">
           {{ 'cart.general.continue_shopping' | t }}
         </a>
       {%- endif -%}
@@ -271,48 +271,6 @@
     display: none;
   }
 
-  /* Quantity selector inside cart */
-  cart-drawer .quantity-selector {
-    display: flex;
-    align-items: center;
-    border-top: 1px solid black;
-    border-bottom: 1px solid black;
-    background-color: var(--color-input-bg);
-    transition: background-color var(--transition-fast);
-  }
-
-  cart-drawer .quantity-selector:hover {
-    background-color: var(--color-input-bg-hover);
-  }
-
-  cart-drawer .quantity-selector button {
-    padding: 8px 16px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: var(--font-control-size);
-    transition: color var(--transition-fast);
-  }
-
-  cart-drawer .quantity-selector button:hover {
-    color: var(--color-accent);
-  }
-
-  cart-drawer .quantity-selector input {
-    padding: 8px 0;
-    min-width: 32px;
-    text-align: center;
-    font-size: 14px;
-    -moz-appearance: textfield;
-    appearance: textfield;
-  }
-
-  cart-drawer .quantity-selector input::-webkit-inner-spin-button,
-  cart-drawer .quantity-selector input::-webkit-outer-spin-button {
-    -webkit-appearance: none;
-    margin: 0;
-  }
-
   /* Cart summary */
   .cart-summary {
     display: flex;
@@ -384,24 +342,6 @@
 
   .cart-checkbox input:checked + .checkbox-custom::after {
     background: black;
-  }
-
-  /* Checkout button */
-  .cart-checkout-btn {
-    display: block;
-    width: 100%;
-    padding: var(--button-padding);
-    background-color: var(--color-accent);
-    color: white;
-    font: inherit;
-    text-transform: uppercase;
-    letter-spacing: 0.05em;
-    text-align: center;
-    transition: all var(--transition-fast);
-  }
-
-  .cart-checkout-btn:hover {
-    background-color: var(--color-accent-dark);
   }
 
   /* Reduced motion */

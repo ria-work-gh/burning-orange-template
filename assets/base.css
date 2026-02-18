@@ -306,9 +306,12 @@ h4 { font-family: var(--font-heading); font-size: var(--h4-size); line-height: v
 .button {
   display: inline-flex;
   justify-content: center;
+  align-items: center;
   padding: var(--button-padding);
   background-color: var(--color-accent);
   color: white;
+  font: inherit;
+  line-height: var(--font-base-height);
   transition: all var(--transition-fast);
 }
 
@@ -683,39 +686,51 @@ h4 { font-family: var(--font-heading); font-size: var(--h4-size); line-height: v
 /* ========== 16. Quantity Selector ========== */
 
 .quantity-selector {
-  display: inline-flex;
+  display: flex;
   align-items: center;
-  border: 1px solid hsla(0, 0%, 0%, 0.1);
-  background-color: var(--color-background);
-  border-radius: 2px;
+  border: none;
+  border-top: 1px solid var(--color-text);
+  border-bottom: 1px solid var(--color-text);
+  background-color: var(--color-input-bg);
+  align-self: stretch;
+  transition: background-color var(--transition-fast);
+}
+
+.quantity-selector:hover {
+  background-color: var(--color-input-bg-hover);
 }
 
 .quantity-selector button {
-  padding: 8px;
-  width: 2.3em;
-  transition: transform 0.2s ease;
+  padding: 8px 16px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: var(--font-control-size);
+  transition: color var(--transition-fast);
 }
 
-.quantity-selector button:hover {
-  background: hsla(0, 0%, 0%, 0.05);
+.quantity-selector button:hover:not(:disabled) {
+  color: var(--color-accent);
 }
-.quantity-selector button:active {
-  transform: scale(0.9);
+
+.quantity-selector button:disabled {
+  opacity: 0.3;
+  cursor: default;
 }
 
 .quantity-selector input {
-  width: 3em;
-  padding: 8px;
+  padding: 8px 0;
+  min-width: 32px;
   text-align: center;
-  border-left: 1px solid hsla(0, 0%, 0%, 0.1);
-  border-right: 1px solid hsla(0, 0%, 0%, 0.1);
-  font-size: inherit;
+  font-size: var(--font-base-size);
   -moz-appearance: textfield;
+  appearance: textfield;
 }
 
 .quantity-selector input::-webkit-outer-spin-button,
 .quantity-selector input::-webkit-inner-spin-button {
   -webkit-appearance: none;
+  margin: 0;
 }
 
 /* ========== 17. Focus States ========== */

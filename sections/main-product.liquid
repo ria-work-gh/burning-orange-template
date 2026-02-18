@@ -12,33 +12,31 @@
     <div class="pdp-media">
       {% render 'product-gallery', product: product %}
 
-      {%- comment -%} Color variant tags {%- endcomment -%}
-      {%- assign current_variant = product.selected_or_first_available_variant -%}
-      {%- assign hex_color = current_variant.metafields.custom.hex_color -%}
-      {%- assign color_collection_handle = product.metafields.custom.color_collection -%}
+      {%- comment -%} Color variant pills {%- endcomment -%}
+      {%- assign color_hex = product.metafields.custom.color_hex -%}
+      {%- assign color_name = product.metafields.custom.color_name -%}
+      {%- assign siblings = product.metafields.custom.product_siblings.value -%}
 
-      {%- if hex_color != blank -%}
+      {%- if color_hex != blank -%}
         <div class="pdp-tags">
           <div class="pdp-tag-wrapper" data-color-tag>
-            <div class="tag-popover" data-color-popover hidden>
-              {%- if color_collection_handle != blank -%}
-                {%- assign sibling_collection = collections[color_collection_handle] -%}
-                {%- for sibling_product in sibling_collection.products -%}
-                  {%- if sibling_product.handle != product.handle -%}
-                    {%- assign sibling_hex = sibling_product.selected_or_first_available_variant.metafields.custom.hex_color -%}
-                    {%- if sibling_hex != blank -%}
-                      <a href="{{ sibling_product.url }}" class="tag-popover-item">
-                        <span class="pdp-swatch" style="--hex: {{ sibling_hex }}"></span>
-                        {{ sibling_product.selected_or_first_available_variant.title | downcase }}
-                      </a>
-                    {%- endif -%}
+            <div class="tag-popover" data-color-popover>
+              {%- if siblings != blank -%}
+                {%- for sibling in siblings -%}
+                  {%- assign sibling_hex = sibling.metafields.custom.color_hex -%}
+                  {%- assign sibling_name = sibling.metafields.custom.color_name -%}
+                  {%- if sibling_hex != blank -%}
+                    <a href="{{ sibling.url }}" class="tag-popover-item">
+                      <span class="pdp-swatch" style="--hex: {{ sibling_hex }}"></span>
+                      {{ sibling_name | downcase }}
+                    </a>
                   {%- endif -%}
                 {%- endfor -%}
               {%- endif -%}
             </div>
             <button type="button" class="pdp-tag" data-color-trigger aria-expanded="false">
-              <span class="pdp-swatch" style="--hex: {{ hex_color }}"></span>
-              {{ current_variant.title | downcase }}
+              <span class="pdp-swatch" style="--hex: {{ color_hex }}"></span>
+              {{ color_name | downcase }}
             </button>
           </div>
         </div>
@@ -79,11 +77,16 @@
   </product-form>
 
   {%- comment -%} — Collection products + accordions — {%- endcomment -%}
-  {%- if color_collection_handle != blank -%}
-    {%- assign pdp_collection = collections[color_collection_handle] -%}
-  {%- else -%}
-    {%- assign pdp_collection = product.collections.first -%}
-  {%- endif -%}
+  {%- liquid
+    assign pdp_collection = nil
+    if product.tags contains 'saffra'
+      assign pdp_collection = collections['saffra']
+    elsif product.tags contains 'viridis'
+      assign pdp_collection = collections['viridis']
+    elsif product.tags contains 'rubra'
+      assign pdp_collection = collections['rubra']
+    endif
+  -%}
 
   {%- assign has_accordions = false -%}
   {%- for block in section.blocks -%}
@@ -114,10 +117,16 @@
 
       {%- if pdp_collection != blank -%}
         <div class="pdp-collection-right">
-          <span class="text-cap">{{ pdp_collection.title }}</span>
+          <span class="text-cap">{{ pdp_collection.title }} collection</span>
           <div class="pdp-collection-grid">
+            {%- comment -%} Bundles first {%- endcomment -%}
             {%- for coll_product in pdp_collection.products -%}
-              {%- if coll_product.handle != product.handle -%}
+              {%- if coll_product.handle != product.handle and coll_product.type == 'Bundles' -%}
+                {% render 'product-card', product: coll_product, lazy_load: true %}
+              {%- endif -%}
+            {%- endfor -%}
+            {%- for coll_product in pdp_collection.products -%}
+              {%- if coll_product.handle != product.handle and coll_product.type != 'Bundles' -%}
                 {% render 'product-card', product: coll_product, lazy_load: true %}
               {%- endif -%}
             {%- endfor -%}
@@ -134,36 +143,38 @@
 <script src="{{ 'quantity-selector.js' | asset_url }}" defer></script>
 
 {% javascript %}
-  var tagWrapper = document.querySelector('[data-color-tag]');
-  if (!tagWrapper) return;
+  document.addEventListener('DOMContentLoaded', function () {
+    var tagWrapper = document.querySelector('[data-color-tag]');
+    if (!tagWrapper) return;
 
-  var trigger = tagWrapper.querySelector('[data-color-trigger]');
-  var popover = tagWrapper.querySelector('[data-color-popover]');
-  if (!trigger || !popover) return;
+    var trigger = tagWrapper.querySelector('[data-color-trigger]');
+    var popover = tagWrapper.querySelector('[data-color-popover]');
+    if (!trigger || !popover) return;
 
-  var isTouch = 'ontouchstart' in window || navigator.maxTouchPoints > 0;
+    var isTouch = 'ontouchstart' in window || navigator.maxTouchPoints > 0;
 
-  function show() {
-    popover.hidden = false;
-    trigger.setAttribute('aria-expanded', 'true');
-  }
-
-  function hide() {
-    popover.hidden = true;
-    trigger.setAttribute('aria-expanded', 'false');
-  }
-
-  if (!isTouch) {
-    tagWrapper.addEventListener('mouseenter', show);
-    tagWrapper.addEventListener('mouseleave', hide);
-  }
-
-  trigger.addEventListener('click', function () {
-    if (popover.hidden) {
-      show();
-    } else {
-      hide();
+    function show() {
+      popover.classList.add('is-open');
+      trigger.setAttribute('aria-expanded', 'true');
     }
+
+    function hide() {
+      popover.classList.remove('is-open');
+      trigger.setAttribute('aria-expanded', 'false');
+    }
+
+    if (!isTouch) {
+      tagWrapper.addEventListener('mouseenter', show);
+      tagWrapper.addEventListener('mouseleave', hide);
+    }
+
+    trigger.addEventListener('click', function () {
+      if (popover.classList.contains('is-open')) {
+        hide();
+      } else {
+        show();
+      }
+    });
   });
 {% endjavascript %}
 
@@ -203,6 +214,10 @@
     padding-bottom: var(--spacing-1);
     left: 0;
     display: flex;
+    opacity: 0;
+    transform: translateY(8px);
+    pointer-events: none;
+    transition: opacity 0.2s ease-out, transform 0.2s ease-out;
     flex-direction: column;
     gap: var(--spacing-1);
   }
@@ -266,7 +281,7 @@
 
   .pdp-info-left {
     display: grid;
-    gap: var(--spacing-3);
+    gap: var(--spacing-2);
   }
 
   .pdp-header {
@@ -295,11 +310,6 @@
     flex-wrap: wrap;
     gap: var(--spacing-1);
     align-items: stretch;
-    flex: 1;
-  }
-
-  .pdp-actions .button {
-    flex: 1;
   }
 
   .pdp-collection {
@@ -326,16 +336,14 @@
     margin-bottom: var(--spacing-2);
   }
 
-  .pdp-collection-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
-    gap: var(--spacing-2);
+  .pdp-collection-left > .text-cap + .pdp-dropdown summary {
+    padding-top: 0;
   }
 
-  @media (min-width: 750px) and (max-width: 1023px) {
-    .pdp-collection-grid {
-      grid-template-columns: repeat(2, 1fr);
-    }
+  .pdp-collection-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: var(--spacing-3) var(--spacing-2);
   }
 
   @media (min-width: 1024px) {
@@ -389,9 +397,16 @@
     padding: 0;
   }
 
+  .tag-popover.is-open {
+    opacity: 1;
+    transform: translateY(0);
+    pointer-events: auto;
+  }
+
   @media (prefers-reduced-motion: reduce) {
     .tag-popover-item,
-    .pdp-tag {
+    .pdp-tag,
+    .tag-popover {
       transition: none !important;
     }
   }

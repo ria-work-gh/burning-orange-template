@@ -53,8 +53,7 @@
         --color-background: {{ scheme.settings.background }};
         --color-text: {{ scheme.settings.text }};
         --color-text-muted: {{ scheme.settings.text | color_modify: 'alpha', 0.5 }};
-        --color-input-bg: {{ scheme.settings.text | color_modify: 'alpha', 0.1 }};
-        --color-input-bg-hover: {{ scheme.settings.text | color_modify: 'alpha', 0.15 }};
+
         --color-accent: {{ scheme.settings.button_background }};
         --color-accent-dark: {{ scheme.settings.button_background | color_darken: 15 }};
       }

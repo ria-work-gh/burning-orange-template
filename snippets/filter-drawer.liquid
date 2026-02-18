@@ -89,7 +89,7 @@
       {%- if active_filter_count > 0 -%}
         <a href="{{ collection.url }}" class="filter-clear text-cap" data-clear-filters>{{ 'collections.filtering.clear' | t }}</a>
       {%- endif -%}
-      <button class="filter-apply text-cap" data-close>
+      <button class="button text-cap" data-close>
         {{ 'collections.filtering.view_results' | t: count: collection.products_count }}
       </button>
     </div>
@@ -298,18 +298,6 @@
     opacity: 1;
   }
 
-  .filter-apply {
-    padding: var(--button-padding);
-    background: var(--color-accent);
-    color: white;
-    width: 100%;
-    text-align: center;
-    transition: background var(--transition-fast);
-  }
-
-  .filter-apply:hover {
-    background: var(--color-accent-dark);
-  }
 
   /* Body scroll lock */
   body.filter-drawer-open {
