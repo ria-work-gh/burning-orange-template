@@ -45,7 +45,7 @@
 
     {%- comment -%} — Info grid — {%- endcomment -%}
     {%- form 'product', product -%}
-      <input type="hidden" name="id" value="{{ current_variant.id }}">
+      <input type="hidden" name="id" value="{{ product.selected_or_first_available_variant.id }}">
 
       <div class="pdp-info">
         <div class="pdp-info-left">

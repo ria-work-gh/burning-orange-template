@@ -26,8 +26,8 @@
     </div>
   {%- endif -%}
 
-  {%- comment -%} — Lead paragraph (from Content field) — {%- endcomment -%}
-  {%- assign lead_text = article.content | strip_html | strip -%}
+  {%- comment -%} — Lead paragraph (from Excerpt field) — {%- endcomment -%}
+  {%- assign lead_text = article.excerpt | strip_html | strip -%}
   {%- if lead_text != blank -%}
     <div class="entry-body entry-body-lead">
       <p class="entry-lead">{{ lead_text }}</p>
@@ -64,10 +64,10 @@
     </div>
   {%- endif -%}
 
-  {%- comment -%} — Body (from Excerpt field) — {%- endcomment -%}
-  {%- if article.excerpt != blank -%}
+  {%- comment -%} — Body (from Content field) — {%- endcomment -%}
+  {%- if article.content != blank -%}
     <div class="entry-body">
-      {{ article.excerpt }}
+      {{ article.content }}
     </div>
   {%- endif -%}
 
