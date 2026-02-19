@@ -1,3 +1,12 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
 {
   "sections": {
     "intro": {
@@ -5,13 +14,14 @@
       "settings": {
         "heading": "Journal",
         "heading_tag": "h1",
-        "description": "<p>Thoughts on craft, materials, and the spaces we make for living slowly.</p>",
+        "description": "<p>Thoughts on craft, materials, and the spaces we make for living slowly. Stories from our workshops, conversations with the makers, and reflections on designing objects that carry the warmth of long afternoons and honest han</p>",
         "color_scheme": "scheme-1"
       }
     },
     "main": {
       "type": "main-blog",
       "settings": {
+        "show_featured": true,
         "articles_per_page": 9,
         "color_scheme": "scheme-1"
       }

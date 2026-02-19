@@ -15,6 +15,18 @@
       "cart-drawer": {
         "type": "cart-drawer",
         "settings": {}
+      },
+      "search-drawer": {
+        "type": "search-drawer",
+        "settings": {}
+      },
+      "newsletter-popup": {
+        "type": "newsletter-popup",
+        "settings": {
+          "image": "shopify://shop_images/ambient-texture_a42cbebe-3011-4c7f-893e-52afe12933ea.png",
+          "heading": "Join the mailing list",
+          "delay_seconds": 5
+        }
       }
     },
     "content_for_index": [],
