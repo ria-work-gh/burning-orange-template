@@ -1,28 +1,24 @@
 /**
  * Hotspot Image Web Component
  *
- * Positioned markers on an image with title/description popovers.
+ * Positioned markers on an image that expand into message cards.
  * Hover to show on desktop, click to toggle on all devices.
- * Only one popover open at a time.
- *
- * Expected markup:
- *   <hotspot-image>
- *     <div class="hotspot-container">
- *       <img class="hotspot-image" ...>
- *       <button class="hotspot-marker" data-hotspot="id">
- *         <div class="hotspot-popover">...</div>
- *       </button>
- *     </div>
- *   </hotspot-image>
+ * Only one hotspot open at a time. Expanded markers are clamped
+ * within the container bounds.
  */
 class HotspotImage extends HTMLElement {
   connectedCallback() {
     this.markers = this.querySelectorAll('[data-hotspot]');
+    this.container = this.querySelector('.hotspot-container');
     this.activeId = null;
 
+    var hasHover = window.matchMedia('(hover: hover) and (pointer: fine)').matches;
+
     this.markers.forEach((marker) => {
-      marker.addEventListener('mouseenter', () => this.show(marker));
-      marker.addEventListener('mouseleave', () => this.hide(marker));
+      if (hasHover) {
+        marker.addEventListener('mouseenter', () => this.show(marker));
+        marker.addEventListener('mouseleave', () => this.hide(marker));
+      }
       marker.addEventListener('click', (e) => {
         e.preventDefault();
         this.toggle(marker);
@@ -35,75 +31,108 @@ class HotspotImage extends HTMLElement {
       }
     };
     document.addEventListener('click', this._onDocClick);
+
+    this.cardsViewport = this.querySelector('.hotspot-cards-viewport');
+    if (this.cardsViewport) {
+      this._initCards();
+    }
   }
 
   disconnectedCallback() {
     document.removeEventListener('click', this._onDocClick);
+    if (this.emblaCards) {
+      this.emblaCards.destroy();
+    }
+  }
+
+  _initCards() {
+    if (typeof window.EmblaCarousel === 'undefined') {
+      var script = document.querySelector('script[src*="embla-carousel"]');
+      if (script) {
+        script.addEventListener('load', () => this._initEmblaCards(), { once: true });
+      }
+      return;
+    }
+    this._initEmblaCards();
+  }
+
+  _initEmblaCards() {
+    this.emblaCards = window.EmblaCarousel(this.cardsViewport, {
+      align: 'start',
+      containScroll: 'trimSnaps'
+    });
   }
 
   show(marker) {
     this.closeAll();
+    this.clamp(marker);
     marker.classList.add('is-active');
-    const popover = marker.querySelector('.hotspot-popover');
-    if (popover) {
-      popover.setAttribute('aria-hidden', 'false');
-      this._clampPopover(popover);
-    }
     this.activeId = marker.dataset.hotspot;
   }
 
   hide(marker) {
     marker.classList.remove('is-active');
-    const popover = marker.querySelector('.hotspot-popover');
-    if (popover) {
-      popover.setAttribute('aria-hidden', 'true');
-      popover.style.removeProperty('left');
-      popover.style.removeProperty('transform');
-      popover.style.removeProperty('bottom');
-      popover.style.removeProperty('top');
-      popover.style.removeProperty('margin-bottom');
-      popover.style.removeProperty('margin-top');
-    }
+    marker.style.removeProperty('transform');
     if (this.activeId === marker.dataset.hotspot) {
       this.activeId = null;
     }
   }
 
-  _clampPopover(popover) {
-    popover.style.removeProperty('left');
-    popover.style.removeProperty('transform');
-    popover.style.removeProperty('bottom');
-    popover.style.removeProperty('top');
-    popover.style.removeProperty('margin-bottom');
-    popover.style.removeProperty('margin-top');
+  clamp(marker) {
+    if (!this.container) return;
 
-    const rect = popover.getBoundingClientRect();
-    const bounds = this.querySelector('.hotspot-container').getBoundingClientRect();
+    var containerRect = this.container.getBoundingClientRect();
+    var containerW = containerRect.width;
+    var containerH = containerRect.height;
 
-    // Flip below the marker if the popover overflows the top of the container
-    if (rect.top < bounds.top) {
-      popover.style.bottom = 'auto';
-      popover.style.top = '100%';
-      popover.style.marginBottom = '0';
-      popover.style.marginTop = 'var(--spacing-1)';
+    // Marker position in pixels
+    var xPercent = parseFloat(marker.style.left);
+    var yPercent = parseFloat(marker.style.top);
+    var markerX = (xPercent / 100) * containerW;
+    var markerY = (yPercent / 100) * containerH;
+
+    // Expanded size
+    var expandedW = window.innerWidth <= 749 ? 250 : 300;
+    var expandedH = 200; // approximate max content height
+
+    // Default transform is translate(-50%, -50%) — box centered on point
+    var offsetX = -50;
+    var offsetY = -50;
+
+    // Left edge: markerX - (expandedW / 2) should be >= 0
+    var leftEdge = markerX - (expandedW / 2);
+    if (leftEdge < 0) {
+      // Shift right: reduce the negative translate
+      var shiftPx = Math.abs(leftEdge);
+      offsetX = -50 + (shiftPx / expandedW) * 100;
     }
 
-    // Re-measure after potential vertical flip
-    const rect2 = popover.getBoundingClientRect();
-    const overflowRight = rect2.right - bounds.right;
-    const overflowLeft = bounds.left - rect2.left;
-
-    if (overflowRight > 0) {
-      popover.style.left = `calc(50% - ${overflowRight}px)`;
-      popover.style.transform = 'translateX(-50%)';
-    } else if (overflowLeft > 0) {
-      popover.style.left = `calc(50% + ${overflowLeft}px)`;
-      popover.style.transform = 'translateX(-50%)';
+    // Right edge: markerX + (expandedW / 2) should be <= containerW
+    var rightEdge = markerX + (expandedW / 2);
+    if (rightEdge > containerW) {
+      var shiftPx = rightEdge - containerW;
+      offsetX = -50 - (shiftPx / expandedW) * 100;
     }
+
+    // Top edge: markerY - (expandedH / 2) should be >= 0
+    var topEdge = markerY - (expandedH / 2);
+    if (topEdge < 0) {
+      var shiftPx = Math.abs(topEdge);
+      offsetY = -50 + (shiftPx / expandedH) * 100;
+    }
+
+    // Bottom edge: markerY + (expandedH / 2) should be <= containerH
+    var bottomEdge = markerY + (expandedH / 2);
+    if (bottomEdge > containerH) {
+      var shiftPx = bottomEdge - containerH;
+      offsetY = -50 - (shiftPx / expandedH) * 100;
+    }
+
+    marker.style.transform = 'translate(' + offsetX + '%, ' + offsetY + '%)';
   }
 
   toggle(marker) {
-    const id = marker.dataset.hotspot;
+    var id = marker.dataset.hotspot;
     if (this.activeId === id) {
       this.hide(marker);
     } else {

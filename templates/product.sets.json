@@ -1,0 +1,99 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
+{
+  "sections": {
+    "main": {
+      "type": "main-product",
+      "blocks": {
+        "accordion_dimensions": {
+          "type": "accordion",
+          "settings": {
+            "heading": "Dimensions",
+            "content": "<p>{{ product.metafields.custom.dimensions | metafield_tag }}</p>"
+          }
+        },
+        "accordion_material": {
+          "type": "accordion",
+          "settings": {
+            "heading": "Material",
+            "content": "<p>{{ product.metafields.custom.material | metafield_tag }}</p>"
+          }
+        },
+        "accordion_origin": {
+          "type": "accordion",
+          "settings": {
+            "heading": "Origin",
+            "content": "<p>{{ product.metafields.custom.origin | metafield_tag }}</p>"
+          }
+        }
+      },
+      "block_order": [
+        "accordion_dimensions",
+        "accordion_material",
+        "accordion_origin"
+      ],
+      "settings": {
+        "color_scheme": "scheme-1"
+      }
+    },
+    "hotspot_image": {
+      "type": "hotspot-image",
+      "settings": {
+        "image": "shopify://shop_images/outdoor_ac029168-4cc9-417f-836b-21988266e986.png",
+        "full_cover": false,
+        "image_fill": true,
+        "mobile_cards": true,
+        "color_scheme": "scheme-1"
+      }
+    },
+    "image_text_craft": {
+      "type": "image-text",
+      "blocks": {
+        "subheader_DA9qP7": {
+          "type": "subheader",
+          "settings": {
+            "text": "Learn about our craft"
+          }
+        },
+        "heading_block": {
+          "type": "heading",
+          "settings": {
+            "heading": "Each piece is thoughtfully crafted by skilled artisans who honour traditional techniques and sustainable practices. We work directly with makers who share our commitment to quality, ethical sourcing, and timeless design."
+          }
+        },
+        "link_k6qdjx": {
+          "type": "link",
+          "settings": {
+            "label": "Discover more",
+            "url": "shopify://pages/about"
+          }
+        }
+      },
+      "block_order": [
+        "subheader_DA9qP7",
+        "heading_block",
+        "link_k6qdjx"
+      ],
+      "settings": {
+        "image": "shopify://shop_images/aboutpage.png",
+        "image_position": "left",
+        "image_width": "half",
+        "image_ratio": "square",
+        "image_caption": "",
+        "color_scheme": "scheme-1"
+      }
+    }
+  },
+  "order": [
+    "main",
+    "hotspot_image",
+    "image_text_craft"
+  ]
+}

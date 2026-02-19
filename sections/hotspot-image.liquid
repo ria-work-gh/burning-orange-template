@@ -1,6 +1,6 @@
 {%- comment -%} Hotspot image: full image with positioned hotspot markers and popovers. {%- endcomment -%}
 
-<hotspot-image class="hotspot-section color-{{ section.settings.color_scheme }}">
+<hotspot-image class="hotspot-section{% if section.settings.image_fill %} hotspot-section-fill{% endif %}{% if section.settings.mobile_cards %} hotspot-section-mobile-cards{% endif %} color-{{ section.settings.color_scheme }}">
   <div class="hotspot-container">
     {%- if section.settings.image != blank -%}
       {{
@@ -18,15 +18,13 @@
       <button
         class="hotspot-marker"
         style="left: {{ block.settings.x }}%; top: {{ block.settings.y }}%;"
-        aria-label="{{ block.settings.title }}"
         data-hotspot="{{ block.id }}"
         {{ block.shopify_attributes }}
       >
         <svg class="hotspot-plus" width="20" height="20" viewBox="0 0 20 20" fill="none" aria-hidden="true" focusable="false">
           <path d="M10 2V18M2 10H18" stroke="white" stroke-width="2.5" stroke-linecap="round"/>
         </svg>
-
-        <div class="hotspot-popover" role="tooltip" aria-hidden="true">
+        <div class="hotspot-content">
           {%- if block.settings.title != blank -%}
             <h3 class="hotspot-title">{{ block.settings.title }}</h3>
           {%- endif -%}
@@ -36,6 +34,25 @@
         </div>
       </button>
     {%- endfor -%}
+
+    {%- if section.settings.mobile_cards -%}
+      <div class="hotspot-cards">
+        <div class="hotspot-cards-viewport">
+          <div class="hotspot-cards-container">
+            {%- for block in section.blocks -%}
+              <div class="hotspot-card" {{ block.shopify_attributes }}>
+                {%- if block.settings.title != blank -%}
+                  <h3 class="hotspot-card-title">{{ block.settings.title }}</h3>
+                {%- endif -%}
+                {%- if block.settings.description != blank -%}
+                  <p class="hotspot-card-description">{{ block.settings.description }}</p>
+                {%- endif -%}
+              </div>
+            {%- endfor -%}
+          </div>
+        </div>
+      </div>
+    {%- endif -%}
   </div>
 </hotspot-image>
 
@@ -69,84 +86,113 @@
   .hotspot-marker {
     position: absolute;
     width: 40px;
-    height: 40px;
+    min-height: 40px;
+    max-height: 40px;
     transform: translate(-50%, -50%);
     background-color: var(--color-accent);
-    border-radius: 50%;
     display: flex;
     align-items: center;
     justify-content: center;
     cursor: pointer;
-    transition: transform var(--transition-fast);
+    overflow: hidden;
     z-index: 1;
-  }
-
-  .hotspot-marker:hover {
-    transform: translate(-50%, -50%) scale(1.1);
+    /* hover-out: box shrinks after text gone (0.15s delay), colour with it */
+    transition: width 0.3s ease 0.15s, max-height 0.3s ease 0.15s, background-color 0.3s ease 0.15s;
   }
 
   .hotspot-plus {
+    position: absolute;
     display: block;
+    flex-shrink: 0;
+    /* hover-out: plus reappears after box shrinks */
+    transition: opacity 0.15s ease 0.45s;
   }
 
-  /* Popover */
-  .hotspot-popover {
-    position: absolute;
-    left: 50%;
-    bottom: 100%;
-    transform: translateX(-50%);
-    margin-bottom: var(--spacing-1);
+  .hotspot-content {
     padding: var(--spacing-1);
-    min-width: 300px;
-    max-width: 400px;
-    z-index: 10;
-    background-color: var(--color-background);
     text-align: left;
     opacity: 0;
     pointer-events: none;
-    transition: opacity var(--transition-fast);
+    /* hover-out: text fades first */
+    transition: opacity 0.15s ease;
   }
 
-  .hotspot-marker.is-active .hotspot-popover {
+  .hotspot-marker.is-active {
+    width: 300px;
+    max-height: 300px;
+    background-color: hsla(45, 33%, 85%, 0.85);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    /* hover-in: box expands after plus gone */
+    transition: width 0.3s ease 0.15s, max-height 0.3s ease 0.15s, background-color 0.3s ease 0.15s;
+  }
+
+  .hotspot-marker.is-active .hotspot-plus {
+    opacity: 0;
+    /* hover-in: plus fades first */
+    transition: opacity 0.15s ease;
+  }
+
+  .hotspot-marker.is-active .hotspot-content {
     opacity: 1;
     pointer-events: auto;
+    /* hover-in: text appears after box expanded */
+    transition: opacity 0.15s ease 0.45s;
   }
 
   .hotspot-title {
     font-size: var(--font-base-size);
     line-height: 1.5;
     font-weight: normal;
-    text-transform: uppercase;
-    color: var(--color-text-muted);
+    color: var(--color-text);
     margin-bottom: var(--spacing-1);
   }
 
   .hotspot-description {
-    font-size: var(--font-base-size);
+    font-size: var(--font-detail-size);
     line-height: 1.5;
     color: var(--color-text);
+  }
+
+.hotspot-section-fill {
+    padding: 0;
+  }
+
+  .hotspot-section-fill .hotspot-container {
+    width: 100%;
+    max-width: none;
+    height: 100%;
+  }
+
+  .hotspot-section-fill .hotspot-image {
+    width: 100%;
+    height: 100%;
+    max-height: none;
+    object-fit: cover;
   }
 
   @media (max-width: 1023px) {
     .hotspot-section {
       height: auto;
+      aspect-ratio: 3 / 4;
     }
   }
 
   @media (max-width: 749px) {
     .hotspot-marker {
       width: 32px;
-      height: 32px;
+      min-height: 32px;
+      max-height: 32px;
+    }
+
+    .hotspot-marker.is-active {
+      width: 250px;
+      max-height: 300px;
     }
 
     .hotspot-plus {
       width: 16px;
       height: 16px;
-    }
-
-    .hotspot-popover {
-      min-width: 250px;
-      max-width: 300px;
     }
   }
 
@@ -154,6 +200,62 @@
     .hotspot-marker,
     .hotspot-popover {
       transition: none;
+    }
+  }
+
+  .hotspot-cards {
+    display: none;
+  }
+
+  @media (max-width: 749px) {
+    .hotspot-section-mobile-cards .hotspot-marker {
+      display: none;
+    }
+
+    .hotspot-section-mobile-cards .hotspot-container {
+      position: relative;
+    }
+
+    .hotspot-section-mobile-cards .hotspot-cards {
+      display: block;
+      position: absolute;
+      bottom: var(--spacing-1);
+      left: 0;
+      right: 0;
+      overflow: hidden;
+      z-index: 1;
+    }
+
+    .hotspot-cards-viewport {
+      overflow: visible;
+      margin-left: var(--spacing-1);
+    }
+
+    .hotspot-cards-container {
+      display: flex;
+      gap: var(--spacing-1);
+      padding-right: var(--spacing-1);
+    }
+
+    .hotspot-card {
+      flex: 0 0 calc(80% - var(--spacing-1));
+      min-width: 0;
+      background-color: hsla(45, 33%, 85%, 0.85);
+      backdrop-filter: blur(8px);
+      -webkit-backdrop-filter: blur(8px);
+      padding: var(--spacing-1);
+    }
+
+    .hotspot-card-title {
+      font-size: var(--font-base-size);
+      line-height: var(--font-base-height);
+      margin-bottom: var(--spacing-1);
+    }
+
+    .hotspot-card-description {
+      font-size: var(--font-detail-size);
+      line-height: var(--font-base-height);
+      color: var(--color-text);
     }
   }
 {% endstylesheet %}
@@ -168,6 +270,18 @@
       "type": "image_picker",
       "id": "image",
       "label": "Image"
+    },
+    {
+      "type": "checkbox",
+      "id": "image_fill",
+      "label": "Image fill container",
+      "default": false
+    },
+    {
+      "type": "checkbox",
+      "id": "mobile_cards",
+      "label": "Show as cards on mobile",
+      "default": false
     },
     {
       "type": "color_scheme",

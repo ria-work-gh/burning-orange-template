@@ -1,0 +1,96 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
+{
+  "sections": {
+    "main": {
+      "type": "main-product",
+      "blocks": {
+        "accordion_dimensions": {
+          "type": "accordion",
+          "settings": {
+            "heading": "Dimensions",
+            "content": "<p>{{ product.metafields.custom.dimensions | metafield_tag }}</p>"
+          }
+        },
+        "accordion_material": {
+          "type": "accordion",
+          "settings": {
+            "heading": "Material",
+            "content": "<p>{{ product.metafields.custom.material | metafield_tag }}</p>"
+          }
+        },
+        "accordion_origin": {
+          "type": "accordion",
+          "settings": {
+            "heading": "Origin",
+            "content": "<p>{{ product.metafields.custom.origin | metafield_tag }}</p>"
+          }
+        }
+      },
+      "block_order": [
+        "accordion_dimensions",
+        "accordion_material",
+        "accordion_origin"
+      ],
+      "settings": {
+        "color_scheme": "scheme-1"
+      }
+    },
+    "hotspot_image": {
+      "type": "hotspot-image",
+      "settings": {
+        "image": "{{ product.metafields.custom.hotspot_image.value }}",
+        "color_scheme": "scheme-1"
+      }
+    },
+    "image_text_craft": {
+      "type": "image-text",
+      "blocks": {
+        "subheader_UEdqBq": {
+          "type": "subheader",
+          "settings": {
+            "text": "Learn about our craft"
+          }
+        },
+        "heading_block": {
+          "type": "heading",
+          "settings": {
+            "heading": "Each piece is thoughtfully crafted by skilled artisans who honour traditional techniques and sustainable practices. We work directly with makers who share our commitment to quality, ethical sourcing, and timeless design."
+          }
+        },
+        "link_VRijgw": {
+          "type": "link",
+          "settings": {
+            "label": "Disover more",
+            "url": "shopify://pages/about"
+          }
+        }
+      },
+      "block_order": [
+        "subheader_UEdqBq",
+        "heading_block",
+        "link_VRijgw"
+      ],
+      "settings": {
+        "image": "shopify://shop_images/26fc6c361e8f7ddd52ee9dd2814eb1e6.jpg",
+        "image_position": "right",
+        "image_width": "half",
+        "image_ratio": "square",
+        "image_caption": "",
+        "color_scheme": "scheme-1"
+      }
+    }
+  },
+  "order": [
+    "main",
+    "hotspot_image",
+    "image_text_craft"
+  ]
+}
