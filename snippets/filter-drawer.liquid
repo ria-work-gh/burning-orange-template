@@ -25,7 +25,7 @@
   <aside class="filter-panel">
     <div class="filter-header">
       <span class="filter-title text-cap">{{ 'collections.filtering.filter_and_sort' | t }}</span>
-      <button class="filter-close" data-close aria-label="{{ 'collections.filtering.close' | t }}">
+      <button class="filter-close text-cap" data-close aria-label="{{ 'collections.filtering.close' | t }}">
         {{ 'general.close' | t }}
       </button>
     </div>
@@ -115,6 +115,8 @@
     position: absolute;
     inset: 0;
     background-color: var(--color-overlay);
+    backdrop-filter: blur(var(--blur-md));
+    -webkit-backdrop-filter: blur(var(--blur-md));
     opacity: 0;
     transition: opacity var(--transition-base);
   }
@@ -156,6 +158,7 @@
 
   .filter-close {
     font-size: var(--font-detail-size);
+    line-height: 1;
     color: var(--color-text);
     opacity: 0.6;
     transition: opacity var(--transition-fast);

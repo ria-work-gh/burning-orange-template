@@ -145,7 +145,7 @@ summary::-webkit-details-marker {
   --h4-height: 1.3;
 
   /* Spacing (mobile-first) */
-  --spacing-1: 6px;
+  --spacing-1: 8px;
   --spacing-2: 16px;
   --spacing-3: 32px;
   --spacing-4: 32px;
@@ -390,6 +390,10 @@ h4 { font-family: var(--font-heading); font-size: var(--h4-size); line-height: v
 
 .input::placeholder {
   color: var(--color-text-muted);
+}
+
+.input:invalid {
+  box-shadow: none;
 }
 
 .input:disabled {

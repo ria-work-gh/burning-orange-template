@@ -121,8 +121,8 @@
     width: 300px;
     max-height: 300px;
     background-color: hsla(45, 33%, 85%, 0.85);
-    backdrop-filter: blur(8px);
-    -webkit-backdrop-filter: blur(8px);
+    backdrop-filter: blur(var(--blur-md));
+    -webkit-backdrop-filter: blur(var(--blur-md));
     /* hover-in: box expands after plus gone */
     transition: width 0.3s ease 0.15s, max-height 0.3s ease 0.15s, background-color 0.3s ease 0.15s;
   }
@@ -171,7 +171,7 @@
     object-fit: cover;
   }
 
-  @media (max-width: 1023px) {
+  @media (max-width: 749px) {
     .hotspot-section {
       height: auto;
       aspect-ratio: 3 / 4;
@@ -241,8 +241,8 @@
       flex: 0 0 calc(80% - var(--spacing-1));
       min-width: 0;
       background-color: hsla(45, 33%, 85%, 0.85);
-      backdrop-filter: blur(8px);
-      -webkit-backdrop-filter: blur(8px);
+      backdrop-filter: blur(var(--blur-md));
+      -webkit-backdrop-filter: blur(var(--blur-md));
       padding: var(--spacing-1);
     }
 

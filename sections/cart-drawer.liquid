@@ -125,7 +125,7 @@
     padding: var(--spacing-1) 0;
     display: flex;
     flex-direction: column;
-    gap: var(--spacing-1);
+    gap: var(--spacing-2);
     scrollbar-width: none;
   }
 
@@ -197,6 +197,10 @@
     max-width: 120px;
   }
 
+  .cart-item-remove-mobile {
+    display: none;
+  }
+
   .cart-item-image {
     width: 100%;
     aspect-ratio: 3 / 4;
@@ -225,7 +229,7 @@
     background-color: var(--hex);
     height: 8px;
     width: 8px;
-    margin-right: 6px;
+    margin-right: var(--spacing-1);
     border: 1px solid hsla(0, 0%, 0%, 0.1);
     display: inline-block;
     flex-shrink: 0;
@@ -268,6 +272,10 @@
 
   /* Mobile subrow (hidden by default, shown on mobile) */
   .cart-item-subrow {
+    display: none;
+  }
+
+  .cart-col-item-actions {
     display: none;
   }
 
@@ -358,9 +366,10 @@
       height: 100vh;
       height: 100dvh;
       gap: var(--spacing-2);
+      padding: var(--spacing-4) var(--spacing-1) 0 var(--spacing-1);
     }
 
-    .cart-drawer-inner {
+.cart-drawer-inner {
       flex-direction: column;
     }
 
@@ -388,11 +397,11 @@
       grid-template-columns: 1fr 2fr 1fr;
     }
 
-    /* Mobile item row: 3 columns + subrow */
+    /* Mobile item row: 3 columns, 2 rows */
     .cart-item-row {
       grid-template-columns: 1fr 2fr 1fr;
       grid-template-rows: auto auto;
-      row-gap: var(--spacing-1);
+      align-items: stretch;
     }
 
     /* Hide desktop qty and remove columns */
@@ -401,12 +410,35 @@
       display: none;
     }
 
-    /* Show mobile subrow */
+    .cart-col-price {
+      text-align: left;
+      display: flex;
+      flex-direction: column;
+    }
+
     .cart-item-subrow {
+      display: none;
+    }
+
+    .cart-item-remove-mobile {
+      display: block;
+      margin-top: auto;
+      align-self: flex-start;
+    }
+
+    .cart-col-item-actions {
       display: flex;
       align-items: center;
       gap: var(--spacing-2);
-      grid-column: 1 / -1;
+      margin-top: auto;
+    }
+
+    .cart-col-item-actions .quantity-selector button {
+      padding: var(--spacing-1) var(--spacing-2);
+    }
+
+    .cart-col-item-actions .quantity-selector input {
+      padding: var(--spacing-1) 0;
     }
 
     /* Mobile scrollbar */

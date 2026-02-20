@@ -185,15 +185,10 @@
 
   .pdp-media {
     width: 100%;
-    height: 50vh;
+    height: 75vh;
     position: relative;
   }
 
-  @media (min-width: 750px) {
-    .pdp-media {
-      height: 75vh;
-    }
-  }
 
   .pdp-tags {
     position: absolute;
@@ -224,8 +219,8 @@
 
   .tag-popover-item {
     background-color: hsla(45, 33%, 85%, 0.85);
-    backdrop-filter: blur(8px);
-    -webkit-backdrop-filter: blur(8px);
+    backdrop-filter: blur(var(--blur-md));
+    -webkit-backdrop-filter: blur(var(--blur-md));
     padding: var(--spacing-1) var(--spacing-2);
     font-size: var(--font-base-size);
     display: flex;
@@ -242,8 +237,8 @@
 
   .pdp-tag {
     background-color: hsla(45, 33%, 85%, 0.85);
-    backdrop-filter: blur(8px);
-    -webkit-backdrop-filter: blur(8px);
+    backdrop-filter: blur(var(--blur-md));
+    -webkit-backdrop-filter: blur(var(--blur-md));
     padding: var(--spacing-1) var(--spacing-2);
     font-size: var(--font-base-size);
     display: flex;

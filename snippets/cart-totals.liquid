@@ -6,13 +6,30 @@
 {%- endcomment -%}
 
 <div class="cart-summary">
-  {%- if cart.cart_level_discount_applications.size > 0 -%}
-    {%- for discount in cart.cart_level_discount_applications -%}
+  {%- if cart.discount_applications.size > 0 -%}
+    {%- for discount in cart.discount_applications -%}
       <div class="cart-discount-block">
         <div class="cart-discount-row">
-          <span>{{ discount.title }}</span>
+          <span>
+            {{- discount.title -}}
+            {%- if discount.value_type == 'percentage' %}&nbsp;· {{ discount.value | floor }}% off{%- endif -%}
+          </span>
           <span>-{{ discount.total_allocated_amount | money }}</span>
         </div>
+        {%- comment -%} Show which line items received this discount {%- endcomment -%}
+        {%- assign discount_products = '' -%}
+        {%- for item in cart.items -%}
+          {%- for allocation in item.discount_allocations -%}
+            {%- if allocation.discount_application.title == discount.title -%}
+              {%- unless discount_products contains item.product.title -%}
+                {%- assign discount_products = discount_products | append: item.product.title | append: ', ' -%}
+              {%- endunless -%}
+            {%- endif -%}
+          {%- endfor -%}
+        {%- endfor -%}
+        {%- if discount_products != '' -%}
+          <span class="cart-discount-collections">{{ discount_products | remove_last: ', ' }}</span>
+        {%- endif -%}
       </div>
     {%- endfor -%}
   {%- endif -%}
@@ -24,11 +41,6 @@
 
   <p class="cart-shipping-note">{{ 'cart.general.taxes_note' | t }}</p>
 
-  <label class="cart-checkbox">
-    <input type="checkbox" />
-    <span class="checkbox-custom"></span>
-    <span class="checkbox-label">{{ 'cart.drawer.terms_label' | t }}</span>
-  </label>
 </div>
 
 <a href="/checkout" class="button text-cap">{{ 'cart.general.checkout' | t }}</a>

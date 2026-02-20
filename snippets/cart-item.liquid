@@ -26,15 +26,23 @@
 
   <div class="cart-col-description">
     <a href="{{ item.url }}" class="cart-item-title">{{ item.product.title }}</a>
-    {%- if item.variant.title != 'Default Title' -%}
+    {%- if item.product.metafields.custom.color_name != blank -%}
       <span class="cart-item-variant">
-        {%- assign hex_color = item.variant.metafields.custom.hex_color.value -%}
-        {%- if hex_color != blank -%}
-          <span class="cart-swatch" style="--hex: {{ hex_color }}"></span>
+        {%- if item.product.metafields.custom.color_hex != blank -%}
+          <span class="cart-swatch" style="--hex: {{ item.product.metafields.custom.color_hex }}"></span>
         {%- endif -%}
-        {{ item.variant.title }}
+        {{ item.product.metafields.custom.color_name | downcase }}
       </span>
     {%- endif -%}
+    <div class="cart-col-item-actions">
+      {% render 'quantity-selector',
+        value: item.quantity,
+        name: 'updates[]',
+        min: 0,
+        max: item.variant.inventory_quantity | default: 99,
+        data_key: item.key
+      %}
+    </div>
   </div>
 
   <div class="cart-col-price">
@@ -44,6 +52,14 @@
     {%- else -%}
       <span>{{ item.final_line_price | money }}</span>
     {%- endif -%}
+    <button
+      type="button"
+      class="cart-item-remove cart-item-remove-mobile"
+      data-remove="{{ item.key }}"
+      aria-label="{{ 'cart.general.remove_item' | t: title: item.product.title }}"
+    >
+      {{ 'cart.general.remove' | t }}
+    </button>
   </div>
 
   <div class="cart-col-qty">
