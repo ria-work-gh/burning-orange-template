@@ -1,4 +1,4 @@
-{%- comment -%} Hero banner: full-viewport image with text overlay at bottom center. {%- endcomment -%}
+{%- comment -%} Hero banner: full-viewport image with text and product pill blocks. {%- endcomment -%}
 <div class="hero-banner{% if section.settings.height == 'compact' %} compact{% endif %}">
   {%- if section.settings.image != blank -%}
     {{
@@ -14,11 +14,54 @@
 
   <div class="hero-overlay" style="--overlay-opacity: {{ section.settings.overlay_opacity | divided_by: 100.0 }}"></div>
 
-  {%- if section.settings.text != blank -%}
-    <div class="hero-text-overlay">
-      <p class="hero-text text-medium">{{ section.settings.text }}</p>
-    </div>
-  {%- endif -%}
+  {%- for block in section.blocks -%}
+    {%- if block.type == 'text' -%}
+      {%- if block.settings.text != blank or block.settings.button_url != blank -%}
+        <div class="hero-text-block hero-align-{{ block.settings.alignment }}" {{ block.shopify_attributes }}>
+          <div class="hero-text-content">
+            {%- if block.settings.text != blank -%}
+              <p class="hero-text text-medium">{{ block.settings.text }}</p>
+            {%- endif -%}
+            {%- if block.settings.button_url != blank -%}
+              <a href="{{ block.settings.button_url }}" class="button text-cap">{{ 'sections.hero.shop_now' | t }}</a>
+            {%- endif -%}
+          </div>
+        </div>
+      {%- endif -%}
+    {%- elsif block.type == 'product_pill' -%}
+      {%- assign pill_product = block.settings.product -%}
+      {%- if pill_product != blank -%}
+        {%- liquid
+          assign color_value = nil
+          for option in pill_product.options_with_values
+            assign option_name_lower = option.name | downcase
+            if option_name_lower == 'color' or option_name_lower == 'colour'
+              assign color_value = option.values | first
+            endif
+          endfor
+        -%}
+        <div class="hero-product-pill" {{ block.shopify_attributes }}>
+          {%- if pill_product.featured_image != blank -%}
+            {{
+              pill_product.featured_image
+              | image_url: width: 120
+              | image_tag:
+                loading: 'lazy',
+                width: pill_product.featured_image.width,
+                height: pill_product.featured_image.height
+            }}
+          {%- endif -%}
+          <div class="hero-product-pill-info">
+            <span class="hero-product-pill-title">{{ pill_product.title }}</span>
+            {%- if color_value != nil -%}
+              <span class="hero-product-pill-color text-cap">{{ color_value }}</span>
+            {%- endif -%}
+            <a href="{{ pill_product.url }}" class="hero-product-pill-cta text-cap">{{ 'sections.hero.shop_now' | t }}</a>
+          </div>
+        </div>
+      {%- endif -%}
+    {%- endif -%}
+  {%- endfor -%}
 </div>
 
 {% stylesheet %}
@@ -33,7 +76,7 @@
     height: 75vh;
   }
 
-  .hero-banner img {
+  .hero-banner > img {
     width: 100%;
     height: 100%;
     object-fit: cover;
@@ -46,28 +89,82 @@
     pointer-events: none;
   }
 
-  .hero-text-overlay {
+  /* Text block */
+  .hero-text-block {
     position: absolute;
-    bottom: var(--spacing-3);
-    left: 0;
-    right: 0;
+    bottom: var(--spacing-1);
     color: white;
-    text-align: center;
-    padding-left: var(--spacing-3);
-    padding-right: var(--spacing-3);
   }
 
-  .hero-text {
-    max-width: 35ch;
-    margin-inline: auto;
+  .hero-align-left {
+    left: var(--spacing-1);
   }
 
-  @media (min-width: 750px) {
-    .hero-text-overlay {
-      padding-left: calc(var(--spacing-3) * 3);
-      padding-right: calc(var(--spacing-3) * 3);
-    }
+  .hero-align-center {
+    left: 50%;
+    transform: translateX(-50%);
   }
+
+  .hero-align-right {
+    right: var(--spacing-1);
+  }
+
+  .hero-text-content {
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-2);
+    max-width: 80ch;
+  }
+
+  /* Product pill */
+  .hero-product-pill {
+    position: absolute;
+    bottom: var(--spacing-1);
+    right: var(--spacing-1);
+    background-color: var(--color-background);
+    box-shadow: 1px 2px 8px hsla(0, 0%, 0%, 0.1);
+    border-radius: 2px;
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-2);
+    padding: var(--spacing-2);
+    max-width: 300px;
+  }
+
+  .hero-product-pill img {
+    width: 80px;
+    height: 80px;
+    object-fit: cover;
+    flex-shrink: 0;
+  }
+
+  .hero-product-pill-info {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+  }
+
+  .hero-product-pill-title {
+    font-size: var(--font-base-size);
+    line-height: var(--font-base-height);
+  }
+
+  .hero-product-pill-color {
+    font-size: var(--font-detail-size);
+    color: var(--color-text-muted);
+  }
+
+  .hero-product-pill-cta {
+    font-size: var(--font-detail-size);
+    margin-top: var(--spacing-1);
+    color: inherit;
+    transition: opacity var(--transition-fast);
+  }
+
+  .hero-product-pill-cta:hover {
+    opacity: 0.6;
+  }
+
 {% endstylesheet %}
 
 {% schema %}
@@ -80,11 +177,6 @@
       "type": "image_picker",
       "id": "image",
       "label": "Background image"
-    },
-    {
-      "type": "text",
-      "id": "text",
-      "label": "Text"
     },
     {
       "type": "range",
@@ -107,9 +199,54 @@
       "default": "full"
     }
   ],
+  "blocks": [
+    {
+      "type": "text",
+      "name": "Text",
+      "limit": 1,
+      "settings": [
+        {
+          "type": "textarea",
+          "id": "text",
+          "label": "Text"
+        },
+        {
+          "type": "url",
+          "id": "button_url",
+          "label": "Button link"
+        },
+        {
+          "type": "select",
+          "id": "alignment",
+          "label": "Alignment",
+          "options": [
+            { "value": "left", "label": "Left" },
+            { "value": "center", "label": "Center" },
+            { "value": "right", "label": "Right" }
+          ],
+          "default": "center"
+        }
+      ]
+    },
+    {
+      "type": "product_pill",
+      "name": "Product pill",
+      "limit": 1,
+      "settings": [
+        {
+          "type": "product",
+          "id": "product",
+          "label": "Product"
+        }
+      ]
+    }
+  ],
   "presets": [
     {
-      "name": "Hero banner"
+      "name": "Hero banner",
+      "blocks": [
+        { "type": "text" }
+      ]
     }
   ]
 }
