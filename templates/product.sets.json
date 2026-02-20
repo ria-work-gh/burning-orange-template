@@ -47,7 +47,6 @@
       "type": "hotspot-image",
       "settings": {
         "image": "shopify://shop_images/outdoor_ac029168-4cc9-417f-836b-21988266e986.png",
-        "full_cover": false,
         "image_fill": true,
         "mobile_cards": true,
         "color_scheme": "scheme-1"

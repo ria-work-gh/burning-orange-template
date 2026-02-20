@@ -45,8 +45,44 @@
     },
     "hotspot_image": {
       "type": "hotspot-image",
+      "blocks": {
+        "hotspot_69YTfA": {
+          "type": "hotspot",
+          "settings": {
+            "x": 63,
+            "y": 28,
+            "title": "Versatility / Use",
+            "description": "Designed to drape beautifully over outdoor seating or wrap around your shoulders as the evening cools."
+          }
+        },
+        "hotspot_ArVPJ3": {
+          "type": "hotspot",
+          "settings": {
+            "x": 38,
+            "y": 44,
+            "title": "Fringe Detail",
+            "description": "Finished with hand-twisted fringe — a signature detail that speaks to the craft behind every thread."
+          }
+        },
+        "hotspot_4mRH49": {
+          "type": "hotspot",
+          "settings": {
+            "x": 49,
+            "y": 73,
+            "title": "Fabric",
+            "description": "Hand-loomed from 100% organic cotton by skilled artisans using time-honoured weaving techniques."
+          }
+        }
+      },
+      "block_order": [
+        "hotspot_69YTfA",
+        "hotspot_ArVPJ3",
+        "hotspot_4mRH49"
+      ],
       "settings": {
         "image": "{{ product.metafields.custom.hotspot_image.value }}",
+        "image_fill": false,
+        "mobile_cards": false,
         "color_scheme": "scheme-1"
       }
     },

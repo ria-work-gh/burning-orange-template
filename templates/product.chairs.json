@@ -45,8 +45,44 @@
     },
     "hotspot_image": {
       "type": "hotspot-image",
+      "blocks": {
+        "hotspot_8fLnyk": {
+          "type": "hotspot",
+          "settings": {
+            "x": 41,
+            "y": 66,
+            "title": "Material",
+            "description": "Weather-tested and built to age gracefully, developing a richer character with every season."
+          }
+        },
+        "hotspot_PkatJm": {
+          "type": "hotspot",
+          "settings": {
+            "x": 56,
+            "y": 28,
+            "title": "Comfort",
+            "description": "Gently curved for natural support — designed to sink into, whether for morning coffee or long evenings outside."
+          }
+        },
+        "hotspot_JpwJnH": {
+          "type": "hotspot",
+          "settings": {
+            "x": 50,
+            "y": 50,
+            "title": "Craftsmanship",
+            "description": "Each seat is hand-woven using sustainably sourced rattan, with patterns perfected over generations of craft."
+          }
+        }
+      },
+      "block_order": [
+        "hotspot_8fLnyk",
+        "hotspot_PkatJm",
+        "hotspot_JpwJnH"
+      ],
       "settings": {
         "image": "{{ product.metafields.custom.hotspot_image.value }}",
+        "image_fill": false,
+        "mobile_cards": false,
         "color_scheme": "scheme-1"
       }
     },

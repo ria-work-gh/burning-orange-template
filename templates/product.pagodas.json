@@ -45,8 +45,44 @@
     },
     "hotspot_image": {
       "type": "hotspot-image",
+      "blocks": {
+        "hotspot_GFeWCX": {
+          "type": "hotspot",
+          "settings": {
+            "x": 50,
+            "y": 65,
+            "title": "Presence",
+            "description": "A statement centrepiece for any outdoor space, blending sculptural form with everyday function."
+          }
+        },
+        "hotspot_AtwKW8": {
+          "type": "hotspot",
+          "settings": {
+            "x": 50,
+            "y": 17,
+            "title": "Canopy",
+            "description": "Draped in naturally dyed, UV-resistant fabric — offering shade that's as considered as it is effortless."
+          }
+        },
+        "hotspot_mQDn7e": {
+          "type": "hotspot",
+          "settings": {
+            "x": 43,
+            "y": 32,
+            "title": "Frame",
+            "description": "Built on a solid hardwood frame, shaped and sanded by hand for a clean, architectural silhouette."
+          }
+        }
+      },
+      "block_order": [
+        "hotspot_GFeWCX",
+        "hotspot_AtwKW8",
+        "hotspot_mQDn7e"
+      ],
       "settings": {
         "image": "{{ product.metafields.custom.hotspot_image.value }}",
+        "image_fill": false,
+        "mobile_cards": false,
         "color_scheme": "scheme-1"
       }
     },
