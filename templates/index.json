@@ -11,9 +11,29 @@
   "sections": {
     "hero_banner": {
       "type": "hero-banner",
+      "blocks": {
+        "text_F736CW": {
+          "type": "text",
+          "settings": {
+            "text": "We create spaces, objects, and moments that honour the golden warmth of being outdoors.",
+            "button_url": "",
+            "alignment": "center",
+            "vertical_alignment": "middle"
+          }
+        },
+        "product_pill_ghKiQd": {
+          "type": "product_pill",
+          "settings": {
+            "product": "viridis-set"
+          }
+        }
+      },
+      "block_order": [
+        "text_F736CW",
+        "product_pill_ghKiQd"
+      ],
       "settings": {
         "image": "shopify://shop_images/outdoor.png",
-        "text": "We create spaces, objects, and moments that honour the golden warmth of being outdoors.",
         "overlay_opacity": 20,
         "height": "full"
       }
@@ -98,35 +118,8 @@
     },
     "immersive_full_bleed": {
       "type": "immersive-full-bleed",
-      "blocks": {
-        "line_1": {
-          "type": "line",
-          "settings": {
-            "text": "",
-            "alignment": "left"
-          }
-        },
-        "line_2": {
-          "type": "line",
-          "settings": {
-            "text": "",
-            "alignment": "right"
-          }
-        },
-        "line_3": {
-          "type": "line",
-          "settings": {
-            "text": "",
-            "alignment": "center"
-          }
-        }
-      },
-      "block_order": [
-        "line_1",
-        "line_2",
-        "line_3"
-      ],
       "settings": {
+        "sentence": "",
         "link_text": "",
         "link_url": "/collections",
         "color_scheme": "scheme-2"

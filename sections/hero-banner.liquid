@@ -20,7 +20,7 @@
         <div class="hero-text-block hero-align-{{ block.settings.alignment }} hero-valign-{{ block.settings.vertical_alignment }}" {{ block.shopify_attributes }}>
           <div class="hero-text-content">
             {%- if block.settings.text != blank -%}
-              <p class="hero-text text-xl">{{ block.settings.text }}</p>
+              <p class="hero-text text-large">{{ block.settings.text }}</p>
             {%- endif -%}
             {%- if block.settings.button_url != blank -%}
               <a href="{{ block.settings.button_url }}" class="button text-cap">{{ 'sections.hero.shop_now' | t }}</a>
@@ -101,9 +101,9 @@
   }
 
   /* Horizontal alignment */
-  .hero-align-left { left: var(--spacing-2); }
-  .hero-align-center { left: 50%; --tx: -50%; }
-  .hero-align-right { right: var(--spacing-2); }
+  .hero-align-left { left: var(--spacing-2); text-align: left; }
+  .hero-align-center { left: 50%; --tx: -50%; text-align: center; }
+  .hero-align-right { right: var(--spacing-2); text-align: right; }
 
   /* Vertical alignment */
   .hero-valign-top { top: var(--spacing-2); }
@@ -118,8 +118,17 @@
   }
 
   .hero-text {
-    max-width: 35ch;
+    max-width: 45ch;
     text-wrap: balance;
+  }
+
+  @media (max-width: 749px) {
+    .hero-valign-middle {
+      left: var(--spacing-2);
+      right: var(--spacing-2);
+      width: auto;
+      --tx: 0;
+    }
   }
 
   /* Product pill — positioned wrapper using journal-card internals */
@@ -127,12 +136,13 @@
     position: absolute;
     bottom: var(--spacing-2);
     right: var(--spacing-2);
-    background-color: var(--color-background);
+    background-color: hsla(45, 33%, 85%, 0.85);
+    backdrop-filter: blur(var(--blur-md));
+    -webkit-backdrop-filter: blur(var(--blur-md));
     display: grid;
     grid-template-columns: 1fr 1fr;
     gap: var(--spacing-1);
-    border-top: 1px solid var(--color-text);
-    padding-block: var(--spacing-1);
+    padding: var(--spacing-1);
     width: clamp(280px, 30vw, 500px);
     text-decoration: none;
     color: inherit;
