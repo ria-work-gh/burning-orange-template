@@ -17,10 +17,10 @@
   {%- for block in section.blocks -%}
     {%- if block.type == 'text' -%}
       {%- if block.settings.text != blank or block.settings.button_url != blank -%}
-        <div class="hero-text-block hero-align-{{ block.settings.alignment }}" {{ block.shopify_attributes }}>
+        <div class="hero-text-block hero-align-{{ block.settings.alignment }} hero-valign-{{ block.settings.vertical_alignment }}" {{ block.shopify_attributes }}>
           <div class="hero-text-content">
             {%- if block.settings.text != blank -%}
-              <p class="hero-text text-medium">{{ block.settings.text }}</p>
+              <p class="hero-text text-xl">{{ block.settings.text }}</p>
             {%- endif -%}
             {%- if block.settings.button_url != blank -%}
               <a href="{{ block.settings.button_url }}" class="button text-cap">{{ 'sections.hero.shop_now' | t }}</a>
@@ -40,25 +40,27 @@
             endif
           endfor
         -%}
-        <div class="hero-product-pill" {{ block.shopify_attributes }}>
+        <a href="{{ pill_product.url }}" class="hero-product-pill" {{ block.shopify_attributes }}>
           {%- if pill_product.featured_image != blank -%}
-            {{
-              pill_product.featured_image
-              | image_url: width: 120
-              | image_tag:
-                loading: 'lazy',
-                width: pill_product.featured_image.width,
-                height: pill_product.featured_image.height
-            }}
+            <div class="journal-card-image-wrapper">
+              {{
+                pill_product.featured_image
+                | image_url: width: 300
+                | image_tag:
+                  loading: 'lazy',
+                  width: pill_product.featured_image.width,
+                  height: pill_product.featured_image.height
+              }}
+            </div>
           {%- endif -%}
-          <div class="hero-product-pill-info">
-            <span class="hero-product-pill-title">{{ pill_product.title }}</span>
-            {%- if color_value != nil -%}
-              <span class="hero-product-pill-color text-cap">{{ color_value }}</span>
-            {%- endif -%}
-            <a href="{{ pill_product.url }}" class="hero-product-pill-cta text-cap">{{ 'sections.hero.shop_now' | t }}</a>
+          <div class="journal-card-content">
+            <span class="journal-date">{{ 'sections.hero.new_in' | t }} — {{ pill_product.type }}</span>
+            <div class="journal-card-lower">
+              <h3 class="text-medium">{{ pill_product.title }}</h3>
+              <span class="text-cap inline-link">{{ 'sections.hero.shop_now' | t }}</span>
+            </div>
           </div>
-        </div>
+        </a>
       {%- endif -%}
     {%- endif -%}
   {%- endfor -%}
@@ -92,22 +94,21 @@
   /* Text block */
   .hero-text-block {
     position: absolute;
-    bottom: var(--spacing-1);
     color: white;
+    --tx: 0;
+    --ty: 0;
+    transform: translate(var(--tx), var(--ty));
   }
 
-  .hero-align-left {
-    left: var(--spacing-1);
-  }
+  /* Horizontal alignment */
+  .hero-align-left { left: var(--spacing-2); }
+  .hero-align-center { left: 50%; --tx: -50%; }
+  .hero-align-right { right: var(--spacing-2); }
 
-  .hero-align-center {
-    left: 50%;
-    transform: translateX(-50%);
-  }
-
-  .hero-align-right {
-    right: var(--spacing-1);
-  }
+  /* Vertical alignment */
+  .hero-valign-top { top: var(--spacing-2); }
+  .hero-valign-middle { top: 50%; --ty: -50%; }
+  .hero-valign-bottom { bottom: var(--spacing-2); }
 
   .hero-text-content {
     display: flex;
@@ -116,53 +117,33 @@
     max-width: 80ch;
   }
 
-  /* Product pill */
+  .hero-text {
+    max-width: 35ch;
+    text-wrap: balance;
+  }
+
+  /* Product pill — positioned wrapper using journal-card internals */
   .hero-product-pill {
     position: absolute;
-    bottom: var(--spacing-1);
-    right: var(--spacing-1);
+    bottom: var(--spacing-2);
+    right: var(--spacing-2);
     background-color: var(--color-background);
-    box-shadow: 1px 2px 8px hsla(0, 0%, 0%, 0.1);
-    border-radius: 2px;
-    display: flex;
-    align-items: center;
-    gap: var(--spacing-2);
-    padding: var(--spacing-2);
-    max-width: 300px;
-  }
-
-  .hero-product-pill img {
-    width: 80px;
-    height: 80px;
-    object-fit: cover;
-    flex-shrink: 0;
-  }
-
-  .hero-product-pill-info {
-    display: flex;
-    flex-direction: column;
-    gap: 2px;
-  }
-
-  .hero-product-pill-title {
-    font-size: var(--font-base-size);
-    line-height: var(--font-base-height);
-  }
-
-  .hero-product-pill-color {
-    font-size: var(--font-detail-size);
-    color: var(--color-text-muted);
-  }
-
-  .hero-product-pill-cta {
-    font-size: var(--font-detail-size);
-    margin-top: var(--spacing-1);
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: var(--spacing-1);
+    border-top: 1px solid var(--color-text);
+    padding-block: var(--spacing-1);
+    width: clamp(280px, 30vw, 500px);
+    text-decoration: none;
     color: inherit;
-    transition: opacity var(--transition-fast);
   }
 
-  .hero-product-pill-cta:hover {
-    opacity: 0.6;
+  .hero-product-pill:hover .inline-link {
+    color: var(--color-accent);
+  }
+
+  .hero-product-pill:hover img {
+    transform: scale(1.03);
   }
 
 {% endstylesheet %}
@@ -218,13 +199,24 @@
         {
           "type": "select",
           "id": "alignment",
-          "label": "Alignment",
+          "label": "Horizontal alignment",
           "options": [
             { "value": "left", "label": "Left" },
             { "value": "center", "label": "Center" },
             { "value": "right", "label": "Right" }
           ],
           "default": "center"
+        },
+        {
+          "type": "select",
+          "id": "vertical_alignment",
+          "label": "Vertical alignment",
+          "options": [
+            { "value": "top", "label": "Top" },
+            { "value": "middle", "label": "Middle" },
+            { "value": "bottom", "label": "Bottom" }
+          ],
+          "default": "bottom"
         }
       ]
     },

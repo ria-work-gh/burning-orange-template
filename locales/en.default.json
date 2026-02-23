@@ -216,7 +216,8 @@
   },
   "sections": {
     "hero": {
-      "shop_now": "Shop now"
+      "shop_now": "Shop now",
+      "new_in": "New In"
     },
     "slideshow": {
       "aria_label": "Slideshow",
