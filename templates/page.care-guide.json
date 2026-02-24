@@ -25,6 +25,72 @@
         "color_scheme": ""
       }
     },
+    "tabs": {
+      "type": "tabs",
+      "blocks": {
+        "product_chairs": {
+          "type": "product",
+          "settings": {
+            "heading": "Chairs"
+          }
+        },
+        "step_chairs_1": {
+          "type": "step",
+          "settings": {
+            "text": "<p>Wipe down with a damp cloth to remove dust and surface dirt.</p>"
+          }
+        },
+        "step_chairs_2": {
+          "type": "step",
+          "settings": {
+            "text": "<p>Apply wood oil along the grain using a soft lint-free cloth.</p>"
+          }
+        },
+        "step_chairs_3": {
+          "type": "step",
+          "settings": {
+            "text": "<p>Allow to dry for 24 hours before use. Reapply every 6 months.</p>"
+          }
+        },
+        "product_pagodas": {
+          "type": "product",
+          "settings": {
+            "heading": "Pagodas"
+          }
+        },
+        "step_pagodas_1": {
+          "type": "step",
+          "settings": {
+            "text": "<p>Brush off loose debris with a soft-bristle brush.</p>"
+          }
+        },
+        "step_pagodas_2": {
+          "type": "step",
+          "settings": {
+            "text": "<p>Wash with mild soap and warm water. Rinse thoroughly.</p>"
+          }
+        },
+        "step_pagodas_3": {
+          "type": "step",
+          "settings": {
+            "text": "<p>Dry completely before storing. Cover during winter months.</p>"
+          }
+        }
+      },
+      "block_order": [
+        "product_chairs",
+        "step_chairs_1",
+        "step_chairs_2",
+        "step_chairs_3",
+        "product_pagodas",
+        "step_pagodas_1",
+        "step_pagodas_2",
+        "step_pagodas_3"
+      ],
+      "settings": {
+        "color_scheme": "scheme-1"
+      }
+    },
     "image_text_split_story": {
       "type": "image-text",
       "blocks": {
@@ -161,6 +227,7 @@
   "order": [
     "hero_banner",
     "quote",
+    "tabs",
     "image_text_split_story",
     "image_gallery",
     "image_text_split_founders",

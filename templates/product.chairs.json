@@ -36,7 +36,7 @@
         "discount_message": {
           "type": "discount_message",
           "settings": {
-            "message": "Buy two and get 20% off the second item"
+            "message": "Add another, and the Chair Set Discount will be applied – 10% off of second item!"
           }
         }
       },

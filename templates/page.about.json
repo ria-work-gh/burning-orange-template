@@ -13,7 +13,6 @@
       "type": "hero-banner",
       "settings": {
         "image": "shopify://shop_images/48e678ab2842a5cd7c0370800d9ea3dc2643289a.png",
-        "text": "",
         "overlay_opacity": 30,
         "height": "full"
       }
@@ -51,7 +50,7 @@
         "image_position": "right",
         "image_width": "half",
         "image_ratio": "square",
-        "image_caption": "It began with a single idea: that the objects we surround ourselves with should carry the warmth of the sun and the care of human hands. We partner with artisans who share our belief that thoughtful design and honest materials create things worth keeping.",
+        "image_caption": "It began with a single idea: that the objects we surround ourselves with should carry the warmth of the sun and the care of human hands.",
         "color_scheme": "scheme-1"
       }
     },

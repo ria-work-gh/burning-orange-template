@@ -12,6 +12,12 @@
     "hero_banner": {
       "type": "hero-banner",
       "blocks": {
+        "product_pill_NJxghA": {
+          "type": "product_pill",
+          "settings": {
+            "product": "viridis-set"
+          }
+        },
         "text_F736CW": {
           "type": "text",
           "settings": {
@@ -20,17 +26,11 @@
             "alignment": "center",
             "vertical_alignment": "middle"
           }
-        },
-        "product_pill_ghKiQd": {
-          "type": "product_pill",
-          "settings": {
-            "product": "viridis-set"
-          }
         }
       },
       "block_order": [
-        "text_F736CW",
-        "product_pill_ghKiQd"
+        "product_pill_NJxghA",
+        "text_F736CW"
       ],
       "settings": {
         "image": "shopify://shop_images/outdoor.png",
@@ -54,7 +54,7 @@
           "type": "collection",
           "settings": {
             "collection": "rubra",
-            "description": "Warm terracotta and burnt coral hues that capture the essence of golden hour.",
+            "description": "Warm terracotta and burnt coral hues that capture the rich, glowing essence of a golden hour sunset.",
             "image": "shopify://shop_images/lifestyle-window-placeholder.png"
           }
         },
@@ -62,7 +62,7 @@
           "type": "collection",
           "settings": {
             "collection": "saffra",
-            "description": "Soft creams and gentle neutrals for spaces of calm and reflection.",
+            "description": "Soft creams and gentle neutrals designed to create serene spaces made for calm, quiet reflection and ease.",
             "image": "shopify://shop_images/aboutpage.png"
           }
         },
@@ -89,6 +89,12 @@
     "image_text": {
       "type": "image-text",
       "blocks": {
+        "subheader_ieBE6R": {
+          "type": "subheader",
+          "settings": {
+            "text": ""
+          }
+        },
         "heading_block": {
           "type": "heading",
           "settings": {
@@ -104,6 +110,7 @@
         }
       },
       "block_order": [
+        "subheader_ieBE6R",
         "heading_block",
         "link_block"
       ],
@@ -120,7 +127,7 @@
       "type": "immersive-full-bleed",
       "settings": {
         "image": "shopify://shop_images/bg-img3.jpg",
-        "sentence": "For mornings,/afternoons,/and golden hours.",
+        "sentence": "For mornings,/ afternoons,/and golden hours.",
         "link_text": "",
         "link_url": "/collections",
         "color_scheme": "scheme-2"

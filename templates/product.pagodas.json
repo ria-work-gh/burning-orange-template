@@ -46,6 +46,15 @@
     "hotspot_image": {
       "type": "hotspot-image",
       "blocks": {
+        "hotspot_NNgTM4": {
+          "type": "hotspot",
+          "settings": {
+            "x": 80,
+            "y": 45,
+            "title": "text",
+            "description": "text"
+          }
+        },
         "hotspot_GFeWCX": {
           "type": "hotspot",
           "settings": {
@@ -75,6 +84,7 @@
         }
       },
       "block_order": [
+        "hotspot_NNgTM4",
         "hotspot_GFeWCX",
         "hotspot_AtwKW8",
         "hotspot_mQDn7e"
@@ -82,7 +92,7 @@
       "settings": {
         "image": "{{ product.metafields.custom.hotspot_image.value }}",
         "image_fill": false,
-        "mobile_cards": false,
+        "mobile_cards": true,
         "color_scheme": "scheme-1"
       }
     },

@@ -232,6 +232,9 @@
     },
     "product_recommendations": {
       "heading": "You may also like"
+    },
+    "tabs": {
+      "navigation": "Tab navigation"
     }
   },
   "share": {
