@@ -65,6 +65,12 @@
           <div class="pdp-actions" data-variant-render="buy-buttons">
             {% render 'product-buy-buttons', product: product, show_quantity: true %}
           </div>
+
+          {%- for block in section.blocks -%}
+            {%- if block.type == 'discount_message' and block.settings.message != blank -%}
+              <p class="pdp-promo-message" {{ block.shopify_attributes }}>{{ block.settings.message }}</p>
+            {%- endif -%}
+          {%- endfor -%}
         </div>
 
         <div class="pdp-info-right">
@@ -307,6 +313,12 @@
     align-items: stretch;
   }
 
+  .pdp-promo-message {
+    max-width: 80ch;
+    color: var(--color-accent);
+    opacity: 0.65;
+  }
+
   .pdp-collection {
     padding: var(--spacing-4) var(--spacing-2);
     display: grid;
@@ -419,6 +431,18 @@
     }
   ],
   "blocks": [
+    {
+      "type": "discount_message",
+      "name": "Discount message",
+      "limit": 1,
+      "settings": [
+        {
+          "type": "text",
+          "id": "message",
+          "label": "Message"
+        }
+      ]
+    },
     {
       "type": "accordion",
       "name": "Accordion",

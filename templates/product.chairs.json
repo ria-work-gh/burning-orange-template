@@ -32,12 +32,19 @@
             "heading": "Origin",
             "content": "<p>{{ product.metafields.custom.origin | metafield_tag }}</p>"
           }
+        },
+        "discount_message": {
+          "type": "discount_message",
+          "settings": {
+            "message": "Buy two and get 20% off the second item"
+          }
         }
       },
       "block_order": [
         "accordion_dimensions",
         "accordion_material",
-        "accordion_origin"
+        "accordion_origin",
+        "discount_message"
       ],
       "settings": {
         "color_scheme": "scheme-1"

@@ -82,7 +82,7 @@
       ],
       "settings": {
         "subheading": "Collections",
-        "heading": "",
+        "heading": "Discover Our Collections",
         "color_scheme": ""
       }
     },
@@ -119,7 +119,8 @@
     "immersive_full_bleed": {
       "type": "immersive-full-bleed",
       "settings": {
-        "sentence": "",
+        "image": "shopify://shop_images/bg-img3.jpg",
+        "sentence": "For mornings,/afternoons,/and golden hours.",
         "link_text": "",
         "link_url": "/collections",
         "color_scheme": "scheme-2"
