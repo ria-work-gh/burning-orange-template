@@ -54,7 +54,7 @@
             </div>
           {%- endif -%}
           <div class="journal-card-content">
-            <span class="journal-date">{{ 'sections.hero.new_in' | t }} — {{ pill_product.type }}</span>
+            <span class="journal-date">{{ 'sections.hero.new_in' | t }} — {% if pill_product.type == 'Bundles' %}Set{% else %}{{ pill_product.type }}{% endif %}</span>
             <div class="journal-card-lower">
               <h3 class="text-medium">{{ pill_product.title }}</h3>
               <span class="text-cap inline-link">{{ 'sections.hero.shop_now' | t }}</span>
