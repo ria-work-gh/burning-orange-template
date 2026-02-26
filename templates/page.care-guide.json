@@ -9,19 +9,13 @@
  */
 {
   "sections": {
-    "hero_banner": {
-      "type": "hero-banner",
+    "intro_section_hiqJr4": {
+      "type": "intro-section",
+      "name": "Intro section",
       "settings": {
-        "image": "shopify://shop_images/48e678ab2842a5cd7c0370800d9ea3dc2643289a.png",
-        "overlay_opacity": 30,
-        "height": "full"
-      }
-    },
-    "quote": {
-      "type": "quote",
-      "settings": {
-        "subheading": "Our philosophy",
-        "body": "We create spaces, objects, and moments that honour the golden warmth of being outdoors.",
+        "heading": "Shop",
+        "heading_tag": "h1",
+        "description": "",
         "color_scheme": ""
       }
     },
@@ -31,26 +25,30 @@
         "tab_chairs": {
           "type": "tab",
           "settings": {
-            "heading": "Chairs"
+            "heading": "Chairs",
+            "image": "shopify://shop_images/chair_43b24b2b-6595-4b2c-b33d-f6c3b651d903.png"
           },
           "blocks": {
             "step_chairs_1": {
               "type": "step",
               "settings": {
                 "text": "<p>Wipe down with a damp cloth to remove dust and surface dirt.</p>"
-              }
+              },
+              "blocks": {}
             },
             "step_chairs_2": {
               "type": "step",
               "settings": {
                 "text": "<p>Apply wood oil along the grain using a soft lint-free cloth.</p>"
-              }
+              },
+              "blocks": {}
             },
             "step_chairs_3": {
               "type": "step",
               "settings": {
                 "text": "<p>Allow to dry for 24 hours before use. Reapply every 6 months.</p>"
-              }
+              },
+              "blocks": {}
             }
           },
           "block_order": [
@@ -62,26 +60,30 @@
         "tab_pagodas": {
           "type": "tab",
           "settings": {
-            "heading": "Pagodas"
+            "heading": "Pagodas",
+            "image": "shopify://shop_images/pagoda_8a4b391f-6787-4591-8090-103447cf9b2f.png"
           },
           "blocks": {
             "step_pagodas_1": {
               "type": "step",
               "settings": {
                 "text": "<p>Brush off loose debris with a soft-bristle brush.</p>"
-              }
+              },
+              "blocks": {}
             },
             "step_pagodas_2": {
               "type": "step",
               "settings": {
                 "text": "<p>Wash with mild soap and warm water. Rinse thoroughly.</p>"
-              }
+              },
+              "blocks": {}
             },
             "step_pagodas_3": {
               "type": "step",
               "settings": {
                 "text": "<p>Dry completely before storing. Cover during winter months.</p>"
-              }
+              },
+              "blocks": {}
             }
           },
           "block_order": [
@@ -98,148 +100,10 @@
       "settings": {
         "color_scheme": "scheme-1"
       }
-    },
-    "image_text_split_story": {
-      "type": "image-text",
-      "blocks": {
-        "subheader_GTXDCN": {
-          "type": "subheader",
-          "settings": {
-            "text": "Our Story"
-          }
-        },
-        "heading_block": {
-          "type": "heading",
-          "settings": {
-            "heading": "It began with a single idea: that the objects we surround ourselves with should carry the warmth of the sun and the care of human hands. We partner with artisans who share our belief that thoughtful design and honest materials create things worth keeping."
-          }
-        }
-      },
-      "block_order": [
-        "subheader_GTXDCN",
-        "heading_block"
-      ],
-      "settings": {
-        "image": "shopify://shop_images/lifestyle-window-placeholder.png",
-        "image_position": "right",
-        "image_width": "half",
-        "image_ratio": "square",
-        "image_caption": "It began with a single idea: that the objects we surround ourselves with should carry the warmth of the sun and the care of human hands. We partner with artisans who share our belief that thoughtful design and honest materials create things worth keeping.",
-        "color_scheme": "scheme-1"
-      }
-    },
-    "image_gallery": {
-      "type": "image-gallery",
-      "blocks": {
-        "image_1": {
-          "type": "image",
-          "settings": {
-            "image": "shopify://shop_images/outdoor.png",
-            "alt": "",
-            "caption": "",
-            "narrow": false
-          }
-        },
-        "image_2": {
-          "type": "image",
-          "settings": {
-            "image": "shopify://shop_images/Frame_1171277164.png",
-            "alt": "",
-            "caption": "",
-            "narrow": false
-          }
-        },
-        "image_3": {
-          "type": "image",
-          "settings": {
-            "image": "shopify://shop_images/about.png",
-            "alt": "",
-            "caption": "",
-            "narrow": false
-          }
-        },
-        "image_4": {
-          "type": "image",
-          "settings": {
-            "image": "shopify://shop_images/lifestyle-chair-placeholder.png",
-            "alt": "",
-            "caption": "",
-            "narrow": false
-          }
-        }
-      },
-      "block_order": [
-        "image_1",
-        "image_2",
-        "image_3",
-        "image_4"
-      ],
-      "settings": {
-        "color_scheme": "scheme-1"
-      }
-    },
-    "image_text_split_founders": {
-      "type": "image-text",
-      "blocks": {
-        "subheader_igCqNA": {
-          "type": "subheader",
-          "settings": {
-            "text": "The Founders"
-          }
-        },
-        "heading_block": {
-          "type": "heading",
-          "settings": {
-            "heading": "We met with a shared question: how do we make objects that feel as alive as the places that inspire them? Objects that carry the warmth of long afternoons and the quiet of early mornings."
-          }
-        },
-        "caption_CeLBHV": {
-          "type": "caption",
-          "settings": {
-            "text": "← One of us brought a background in textile design, the other in furniture making. Today, we remain a small team with an outsized commitment to craft. Every piece still passes through our hands before it leaves the workshop."
-          }
-        }
-      },
-      "block_order": [
-        "subheader_igCqNA",
-        "heading_block",
-        "caption_CeLBHV"
-      ],
-      "settings": {
-        "image": "shopify://shop_images/placeholder-hero.png",
-        "image_position": "left",
-        "image_width": "three-quarter",
-        "image_ratio": "landscape",
-        "image_caption": "",
-        "color_scheme": "scheme-1"
-      }
-    },
-    "featured_collection": {
-      "type": "featured-collection",
-      "settings": {
-        "heading": "Featured pieces",
-        "collection": "new-in",
-        "products_to_show": 4,
-        "color_scheme": "scheme-1"
-      }
-    },
-    "tagline": {
-      "type": "tagline",
-      "settings": {
-        "svg_code": "",
-        "image": "shopify://shop_images/tagline_a27b9d48-e213-47ad-865e-23a3011c265d.svg",
-        "color_scheme": "scheme-1"
-      }
     }
   },
   "order": [
-    "hero_banner",
-    "quote",
-    "tabs",
-    "image_text_split_story",
-    "image_gallery",
-    "image_text_split_founders",
-    "featured_collection",
-    "tagline"
+    "intro_section_hiqJr4",
+    "tabs"
   ]
 }

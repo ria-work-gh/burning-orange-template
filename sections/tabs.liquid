@@ -3,7 +3,11 @@
 <section class="tabs color-{{ section.settings.color_scheme }}">
   {%- if section.blocks.size > 0 -%}
     <div class="tabs-layout">
-      <div class="tabs-nav" role="tablist" aria-label="{{ 'sections.tabs.navigation' | t }}" aria-orientation="vertical"></div>
+      <div class="tabs-nav">
+        <div class="tabs-nav-viewport">
+          <div class="tabs-nav-container" role="tablist" aria-label="{{ 'sections.tabs.navigation' | t }}"></div>
+        </div>
+      </div>
       <div class="tabs-panels">
         {% content_for 'blocks' %}
       </div>
@@ -11,20 +15,27 @@
   {%- endif -%}
 </section>
 
+<script src="{{ 'embla-carousel.umd.js' | asset_url }}" defer></script>
+
 <noscript>
   <style>.tabs-panel { display: block !important; }</style>
 </noscript>
 
 {% stylesheet %}
   .tabs {
-    width: 83%;
-    max-width: 1200px;
-    margin-inline: auto;
-    padding: var(--spacing-4) 0;
+    width: 100%;
+    padding: var(--spacing-4) var(--spacing-2);
   }
 
-  @media (min-width: 750px) {
+  .tabs-panels {
+    padding-inline: 0;
+  }
+
+  @media (min-width: 900px) {
     .tabs {
+      width: 83%;
+      max-width: 1200px;
+      margin-inline: auto;
       padding: var(--spacing-5) 0;
     }
   }
@@ -54,11 +65,17 @@
     }
   }
 
-  /* Tab navigation — 2-column image grid */
+  /* Tab navigation — Embla slider on mobile/tablet */
   .tabs-nav {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
     border-top: 1px solid var(--color-text);
+  }
+
+  .tabs-nav-viewport {
+    overflow: hidden;
+  }
+
+  .tabs-nav-container {
+    display: flex;
   }
 
   .tabs-button {
@@ -67,16 +84,47 @@
     overflow: hidden;
     aspect-ratio: 1 / 1;
     color: var(--color-text);
-  }
-
-  /* Horizontal divider between rows (not on last row) */
-  .tabs-button:not(:nth-last-child(-n+2)) {
-    border-bottom: 1px solid var(--color-text);
-  }
-
-  /* Vertical divider between columns (only on odd items that have a sibling next to them) */
-  .tabs-button:nth-child(odd):not(:last-child) {
+    flex: 0 0 50%;
+    min-width: 0;
     border-right: 1px solid var(--color-text);
+  }
+
+  @media (min-width: 600px) and (max-width: 899px) {
+    .tabs-button {
+      flex: 0 0 33.333%;
+      border-right: 1px solid var(--color-text);
+    }
+
+    .tabs-button:last-child {
+      border-right: 0;
+    }
+  }
+
+  /* Desktop: 2-column grid instead of slider */
+  @media (min-width: 900px) {
+    .tabs-nav-viewport {
+      overflow: visible;
+    }
+
+    .tabs-nav-container {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+    }
+
+    .tabs-button {
+      flex: none;
+      border-right: 0;
+    }
+
+    /* Horizontal divider between rows (not on last row) */
+    .tabs-button:not(:nth-last-child(-n+2)) {
+      border-bottom: 1px solid var(--color-text);
+    }
+
+    /* Vertical divider between columns */
+    .tabs-button:nth-child(odd):not(:last-child) {
+      border-right: 1px solid var(--color-text);
+    }
   }
 
   .tabs-button:focus-visible {
@@ -222,7 +270,8 @@
 {% javascript %}
   function initTabsSection(section) {
     var tablist = section.querySelector('[role="tablist"]');
-    if (!tablist) return;
+    var viewport = section.querySelector('.tabs-nav-viewport');
+    if (!tablist || !viewport) return;
 
     var panels = section.querySelectorAll('[role="tabpanel"]');
     if (!panels.length) return;
@@ -324,6 +373,50 @@
       buttons[newIndex].focus();
       activateTab(buttons[newIndex]);
     });
+
+    /* Embla slider for tablet/mobile */
+    var emblaInstance = null;
+    var desktopMql = window.matchMedia('(min-width: 900px)');
+
+    function initEmbla() {
+      if (typeof window.EmblaCarousel === 'undefined') return;
+      if (emblaInstance) return;
+      var slideCount = tablist.querySelectorAll('[role="tab"]').length;
+      var middleIndex = Math.floor(slideCount / 2);
+      emblaInstance = window.EmblaCarousel(viewport, {
+        align: 'center',
+        loop: true,
+        startIndex: middleIndex
+      });
+    }
+
+    function destroyEmbla() {
+      if (emblaInstance) {
+        emblaInstance.destroy();
+        emblaInstance = null;
+      }
+    }
+
+    function handleBreakpoint(e) {
+      if (e.matches) {
+        destroyEmbla();
+      } else {
+        initEmbla();
+      }
+    }
+
+    desktopMql.addEventListener('change', handleBreakpoint);
+    handleBreakpoint(desktopMql);
+
+    /* If Embla script hasn't loaded yet, wait for it */
+    if (!desktopMql.matches && typeof window.EmblaCarousel === 'undefined') {
+      var script = document.querySelector('script[src*="embla-carousel"]');
+      if (script) {
+        script.addEventListener('load', function() {
+          if (!desktopMql.matches) initEmbla();
+        }, { once: true });
+      }
+    }
   }
 
   /* Initialize on page load */
