@@ -1,0 +1,69 @@
+{%- comment -%} Step within a tab — numbered via CSS counter {%- endcomment -%}
+
+<div class="tabs-step" {{ block.shopify_attributes }}>
+  <span class="tabs-step-number" aria-hidden="true"></span>
+  <div class="tabs-step-content">
+    <span class="tabs-step-label">{{ 'sections.tabs.step' | t }}</span>
+    {%- if block.settings.text != blank -%}
+      <div class="tabs-step-text typeset">
+        {{ block.settings.text }}
+      </div>
+    {%- endif -%}
+    {%- if block.settings.image != blank and block.settings.image_2 != blank -%}
+      <div class="tabs-step-split">
+        <div class="tabs-step-split-image">
+          {{ block.settings.image | image_url: width: 600 | image_tag:
+              loading: 'lazy',
+              width: block.settings.image.width,
+              height: block.settings.image.height
+          }}
+        </div>
+        <div class="tabs-step-split-image">
+          {{ block.settings.image_2 | image_url: width: 600 | image_tag:
+              loading: 'lazy',
+              width: block.settings.image_2.width,
+              height: block.settings.image_2.height
+          }}
+        </div>
+      </div>
+    {%- elsif block.settings.image != blank -%}
+      <div class="tabs-step-media">
+        {{ block.settings.image | image_url: width: 800 | image_tag:
+            loading: 'lazy',
+            width: block.settings.image.width,
+            height: block.settings.image.height,
+            class: 'tabs-step-image'
+        }}
+      </div>
+    {%- endif -%}
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "Step",
+  "settings": [
+    {
+      "type": "richtext",
+      "id": "text",
+      "label": "Step text",
+      "default": "<p>Describe this care step.</p>"
+    },
+    {
+      "type": "image_picker",
+      "id": "image",
+      "label": "Image"
+    },
+    {
+      "type": "image_picker",
+      "id": "image_2",
+      "label": "Second image (split layout)"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Step"
+    }
+  ]
+}
+{% endschema %}

@@ -1,0 +1,52 @@
+{%- comment -%} Tab panel — JS reads data attributes to build nav buttons {%- endcomment -%}
+
+<div
+  class="tabs-panel"
+  role="tabpanel"
+  id="panel-{{ block.id }}"
+  aria-labelledby="tab-{{ block.id }}"
+  data-tab-heading="{{ block.settings.heading | escape }}"
+  {%- if block.settings.image != blank -%}
+    data-tab-image-url="{{ block.settings.image | image_url: width: 200 }}"
+    data-tab-image-width="{{ block.settings.image.width }}"
+    data-tab-image-height="{{ block.settings.image.height }}"
+  {%- endif -%}
+  {{ block.shopify_attributes }}
+>
+  {% content_for 'blocks' %}
+</div>
+
+{% schema %}
+{
+  "name": "Tab",
+  "settings": [
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Tab heading",
+      "default": "Product name"
+    },
+    {
+      "type": "image_picker",
+      "id": "image",
+      "label": "Tab image"
+    }
+  ],
+  "blocks": [
+    { "type": "step" }
+  ],
+  "presets": [
+    {
+      "name": "Tab",
+      "blocks": [
+        {
+          "type": "step",
+          "settings": {
+            "text": "<p>Describe this care step.</p>"
+          }
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

@@ -1,115 +1,23 @@
-{%- comment -%} Collect product tab indices for building nav and panels {%- endcomment -%}
+{%- comment -%} Tabs section — JS builds nav buttons from panel data attributes {%- endcomment -%}
 
 <section class="tabs color-{{ section.settings.color_scheme }}">
-  {%- assign tab_count = 0 -%}
-
   {%- if section.blocks.size > 0 -%}
     <div class="tabs-layout">
-
-      {%- comment -%} Tab navigation — vertical stack with image cards {%- endcomment -%}
-      <div class="tabs-nav" role="tablist" aria-label="{{ 'sections.tabs.navigation' | t }}" aria-orientation="vertical">
-        {%- for block in section.blocks -%}
-          {%- if block.type == 'product' -%}
-            {%- assign tab_count = tab_count | plus: 1 -%}
-            <button
-              class="tabs-button{% if tab_count == 1 %} is-active{% endif %}"
-              role="tab"
-              id="tab-{{ section.id }}-{{ tab_count }}"
-              aria-selected="{% if tab_count == 1 %}true{% else %}false{% endif %}"
-              aria-controls="panel-{{ section.id }}-{{ tab_count }}"
-              data-tab-index="{{ tab_count }}"
-              {{ block.shopify_attributes }}
-            >
-              {%- if block.settings.image != blank -%}
-                <span class="tabs-button-image">
-                  {{ block.settings.image | image_url: width: 200 | image_tag:
-                      loading: 'lazy',
-                      width: block.settings.image.width,
-                      height: block.settings.image.height
-                  }}
-                </span>
-              {%- endif -%}
-              <span class="tabs-button-label">{{ block.settings.heading }}</span>
-            </button>
-          {%- endif -%}
-        {%- endfor -%}
-      </div>
-
-      {%- comment -%} Tab panels {%- endcomment -%}
+      <div class="tabs-nav" role="tablist" aria-label="{{ 'sections.tabs.navigation' | t }}" aria-orientation="vertical"></div>
       <div class="tabs-panels">
-        {%- assign panel_index = 0 -%}
-        {%- assign step_counter = 0 -%}
-        {%- assign panel_open = false -%}
-
-        {%- for block in section.blocks -%}
-          {%- if block.type == 'product' -%}
-            {%- if panel_open -%}
-              </div>
-            {%- endif -%}
-            {%- assign panel_index = panel_index | plus: 1 -%}
-            {%- assign step_counter = 0 -%}
-            {%- assign panel_open = true -%}
-            <div
-              class="tabs-panel{% if panel_index == 1 %} is-active{% endif %}"
-              role="tabpanel"
-              id="panel-{{ section.id }}-{{ panel_index }}"
-              aria-labelledby="tab-{{ section.id }}-{{ panel_index }}"
-              {% if panel_index != 1 %}hidden{% endif %}
-            >
-          {%- endif -%}
-
-          {%- if block.type == 'step' -%}
-            {%- assign step_counter = step_counter | plus: 1 -%}
-            <div class="tabs-step" {{ block.shopify_attributes }}>
-              <span class="tabs-step-number" aria-hidden="true">{{ step_counter }}</span>
-              <div class="tabs-step-body">
-                <div class="tabs-step-text typeset">
-                  {{ block.settings.text }}
-                </div>
-                {%- if block.settings.image != blank and block.settings.image_2 != blank -%}
-                  <div class="tabs-step-split">
-                    <div class="tabs-step-split-image">
-                      {{ block.settings.image | image_url: width: 600 | image_tag:
-                          loading: 'lazy',
-                          width: block.settings.image.width,
-                          height: block.settings.image.height
-                      }}
-                    </div>
-                    <div class="tabs-step-split-image">
-                      {{ block.settings.image_2 | image_url: width: 600 | image_tag:
-                          loading: 'lazy',
-                          width: block.settings.image_2.width,
-                          height: block.settings.image_2.height
-                      }}
-                    </div>
-                  </div>
-                {%- elsif block.settings.image != blank -%}
-                  <div class="tabs-step-media">
-                    {{ block.settings.image | image_url: width: 800 | image_tag:
-                        loading: 'lazy',
-                        width: block.settings.image.width,
-                        height: block.settings.image.height,
-                        class: 'tabs-step-image'
-                    }}
-                  </div>
-                {%- endif -%}
-              </div>
-            </div>
-          {%- endif -%}
-        {%- endfor -%}
-
-        {%- if panel_open -%}
-          </div>
-        {%- endif -%}
+        {% content_for 'blocks' %}
       </div>
-
     </div>
   {%- endif -%}
 </section>
 
+<noscript>
+  <style>.tabs-panel { display: block !important; }</style>
+</noscript>
+
 {% stylesheet %}
   .tabs {
-    width: 80%;
+    width: 83%;
     max-width: 1200px;
     margin-inline: auto;
     padding: var(--spacing-4) 0;
@@ -129,52 +37,46 @@
 
   @media (min-width: 900px) {
     .tabs-layout {
-      grid-template-columns: 2fr 3fr;
-      gap: var(--spacing-3);
+      display: grid;
+      grid-template-columns: repeat(10, 1fr);
+      column-gap: 0;
     }
-  }
 
-  /* Vertical tab navigation */
-  .tabs-nav {
-    display: flex;
-    flex-direction: row;
-    gap: 0;
-    overflow-x: auto;
-    -webkit-overflow-scrolling: touch;
-  }
-
-  @media (min-width: 900px) {
     .tabs-nav {
-      flex-direction: column;
-      overflow-x: visible;
+      grid-column: 1 / span 3;
+      position: sticky;
+      top: var(--header-height, 80px);
+      align-self: start;
     }
+
+    .tabs-panels {
+      grid-column: 5 / span 6;
+    }
+  }
+
+  /* Tab navigation — 2-column image grid */
+  .tabs-nav {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    border-top: 1px solid var(--color-text);
   }
 
   .tabs-button {
-    display: flex;
-    align-items: center;
-    gap: var(--spacing-2);
-    padding: var(--spacing-2) 0;
-    text-align: left;
-    border-top: 1px solid var(--color-text);
-    white-space: nowrap;
-    color: var(--color-text-muted);
-    transition: color var(--transition-fast);
-  }
-
-  @media (min-width: 900px) {
-    .tabs-button {
-      white-space: normal;
-    }
-  }
-
-  .tabs-button.is-active {
+    position: relative;
+    display: block;
+    overflow: hidden;
+    aspect-ratio: 1 / 1;
     color: var(--color-text);
-    background-color: var(--color-input-bg);
   }
 
-  .tabs-button:hover {
-    color: var(--color-text);
+  /* Horizontal divider between rows (not on last row) */
+  .tabs-button:not(:nth-last-child(-n+2)) {
+    border-bottom: 1px solid var(--color-text);
+  }
+
+  /* Vertical divider between columns (only on odd items that have a sibling next to them) */
+  .tabs-button:nth-child(odd):not(:last-child) {
+    border-right: 1px solid var(--color-text);
   }
 
   .tabs-button:focus-visible {
@@ -183,11 +85,11 @@
   }
 
   .tabs-button-image {
-    flex-shrink: 0;
-    width: 64px;
-    height: 64px;
-    overflow: hidden;
-    aspect-ratio: 1 / 1;
+    display: block;
+    width: 100%;
+    height: 100%;
+    opacity: 1;
+    transition: opacity var(--transition-fast);
   }
 
   .tabs-button-image img {
@@ -196,21 +98,56 @@
     object-fit: cover;
   }
 
+  /* On hover/active: hide image, show centered label with bg */
+  .tabs-button:hover .tabs-button-image,
+  .tabs-button.is-active .tabs-button-image {
+    opacity: 0;
+  }
+
+  .tabs-button.is-active {
+    background-color: var(--color-input-bg);
+  }
+
+  /* Label — centered, hidden by default, visible on hover and when active */
   .tabs-button-label {
-    font-family: var(--font-heading);
-    font-size: var(--font-medium-size);
-  }
-
-  /* Panels */
-  .tabs-panel[hidden] {
-    display: none;
-  }
-
-  /* Steps — vertically stacked */
-  .tabs-step {
+    position: absolute;
+    inset: 0;
     display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: var(--spacing-s);
+    font-size: var(--font-detail-size);
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    text-align: center;
+    opacity: 0;
+    transition: opacity var(--transition-fast);
+  }
+
+  .tabs-button:hover .tabs-button-label,
+  .tabs-button.is-active .tabs-button-label {
+    opacity: 1;
+  }
+
+  /* Panels — hidden by default, JS activates the first */
+  .tabs-panel {
+    display: none;
+    counter-reset: step-counter;
+  }
+
+  .tabs-panel.is-active {
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-3);
+  }
+
+  /* Steps — number left, content (label + text + images) right */
+  .tabs-step {
+    counter-increment: step-counter;
+    display: grid;
+    grid-template-columns: auto 1fr;
     gap: var(--spacing-2);
-    align-items: flex-start;
+    align-items: baseline;
     margin-bottom: var(--spacing-3);
   }
 
@@ -219,26 +156,33 @@
   }
 
   .tabs-step-number {
-    flex-shrink: 0;
     font-family: var(--font-heading);
     font-size: var(--font-large-size);
     line-height: var(--font-large-height);
   }
 
-  .tabs-step-body {
-    flex: 1;
-    min-width: 0;
+  .tabs-step-number::before {
+    content: counter(step-counter);
+  }
+
+  .tabs-step-content {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .tabs-step-label {
+    font-size: var(--font-detail-size);
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    margin-bottom: var(--spacing-2);
   }
 
   .tabs-step-text {
-    max-width: 80ch;
+    max-width: 60ch;
   }
 
   .tabs-step-media {
-    margin-top: var(--spacing-2);
-  }
-
-  .tabs-step-media {
+    margin-top: var(--spacing-1);
     aspect-ratio: 3 / 2;
     overflow: hidden;
   }
@@ -254,7 +198,7 @@
     display: grid;
     grid-template-columns: 1fr 1fr;
     gap: var(--spacing-1);
-    margin-top: var(--spacing-2);
+    margin-top: var(--spacing-1);
   }
 
   .tabs-step-split-image {
@@ -276,12 +220,57 @@
 {% endstylesheet %}
 
 {% javascript %}
-  document.querySelectorAll('.tabs-section').forEach(function(section) {
+  function initTabsSection(section) {
     var tablist = section.querySelector('[role="tablist"]');
     if (!tablist) return;
 
-    var buttons = tablist.querySelectorAll('[role="tab"]');
     var panels = section.querySelectorAll('[role="tabpanel"]');
+    if (!panels.length) return;
+
+    /* Clear previous buttons (handles editor re-renders) */
+    tablist.innerHTML = '';
+
+    /* Build tab buttons from panel data attributes */
+    panels.forEach(function(panel, i) {
+      var button = document.createElement('button');
+      button.className = 'tabs-button' + (i === 0 ? ' is-active' : '');
+      button.setAttribute('role', 'tab');
+      button.setAttribute('id', panel.getAttribute('aria-labelledby'));
+      button.setAttribute('aria-selected', i === 0 ? 'true' : 'false');
+      button.setAttribute('aria-controls', panel.id);
+      if (i > 0) button.setAttribute('tabindex', '-1');
+
+      var imageUrl = panel.getAttribute('data-tab-image-url');
+      if (imageUrl) {
+        var imgSpan = document.createElement('span');
+        imgSpan.className = 'tabs-button-image';
+        var img = document.createElement('img');
+        img.src = imageUrl;
+        img.loading = 'lazy';
+        img.width = panel.getAttribute('data-tab-image-width') || '';
+        img.height = panel.getAttribute('data-tab-image-height') || '';
+        imgSpan.appendChild(img);
+        button.appendChild(imgSpan);
+      }
+
+      var label = document.createElement('span');
+      label.className = 'tabs-button-label';
+      label.textContent = panel.getAttribute('data-tab-heading') || '';
+      button.appendChild(label);
+
+      tablist.appendChild(button);
+
+      /* Set panel initial state */
+      if (i === 0) {
+        panel.classList.add('is-active');
+        panel.hidden = false;
+      } else {
+        panel.classList.remove('is-active');
+        panel.hidden = true;
+      }
+    });
+
+    var buttons = tablist.querySelectorAll('[role="tab"]');
 
     function activateTab(button) {
       buttons.forEach(function(btn) {
@@ -313,7 +302,7 @@
       });
     });
 
-    /* Keyboard navigation — vertical orientation uses ArrowUp/ArrowDown */
+    /* Keyboard navigation */
     tablist.addEventListener('keydown', function(e) {
       var index = Array.prototype.indexOf.call(buttons, document.activeElement);
       if (index === -1) return;
@@ -335,11 +324,30 @@
       buttons[newIndex].focus();
       activateTab(buttons[newIndex]);
     });
+  }
 
-    /* Set initial tabindex for roving tabindex pattern */
-    buttons.forEach(function(btn, i) {
-      if (i > 0) btn.setAttribute('tabindex', '-1');
-    });
+  /* Initialize on page load */
+  document.querySelectorAll('.tabs-section').forEach(initTabsSection);
+
+  /* Re-initialize when the theme editor re-renders the section */
+  document.addEventListener('shopify:section:load', function(e) {
+    var section = e.target;
+    if (section.classList.contains('tabs-section')) {
+      initTabsSection(section);
+    }
+  });
+
+  /* Switch to the correct tab when a block is selected in the editor */
+  document.addEventListener('shopify:block:select', function(e) {
+    var section = e.target.closest('.tabs-section');
+    if (!section) return;
+
+    var panel = e.target.closest('[role="tabpanel"]');
+    if (!panel) return;
+
+    var tabId = panel.getAttribute('aria-labelledby');
+    var button = section.querySelector('#' + tabId);
+    if (button) button.click();
   });
 {% endjavascript %}
 
@@ -357,45 +365,7 @@
     }
   ],
   "blocks": [
-    {
-      "type": "product",
-      "name": "Product tab",
-      "settings": [
-        {
-          "type": "text",
-          "id": "heading",
-          "label": "Tab heading",
-          "default": "Product name"
-        },
-        {
-          "type": "image_picker",
-          "id": "image",
-          "label": "Tab image"
-        }
-      ]
-    },
-    {
-      "type": "step",
-      "name": "Step",
-      "settings": [
-        {
-          "type": "richtext",
-          "id": "text",
-          "label": "Step text",
-          "default": "<p>Describe this care step.</p>"
-        },
-        {
-          "type": "image_picker",
-          "id": "image",
-          "label": "Image"
-        },
-        {
-          "type": "image_picker",
-          "id": "image_2",
-          "label": "Second image (split layout)"
-        }
-      ]
-    }
+    { "type": "tab" }
   ],
   "disabled_on": {
     "templates": ["index"]
@@ -405,52 +375,56 @@
       "name": "Tabs",
       "blocks": [
         {
-          "type": "product",
+          "type": "tab",
           "settings": {
             "heading": "Chairs"
-          }
+          },
+          "blocks": [
+            {
+              "type": "step",
+              "settings": {
+                "text": "<p>Wipe down with a damp cloth to remove dust and surface dirt.</p>"
+              }
+            },
+            {
+              "type": "step",
+              "settings": {
+                "text": "<p>Apply wood oil along the grain using a soft lint-free cloth.</p>"
+              }
+            },
+            {
+              "type": "step",
+              "settings": {
+                "text": "<p>Allow to dry for 24 hours before use. Reapply every 6 months.</p>"
+              }
+            }
+          ]
         },
         {
-          "type": "step",
-          "settings": {
-            "text": "<p>Wipe down with a damp cloth to remove dust and surface dirt.</p>"
-          }
-        },
-        {
-          "type": "step",
-          "settings": {
-            "text": "<p>Apply wood oil along the grain using a soft lint-free cloth.</p>"
-          }
-        },
-        {
-          "type": "step",
-          "settings": {
-            "text": "<p>Allow to dry for 24 hours before use. Reapply every 6 months.</p>"
-          }
-        },
-        {
-          "type": "product",
+          "type": "tab",
           "settings": {
             "heading": "Pagodas"
-          }
-        },
-        {
-          "type": "step",
-          "settings": {
-            "text": "<p>Brush off loose debris with a soft-bristle brush.</p>"
-          }
-        },
-        {
-          "type": "step",
-          "settings": {
-            "text": "<p>Wash with mild soap and warm water. Rinse thoroughly.</p>"
-          }
-        },
-        {
-          "type": "step",
-          "settings": {
-            "text": "<p>Dry completely before storing. Cover during winter months.</p>"
-          }
+          },
+          "blocks": [
+            {
+              "type": "step",
+              "settings": {
+                "text": "<p>Brush off loose debris with a soft-bristle brush.</p>"
+              }
+            },
+            {
+              "type": "step",
+              "settings": {
+                "text": "<p>Wash with mild soap and warm water. Rinse thoroughly.</p>"
+              }
+            },
+            {
+              "type": "step",
+              "settings": {
+                "text": "<p>Dry completely before storing. Cover during winter months.</p>"
+              }
+            }
+          ]
         }
       ]
     }

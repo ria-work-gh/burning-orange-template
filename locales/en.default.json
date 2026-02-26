@@ -234,7 +234,8 @@
       "heading": "You may also like"
     },
     "tabs": {
-      "navigation": "Tab navigation"
+      "navigation": "Tab navigation",
+      "step": "Step"
     }
   },
   "share": {
