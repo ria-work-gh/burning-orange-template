@@ -67,7 +67,9 @@
     {{ 'accessibility.skip_to_content' | t }}
   </a>
 
-  {% sections 'header-group' %}
+  <div class="header-group">
+    {%- sections 'header-group' -%}
+  </div>
 
   <main id="main-content">
     {{ content_for_layout }}

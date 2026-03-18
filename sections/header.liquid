@@ -76,6 +76,7 @@
   var container = header && header.querySelector('.header-container');
   if (!header || !container) return;
 
+  var announcementBar = document.querySelector('announcement-bar');
   var lastScrollY = 0;
 
   function handleScroll() {
@@ -94,11 +95,14 @@
     if (currentScrollY > 50) {
       if (currentScrollY > lastScrollY) {
         container.classList.add('nav-hidden');
+        if (announcementBar) announcementBar.classList.add('is-hidden');
       } else {
         container.classList.remove('nav-hidden');
+        if (announcementBar) announcementBar.classList.remove('is-hidden');
       }
     } else {
       container.classList.remove('nav-hidden');
+      if (announcementBar) announcementBar.classList.remove('is-hidden');
     }
 
     lastScrollY = currentScrollY;

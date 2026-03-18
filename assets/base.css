@@ -864,7 +864,7 @@ details.is-closing > *:not(summary) {
 
 /* ========== 21. Fixed Header Group ========== */
 
-.shopify-section-group-header-group {
+.header-group {
   position: fixed;
   top: 0;
   left: 0;
