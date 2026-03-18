@@ -16,9 +16,14 @@
   {%- endif -%}
 
   <div class="popup-content">
-    {%- if section.settings.heading != blank -%}
-      <h2 class="text-medium">{{ section.settings.heading }}</h2>
-    {%- endif -%}
+    <div class="popup-text">
+      {%- if section.settings.heading != blank -%}
+        <h2 class="text-medium">{{ section.settings.heading }}</h2>
+      {%- endif -%}
+      {%- if section.settings.subtitle != blank -%}
+        <p>{{ section.settings.subtitle }}</p>
+      {%- endif -%}
+    </div>
     {% render 'newsletter-form' %}
   </div>
 </newsletter-popup>
@@ -65,8 +70,14 @@
   .popup-content {
     display: flex;
     flex-direction: column;
-    gap: var(--spacing-2);
-    justify-content: flex-end;
+    justify-content: space-between;
+  }
+
+  .popup-text {
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-1);
+    padding-right: var(--spacing-3);
   }
 
   .popup-close {
@@ -135,6 +146,11 @@
       "id": "heading",
       "label": "Heading",
       "default": "Join the mailing list"
+    },
+    {
+      "type": "textarea",
+      "id": "subtitle",
+      "label": "Subtitle"
     },
     {
       "type": "range",

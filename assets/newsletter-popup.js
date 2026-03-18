@@ -13,18 +13,34 @@
  */
 class NewsletterPopup extends HTMLElement {
   connectedCallback() {
-    if (sessionStorage.getItem('newsletter-popup-dismissed')) return;
-
     this.closeBtn = this.querySelector('[data-close]');
     this.delay = parseInt(this.dataset.delay, 10) || 5000;
 
     this.closeBtn?.addEventListener('click', () => this.dismiss());
+
+    if (Shopify.designMode) {
+      this.onSectionSelect = (e) => {
+        if (e.target.contains(this)) this.show();
+      };
+      this.onSectionDeselect = (e) => {
+        if (e.target.contains(this)) this.hide();
+      };
+      document.addEventListener('shopify:section:select', this.onSectionSelect);
+      document.addEventListener('shopify:section:deselect', this.onSectionDeselect);
+      return;
+    }
+
+    if (sessionStorage.getItem('newsletter-popup-dismissed')) return;
 
     this.timer = setTimeout(() => this.show(), this.delay);
   }
 
   disconnectedCallback() {
     if (this.timer) clearTimeout(this.timer);
+    if (Shopify.designMode) {
+      document.removeEventListener('shopify:section:select', this.onSectionSelect);
+      document.removeEventListener('shopify:section:deselect', this.onSectionDeselect);
+    }
   }
 
   show() {
@@ -32,9 +48,13 @@ class NewsletterPopup extends HTMLElement {
     this.setAttribute('aria-hidden', 'false');
   }
 
-  dismiss() {
+  hide() {
     this.classList.remove('is-visible');
     this.setAttribute('aria-hidden', 'true');
+  }
+
+  dismiss() {
+    this.hide();
     sessionStorage.setItem('newsletter-popup-dismissed', '1');
   }
 }
