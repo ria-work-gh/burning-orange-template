@@ -283,6 +283,7 @@
   .pdp-info-left {
     display: grid;
     gap: var(--spacing-2);
+    justify-items: start;
   }
 
   .pdp-header {
@@ -314,9 +315,12 @@
   }
 
   .pdp-promo-message {
+    display: inline-block;
     max-width: 80ch;
     color: var(--color-accent);
-    opacity: 0.65;
+    background-color: color-mix(in srgb, var(--color-accent) 10%, transparent);
+    border: 1px solid color-mix(in srgb, var(--color-accent) 5%, transparent);
+    padding: var(--spacing-1);
   }
 
   .pdp-collection {
