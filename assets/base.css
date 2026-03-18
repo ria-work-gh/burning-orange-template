@@ -116,7 +116,7 @@ summary::-webkit-details-marker {
 
 :root {
   /* Typography */
-  --font-body: 'Litteratur', serif;
+  --font-body: "Litteratur", serif;
   --font-heading: var(--font-body);
 
   --font-base-size: 14px;
@@ -150,6 +150,7 @@ summary::-webkit-details-marker {
   --spacing-3: 32px;
   --spacing-4: 32px;
   --spacing-5: 64px;
+  --spacing-6: 128px;
 
   /* Button */
   --button-padding: 8px 16px;
@@ -200,6 +201,7 @@ summary::-webkit-details-marker {
     --spacing-3: 48px;
     --spacing-4: 64px;
     --spacing-5: 128px;
+    --spacing-6: 256px;
   }
 }
 
@@ -216,10 +218,26 @@ body {
   background-color: var(--color-background);
 }
 
-h1 { font-family: var(--font-heading); font-size: var(--h1-size); line-height: var(--h1-height); }
-h2 { font-family: var(--font-heading); font-size: var(--h2-size); line-height: var(--h2-height); }
-h3 { font-family: var(--font-heading); font-size: var(--h3-size); line-height: var(--h3-height); }
-h4 { font-family: var(--font-heading); font-size: var(--h4-size); line-height: var(--h4-height); }
+h1 {
+  font-family: var(--font-heading);
+  font-size: var(--h1-size);
+  line-height: var(--h1-height);
+}
+h2 {
+  font-family: var(--font-heading);
+  font-size: var(--h2-size);
+  line-height: var(--h2-height);
+}
+h3 {
+  font-family: var(--font-heading);
+  font-size: var(--h3-size);
+  line-height: var(--h3-height);
+}
+h4 {
+  font-family: var(--font-heading);
+  font-size: var(--h4-size);
+  line-height: var(--h4-height);
+}
 
 /* ========== 5. Typography Utilities ========== */
 
@@ -325,7 +343,7 @@ h4 { font-family: var(--font-heading); font-size: var(--h4-size); line-height: v
 }
 
 .button.secondary {
-  background-color: hsla(0, 0%, 0%, 0.10);
+  background-color: hsla(0, 0%, 0%, 0.1);
   color: black;
 }
 
@@ -556,8 +574,8 @@ h4 { font-family: var(--font-heading); font-size: var(--h4-size); line-height: v
 }
 
 .badge-sale {
-  background: #dc2626;
-  color: white;
+  background: var(--color-accent);
+  color: var(--color-background);
 }
 
 .badge-new {
@@ -641,7 +659,6 @@ h4 { font-family: var(--font-heading); font-size: var(--h4-size); line-height: v
   height: 100%;
   object-fit: cover;
 }
-
 
 /* ========== 14. Accessibility Utilities ========== */
 
@@ -877,7 +894,9 @@ details.is-closing > *:not(summary) {
 .fade-in {
   opacity: 0;
   transform: translateY(20px);
-  transition: opacity 500ms ease, transform 500ms ease;
+  transition:
+    opacity 500ms ease,
+    transform 500ms ease;
 }
 
 .fade-in.visible {
