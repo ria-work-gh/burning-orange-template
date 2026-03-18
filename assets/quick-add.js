@@ -45,7 +45,8 @@ class QuickAdd extends HTMLElement {
         detail: { items: data.items || data }
       }));
     } catch (error) {
-      window.location.href = this.closest('.product-card')?.querySelector('a')?.href;
+      const card = this.closest('.product-card') || this.closest('.upsell-card');
+      window.location.href = card?.querySelector('a')?.href;
     } finally {
       this.button.classList.remove('is-loading');
       this.button.disabled = false;

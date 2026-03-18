@@ -99,6 +99,11 @@
       "col_price": "Price",
       "col_qty": "Qty",
       "terms_label": "I agree to the Sales Terms"
+    },
+    "upsells": {
+      "heading": "Complete the collection",
+      "add": "Add",
+      "add_item": "Add {{ title }} to cart"
     }
   },
   "search": {

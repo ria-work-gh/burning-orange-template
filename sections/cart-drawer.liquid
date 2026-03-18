@@ -29,6 +29,11 @@
     {%- comment -%} Checkout section (25%) {%- endcomment -%}
     <div class="cart-checkout-section" data-checkout>
       {%- if cart.item_count > 0 -%}
+        {%- if section.settings.show_upsells -%}
+          <div class="cart-upsells-wrapper">
+            {% render 'cart-upsells', cart: cart, limit: section.settings.upsells_limit %}
+          </div>
+        {%- endif -%}
         {% render 'cart-totals', cart: cart %}
       {%- else -%}
         <a href="{{ routes.all_products_collection_url }}" class="button text-cap">
@@ -44,6 +49,7 @@
 <script src="{{ 'cart-drawer.js' | asset_url }}" defer></script>
 <script src="{{ 'cart-items.js' | asset_url }}" defer></script>
 <script src="{{ 'quantity-selector.js' | asset_url }}" defer></script>
+<script src="{{ 'quick-add.js' | asset_url }}" defer></script>
 
 {% stylesheet %}
   /* Cart drawer: top-slide panel */
@@ -153,6 +159,18 @@
     justify-content: flex-end;
     gap: var(--spacing-2);
     padding-bottom: var(--spacing-1);
+  }
+
+  /* Upsells wrapper */
+  .cart-upsells-wrapper {
+    flex: 1;
+    overflow-y: auto;
+    min-height: 0;
+    scrollbar-width: none;
+  }
+
+  .cart-upsells-wrapper::-webkit-scrollbar {
+    display: none;
   }
 
   /* Backdrop (below drawer) */
@@ -466,6 +484,22 @@
 {
   "name": "Cart drawer",
   "class": "cart-drawer-section",
-  "settings": []
+  "settings": [
+    {
+      "type": "checkbox",
+      "id": "show_upsells",
+      "label": "Show upsells",
+      "default": true
+    },
+    {
+      "type": "range",
+      "id": "upsells_limit",
+      "label": "Upsells limit",
+      "min": 1,
+      "max": 6,
+      "step": 1,
+      "default": 3
+    }
+  ]
 }
 {% endschema %}

@@ -1,0 +1,33 @@
+{%- comment -%}
+  Compact upsell card for cart contexts (drawer + page).
+  Expects: product (product object)
+{%- endcomment -%}
+
+<div class="upsell-card">
+  <a href="{{ product.url }}" class="upsell-card-image-link">
+    {%- if product.featured_image != blank -%}
+      {{ product.featured_image | image_url: width: 300 | image_tag:
+          loading: 'lazy',
+          width: product.featured_image.width,
+          height: product.featured_image.height,
+          class: 'upsell-card-image'
+      }}
+    {%- endif -%}
+  </a>
+
+  <div class="upsell-card-info">
+    <a href="{{ product.url }}" class="upsell-card-title">{{ product.title }}</a>
+    {% render 'product-price', product: product %}
+  </div>
+
+  <quick-add>
+    <button
+      type="button"
+      class="button upsell-add-button text-cap"
+      data-variant-id="{{ product.selected_or_first_available_variant.id }}"
+      aria-label="{{ 'cart.upsells.add_item' | t: title: product.title }}"
+    >
+      {{ 'cart.upsells.add' | t }}
+    </button>
+  </quick-add>
+</div>

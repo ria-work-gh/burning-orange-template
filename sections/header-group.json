@@ -15,10 +15,10 @@
       "type": "announcement-bar",
       "name": "Announcement bar",
       "settings": {
-        "text": "Free shipping on orders over £100",
+        "text": "Free shipping on orders over £150",
         "link": "",
         "dismissible": true,
-        "color_scheme": "scheme-1"
+        "color_scheme": "scheme-2"
       }
     },
     "header": {

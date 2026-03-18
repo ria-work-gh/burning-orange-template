@@ -6,6 +6,12 @@
       {%- if cart.item_count > 0 -%}
         {% render 'cart-items', cart: cart %}
 
+        {%- if section.settings.show_upsells -%}
+          <div class="cart-page-upsells">
+            {% render 'cart-upsells', cart: cart, limit: section.settings.upsells_limit %}
+          </div>
+        {%- endif -%}
+
         {%- if section.settings.show_note -%}
           <div class="cart-note">
             <label for="cart-note" class="form-label">{{ 'cart.general.order_note' | t }}</label>
@@ -23,6 +29,7 @@
 
 <script src="{{ 'cart-items.js' | asset_url }}" defer></script>
 <script src="{{ 'quantity-selector.js' | asset_url }}" defer></script>
+<script src="{{ 'quick-add.js' | asset_url }}" defer></script>
 
 {% stylesheet %}
   .cart-page {
@@ -50,12 +57,46 @@
     min-height: 80px;
     margin-top: var(--spacing-1);
   }
+
+  /* Cart page upsells */
+  .cart-page-upsells {
+    margin-top: var(--spacing-3);
+    padding-top: var(--spacing-3);
+    border-top: 1px solid hsla(0, 0%, 0%, 0.1);
+  }
+
+  .cart-page-upsells .cart-upsells-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: var(--spacing-2);
+  }
+
+  @media (min-width: 600px) {
+    .cart-page-upsells .cart-upsells-grid {
+      grid-template-columns: repeat(4, 1fr);
+    }
+  }
 {% endstylesheet %}
 
 {% schema %}
 {
   "name": "Cart",
   "settings": [
+    {
+      "type": "checkbox",
+      "id": "show_upsells",
+      "label": "Show upsells",
+      "default": true
+    },
+    {
+      "type": "range",
+      "id": "upsells_limit",
+      "label": "Upsells limit",
+      "min": 1,
+      "max": 6,
+      "step": 1,
+      "default": 4
+    },
     {
       "type": "checkbox",
       "id": "show_note",

@@ -200,6 +200,8 @@ Each snippet is owned by ONE section/area. When modifying a snippet, read its ow
 | `cart-item` | `sections/main-cart.liquid` | cart-items |
 | `cart-totals` | `sections/main-cart.liquid` | main-cart, cart-drawer |
 | `cart-empty` | `sections/main-cart.liquid` | main-cart, cart-drawer |
+| `cart-upsells` | `sections/cart-drawer.liquid` | cart-drawer, main-cart |
+| `cart-upsell-card` | `snippets/cart-upsells.liquid` | cart-upsells |
 | `collection-filters` | `sections/main-collection.liquid` | main-collection |
 | `pagination` | `sections/main-collection.liquid` | collection, blog, search |
 | `article-card` | `sections/main-blog.liquid` | main-blog, search |

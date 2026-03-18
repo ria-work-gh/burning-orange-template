@@ -1,0 +1,100 @@
+{%- comment -%}
+  Cart upsells: recommends sibling products from the same collection
+  based on product tags (saffra, viridis, rubra).
+  Expects: cart (cart object), limit (optional number, default 3)
+{%- endcomment -%}
+
+{%- assign cart_handles = '' -%}
+{%- for item in cart.items -%}
+  {%- assign cart_handles = cart_handles | append: item.product.handle | append: ',' -%}
+{%- endfor -%}
+
+{%- assign seen_collections = '' -%}
+{%- assign upsell_count = 0 -%}
+{%- assign upsell_limit = limit | default: 3 -%}
+
+{%- capture upsell_cards -%}
+  {%- for item in cart.items -%}
+    {%- liquid
+      assign item_collection = nil
+      if item.product.tags contains 'saffra'
+        assign item_collection = collections['saffra']
+      elsif item.product.tags contains 'viridis'
+        assign item_collection = collections['viridis']
+      elsif item.product.tags contains 'rubra'
+        assign item_collection = collections['rubra']
+      endif
+    -%}
+    {%- if item_collection == blank -%}{%- continue -%}{%- endif -%}
+    {%- assign coll_handle_check = item_collection.handle | append: ',' -%}
+    {%- if seen_collections contains coll_handle_check -%}{%- continue -%}{%- endif -%}
+    {%- assign seen_collections = seen_collections | append: coll_handle_check -%}
+
+    {%- for coll_product in item_collection.products -%}
+      {%- if upsell_count >= upsell_limit -%}{%- break -%}{%- endif -%}
+      {%- assign handle_check = coll_product.handle | append: ',' -%}
+      {%- if cart_handles contains handle_check -%}{%- continue -%}{%- endif -%}
+      {%- unless coll_product.available -%}{%- continue -%}{%- endunless -%}
+      {%- assign upsell_count = upsell_count | plus: 1 -%}
+      {%- render 'cart-upsell-card', product: coll_product -%}
+    {%- endfor -%}
+  {%- endfor -%}
+{%- endcapture -%}
+
+{%- if upsell_count > 0 -%}
+  <div class="cart-upsells">
+    <h2 class="cart-upsells-heading text-cap">{{ 'cart.upsells.heading' | t }}</h2>
+    <div class="cart-upsells-grid">
+      {{ upsell_cards }}
+    </div>
+  </div>
+{%- endif -%}
+
+{% stylesheet %}
+  .cart-upsells-heading {
+    font-size: var(--font-detail-size);
+    color: var(--color-text-muted);
+    margin-bottom: var(--spacing-2);
+  }
+
+  .cart-upsells {
+    margin-top: var(--spacing-3);
+  }
+
+  .cart-upsells-grid {
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-2);
+  }
+
+  .upsell-card {
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-2);
+  }
+
+  .upsell-card-image-link {
+    flex-shrink: 0;
+    width: 60px;
+  }
+
+  .upsell-card-image {
+    width: 100%;
+    aspect-ratio: 1 / 1;
+    object-fit: cover;
+    background: var(--color-input-bg);
+  }
+
+  .upsell-card-info {
+    flex: 1;
+    min-width: 0;
+  }
+
+  .upsell-card-title {
+  }
+
+  .upsell-add-button {
+    flex-shrink: 0;
+    font-size: var(--font-detail-size);
+  }
+{% endstylesheet %}
