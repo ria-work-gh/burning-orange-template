@@ -22,6 +22,38 @@
     "tabs": {
       "type": "tabs",
       "blocks": {
+        "tab_hpkT8W": {
+          "type": "tab",
+          "name": "Tab",
+          "settings": {
+            "heading": "blanket",
+            "image": "shopify://shop_images/blanket.png"
+          },
+          "blocks": {
+            "step_NqdUTk": {
+              "type": "step",
+              "name": "Step",
+              "settings": {
+                "text": "<p>Describe this care step.</p>",
+                "image": "shopify://shop_images/lifestyle-chair-placeholder.png",
+                "image_2": "shopify://shop_images/aboutpage.png"
+              },
+              "blocks": {}
+            },
+            "step_xWMhDN": {
+              "type": "step",
+              "settings": {
+                "text": "<p>Describe this care step.</p>",
+                "image": "shopify://shop_images/48e678ab2842a5cd7c0370800d9ea3dc2643289a_22199b60-7360-4527-9060-6755a23ff570.png"
+              },
+              "blocks": {}
+            }
+          },
+          "block_order": [
+            "step_NqdUTk",
+            "step_xWMhDN"
+          ]
+        },
         "tab_chairs": {
           "type": "tab",
           "settings": {
@@ -32,21 +64,25 @@
             "step_chairs_1": {
               "type": "step",
               "settings": {
-                "text": "<p>Wipe down with a damp cloth to remove dust and surface dirt.</p>"
+                "text": "<p>Wipe down with a damp cloth to remove dust and surface dirt.</p>",
+                "image": "shopify://shop_images/outdoor_ac029168-4cc9-417f-836b-21988266e986.png"
               },
               "blocks": {}
             },
             "step_chairs_2": {
               "type": "step",
               "settings": {
-                "text": "<p>Apply wood oil along the grain using a soft lint-free cloth.</p>"
+                "text": "<p>Apply wood oil along the grain using a soft lint-free cloth.</p>",
+                "image": "shopify://shop_images/48e678ab2842a5cd7c0370800d9ea3dc2643289a_22199b60-7360-4527-9060-6755a23ff570.png",
+                "image_2": "shopify://shop_images/placeholder-hero.png"
               },
               "blocks": {}
             },
             "step_chairs_3": {
               "type": "step",
               "settings": {
-                "text": "<p>Allow to dry for 24 hours before use. Reapply every 6 months.</p>"
+                "text": "<p>Allow to dry for 24 hours before use. Reapply every 6 months.</p>",
+                "image": "shopify://shop_images/Frame_1171277165.png"
               },
               "blocks": {}
             }
@@ -67,21 +103,25 @@
             "step_pagodas_1": {
               "type": "step",
               "settings": {
-                "text": "<p>Brush off loose debris with a soft-bristle brush.</p>"
+                "text": "<p>Brush off loose debris with a soft-bristle brush.</p>",
+                "image": "shopify://shop_images/placeholder-hero.png",
+                "image_2": "shopify://shop_images/placeholder-hero.png"
               },
               "blocks": {}
             },
             "step_pagodas_2": {
               "type": "step",
               "settings": {
-                "text": "<p>Wash with mild soap and warm water. Rinse thoroughly.</p>"
+                "text": "<p>Wash with mild soap and warm water. Rinse thoroughly.</p>",
+                "image": "shopify://shop_images/ambient-texture_a42cbebe-3011-4c7f-893e-52afe12933ea.png"
               },
               "blocks": {}
             },
             "step_pagodas_3": {
               "type": "step",
               "settings": {
-                "text": "<p>Dry completely before storing. Cover during winter months.</p>"
+                "text": "<p>Dry completely before storing. Cover during winter months.</p>",
+                "image": "shopify://shop_images/about.png"
               },
               "blocks": {}
             }
@@ -94,6 +134,7 @@
         }
       },
       "block_order": [
+        "tab_hpkT8W",
         "tab_chairs",
         "tab_pagodas"
       ],

@@ -134,8 +134,8 @@
       "settings": {
         "image": "shopify://shop_images/placeholder-hero.png",
         "image_position": "left",
-        "image_width": "three-quarter",
-        "image_ratio": "landscape",
+        "image_width": "half",
+        "image_ratio": "square",
         "image_caption": "",
         "color_scheme": "scheme-1"
       }
@@ -148,14 +148,6 @@
         "products_to_show": 4,
         "color_scheme": "scheme-1"
       }
-    },
-    "tagline": {
-      "type": "tagline",
-      "settings": {
-        "svg_code": "",
-        "image": "shopify://shop_images/tagline_a27b9d48-e213-47ad-865e-23a3011c265d.svg",
-        "color_scheme": "scheme-1"
-      }
     }
   },
   "order": [
@@ -164,7 +156,6 @@
     "image_text_split_story",
     "image_gallery",
     "image_text_split_founders",
-    "featured_collection",
-    "tagline"
+    "featured_collection"
   ]
 }

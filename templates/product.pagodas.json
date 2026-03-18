@@ -49,8 +49,8 @@
         "hotspot_NNgTM4": {
           "type": "hotspot",
           "settings": {
-            "x": 80,
-            "y": 45,
+            "x": 57,
+            "y": 32,
             "title": "text",
             "description": "text"
           }
@@ -68,7 +68,7 @@
           "type": "hotspot",
           "settings": {
             "x": 50,
-            "y": 17,
+            "y": 10,
             "title": "Canopy",
             "description": "Draped in naturally dyed, UV-resistant fabric — offering shade that's as considered as it is effortless."
           }
@@ -76,7 +76,7 @@
         "hotspot_mQDn7e": {
           "type": "hotspot",
           "settings": {
-            "x": 43,
+            "x": 34,
             "y": 32,
             "title": "Frame",
             "description": "Built on a solid hardwood frame, shaped and sanded by hand for a clean, architectural silhouette."
