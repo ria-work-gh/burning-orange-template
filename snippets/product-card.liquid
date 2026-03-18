@@ -24,7 +24,8 @@
             loading: 'lazy',
             sizes: '(min-width: 1200px) 25vw, (min-width: 900px) 33vw, (min-width: 600px) 50vw, 100vw',
             width: product.featured_image.width,
-            height: product.featured_image.height
+            height: product.featured_image.height,
+            class: 'product-card-main-image'
         }}
 
         {%- if product.media.size > 1 and product.media[1].media_type == 'image' -%}
@@ -42,7 +43,6 @@
       {%- else -%}
         <div class="product-card-placeholder"></div>
       {%- endif -%}
-
     </div>
 
     <div class="product-card-meta">
@@ -120,10 +120,16 @@
     opacity: 0;
     transition: opacity var(--transition-base);
   }
+  .product-card-main-image {
+    transition: opacity var(--transition-base);
+  }
 
   @media (hover: hover) {
     .product-card:hover .product-card-hover-image {
       opacity: 1;
+    }
+    .product-card:hover .product-card-main-image {
+      opacity: 0;
     }
   }
 
