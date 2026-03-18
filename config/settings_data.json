@@ -14,7 +14,10 @@
     "sections": {
       "cart-drawer": {
         "type": "cart-drawer",
-        "settings": {}
+        "settings": {
+          "show_upsells": true,
+          "upsells_limit": 3
+        }
       },
       "search-drawer": {
         "type": "search-drawer",
@@ -23,8 +26,9 @@
       "newsletter-popup": {
         "type": "newsletter-popup",
         "settings": {
-          "image": "shopify://shop_images/ambient-texture_a42cbebe-3011-4c7f-893e-52afe12933ea.png",
-          "heading": "Join the mailing list",
+          "image": "shopify://shop_images/26fc6c361e8f7ddd52ee9dd2814eb1e6.jpg",
+          "heading": "Sign up for 10% off your first order",
+          "subtitle": "Also, get early access to sales, first look at new collections and more exclusive benefits.",
           "delay_seconds": 5
         }
       }
