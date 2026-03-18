@@ -54,11 +54,23 @@ class CartDrawer extends HTMLElement {
 
     document.addEventListener('cart:item-added', this._onItemAdded);
     document.addEventListener('cart:updated', this._onCartUpdated);
+
+    if (Shopify.designMode) {
+      this._onSectionSelect = (e) => { if (e.target.contains(this)) this.open(); };
+      this._onSectionDeselect = (e) => { if (e.target.contains(this)) this.close(); };
+      document.addEventListener('shopify:section:select', this._onSectionSelect);
+      document.addEventListener('shopify:section:deselect', this._onSectionDeselect);
+    }
   }
 
   disconnectedCallback() {
     document.removeEventListener('cart:item-added', this._onItemAdded);
     document.removeEventListener('cart:updated', this._onCartUpdated);
+
+    if (Shopify.designMode) {
+      document.removeEventListener('shopify:section:select', this._onSectionSelect);
+      document.removeEventListener('shopify:section:deselect', this._onSectionDeselect);
+    }
   }
 
   /**

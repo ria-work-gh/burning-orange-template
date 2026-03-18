@@ -50,10 +50,22 @@ class SearchDrawer extends HTMLElement {
         this.open();
       });
     }
+
+    if (Shopify.designMode) {
+      this._onSectionSelect = (e) => { if (e.target.contains(this)) this.open(); };
+      this._onSectionDeselect = (e) => { if (e.target.contains(this)) this.close(); };
+      document.addEventListener('shopify:section:select', this._onSectionSelect);
+      document.addEventListener('shopify:section:deselect', this._onSectionDeselect);
+    }
   }
 
   disconnectedCallback() {
     if (this.debounceTimer) clearTimeout(this.debounceTimer);
+
+    if (Shopify.designMode) {
+      document.removeEventListener('shopify:section:select', this._onSectionSelect);
+      document.removeEventListener('shopify:section:deselect', this._onSectionDeselect);
+    }
   }
 
   get isOpen() {
