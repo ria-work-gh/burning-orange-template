@@ -122,8 +122,8 @@ summary::-webkit-details-marker {
   --font-base-size: 14px;
   --font-base-height: 1.3;
 
-  --font-detail-size: 12px;
-  --font-control-size: 16px;
+  --font-mini-size: 12px;
+
 
   --font-medium-size: 20px;
   --font-medium-height: 1.2;
@@ -131,18 +131,8 @@ summary::-webkit-details-marker {
   --font-large-size: 32px;
   --font-large-height: 1.2;
 
-  --font-hero-size: 56px;
-  --font-hero-height: 0.95;
-
-  /* Heading hierarchy (mobile-first) */
-  --h1-size: 36px;
-  --h1-height: 0.95;
-  --h2-size: 28px;
-  --h2-height: 1.2;
-  --h3-size: 20px;
-  --h3-height: 1.2;
-  --h4-size: 14px;
-  --h4-height: 1.3;
+  --font-xl-size: 56px;
+  --font-xl-height: 0.95;
 
   /* Spacing (mobile-first) */
   --spacing-1: 8px;
@@ -194,8 +184,6 @@ summary::-webkit-details-marker {
 
 @media (min-width: 750px) {
   :root {
-    --h1-size: 56px;
-    --h2-size: 32px;
     --font-medium-size: 24px;
 
     --spacing-3: 48px;
@@ -209,6 +197,9 @@ summary::-webkit-details-marker {
 /* Generated dynamically in theme.liquid from settings.color_schemes */
 
 /* ========== 4. Body Defaults ========== */
+::selection {
+  background-color: color-mix(in srgb, var(--color-accent) 50%, transparent);
+}
 
 body {
   font-family: var(--font-body);
@@ -218,31 +209,10 @@ body {
   background-color: var(--color-background);
 }
 
-h1 {
-  font-family: var(--font-heading);
-  font-size: var(--h1-size);
-  line-height: var(--h1-height);
-}
-h2 {
-  font-family: var(--font-heading);
-  font-size: var(--h2-size);
-  line-height: var(--h2-height);
-}
-h3 {
-  font-family: var(--font-heading);
-  font-size: var(--h3-size);
-  line-height: var(--h3-height);
-}
-h4 {
-  font-family: var(--font-heading);
-  font-size: var(--h4-size);
-  line-height: var(--h4-height);
-}
-
 /* ========== 5. Typography Utilities ========== */
 
 .text-mini {
-  font-size: var(--font-detail-size);
+  font-size: var(--font-mini-size);
   line-height: 1.3;
 }
 
@@ -265,8 +235,8 @@ h4 {
 
 .text-xl {
   font-family: var(--font-heading);
-  font-size: var(--font-hero-size);
-  line-height: var(--font-hero-height);
+  font-size: var(--font-xl-size);
+  line-height: var(--font-xl-height);
 }
 
 .text-cap {
@@ -390,7 +360,7 @@ h4 {
   border-top: 1px solid var(--color-text);
   border-bottom: 1px solid var(--color-text);
   border-radius: 0;
-  font-size: var(--font-detail-size);
+  font-size: var(--font-mini-size);
   transition: background-color var(--transition-fast);
 }
 
@@ -425,7 +395,7 @@ h4 {
 
 .input-error {
   color: #dc2626;
-  font-size: var(--font-detail-size);
+  font-size: var(--font-mini-size);
   margin-top: 4px;
 }
 
@@ -452,7 +422,7 @@ h4 {
 
 .form-hint {
   color: var(--color-text-muted);
-  font-size: var(--font-detail-size);
+  font-size: var(--font-mini-size);
   margin-top: 4px;
 }
 
@@ -467,13 +437,13 @@ h4 {
 
 .form-error {
   color: #dc2626;
-  font-size: var(--font-detail-size);
+  font-size: var(--font-mini-size);
   margin-top: 4px;
 }
 
 .form-success {
   color: #16a34a;
-  font-size: var(--font-detail-size);
+  font-size: var(--font-mini-size);
   margin-top: 4px;
 }
 
@@ -566,7 +536,7 @@ h4 {
   display: inline-flex;
   align-items: center;
   padding: 4px 8px;
-  font-size: var(--font-detail-size);
+  font-size: var(--font-mini-size);
   font-weight: 500;
   border-radius: 2px;
   background: var(--color-text);
@@ -727,7 +697,7 @@ h4 {
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: var(--font-control-size);
+  font-size: var(--font-base-size);
   transition: color var(--transition-fast);
 }
 

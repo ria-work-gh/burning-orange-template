@@ -8,7 +8,7 @@
         {%- case block.type -%}
           {%- when 'heading' -%}
             {%- if block.settings.text != blank -%}
-              <h2 class="rich-text-heading text-l" {{ block.shopify_attributes }}>
+              <h2 class="rich-text-heading text-large" {{ block.shopify_attributes }}>
                 {{ block.settings.text }}
               </h2>
             {%- endif -%}
