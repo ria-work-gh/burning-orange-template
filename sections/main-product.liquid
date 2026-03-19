@@ -84,13 +84,13 @@
 
   {%- comment -%} — Collection products + accordions — {%- endcomment -%}
   {%- liquid
-    assign pdp_collection = nil
+    assign pdp_collection = null
     if product.tags contains 'saffra'
-      assign pdp_collection = collections['saffra']
+      assign pdp_collection = collections.saffra
     elsif product.tags contains 'viridis'
-      assign pdp_collection = collections['viridis']
+      assign pdp_collection = collections.viridis
     elsif product.tags contains 'rubra'
-      assign pdp_collection = collections['rubra']
+      assign pdp_collection = collections.rubra
     endif
   -%}
 
@@ -110,10 +110,12 @@
           {%- for block in section.blocks -%}
             {%- case block.type -%}
               {%- when 'accordion' -%}
-                <details class="pdp-dropdown" {{ block.shopify_attributes }}>
-                  <summary class="pdp-dropdown-summary text-medium">{{ block.settings.heading }}</summary>
-                  <div class="pdp-dropdown-content typeset">{{ block.settings.content }}</div>
-                </details>
+                {%- if block.settings.content != blank -%}
+                  <details class="pdp-dropdown" {{ block.shopify_attributes }}>
+                    <summary class="pdp-dropdown-summary text-medium">{{ block.settings.heading }}</summary>
+                    <div class="pdp-dropdown-content typeset">{{ block.settings.content }}</div>
+                  </details>
+                {%- endif -%}
               {%- when '@app' -%}
                 {% render block %}
             {%- endcase -%}
@@ -194,7 +196,6 @@
     height: 75vh;
     position: relative;
   }
-
 
   .pdp-tags {
     position: absolute;
