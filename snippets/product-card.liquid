@@ -15,7 +15,7 @@
 
 <article class="product-card{% unless product.available %} sold-out{% endunless %}">
   <a href="{{ product.url }}" class="product-card-link">
-    <div class="product-card-thumbnail">
+    <div class="product-card-thumbnail{% if product.media.size > 1 and product.media[1].media_type == 'image' %} has-hover-image{% endif %}">
       {%- if product.featured_image -%}
         {{
           product.featured_image
@@ -134,10 +134,10 @@
   }
 
   @media (hover: hover) {
-    .product-card:hover .product-card-hover-image {
+    .product-card:hover .has-hover-image .product-card-hover-image {
       opacity: 1;
     }
-    .product-card:hover .product-card-main-image {
+    .product-card:hover .has-hover-image .product-card-main-image {
       opacity: 0;
     }
   }
@@ -164,12 +164,12 @@
 
   .product-card-collection {
     color: var(--color-text-muted);
-    font-size: var(--font-detail-size);
+    font-size: var(--font-mini-size);
   }
 
   .product-card-variant {
     color: var(--color-text-muted);
-    font-size: var(--font-detail-size);
+    font-size: var(--font-mini-size);
     display: flex;
     align-items: center;
   }
@@ -197,6 +197,25 @@
   /* Sold-out state */
   .product-card.sold-out .product-card-thumbnail {
     opacity: 0.5;
+  }
+
+  /* Product grid layout */
+  .product-grid {
+    display: grid;
+    gap: var(--spacing-3) var(--spacing-2);
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  @media (min-width: 750px) {
+    .product-grid {
+      grid-template-columns: repeat(3, 1fr);
+    }
+  }
+
+  @media (min-width: 1024px) {
+    .product-grid {
+      grid-template-columns: repeat(4, 1fr);
+    }
   }
 
   @media (prefers-reduced-motion: reduce) {

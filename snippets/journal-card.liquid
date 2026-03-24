@@ -1,0 +1,120 @@
+{%- comment -%}
+  Renders a journal card for blog grids.
+
+  Expects:
+    - article: article object
+
+  Usage:
+    {% render 'journal-card', article: article %}
+{%- endcomment -%}
+
+<a href="{{ article.url }}" class="journal-card">
+  <div class="journal-card-body">
+    {%- if article.image -%}
+      <div class="journal-card-image">
+        {{
+          article.image
+          | image_url: width: 800
+          | image_tag:
+            loading: 'lazy',
+            sizes: '(min-width: 1024px) 33vw, (min-width: 750px) 50vw, 100vw',
+            width: article.image.width,
+            height: article.image.height
+        }}
+      </div>
+    {%- endif -%}
+
+    <div class="journal-card-content">
+      <span class="journal-card-date">
+        {{ article.published_at | date: '%d.%m.%y' }}
+        {%- if article.metafields.custom.tag != blank -%}
+          {{ ' — ' }}{{ article.metafields.custom.tag }}
+        {%- endif -%}
+      </span>
+      <div class="journal-card-title">
+        <h3 class="text-medium">{{ article.title }}</h3>
+      </div>
+      <span class="text-cap inline-link">{{ 'blogs.article.read_more' | t }}</span>
+    </div>
+  </div>
+</a>
+
+{% stylesheet %}
+  .journal-card {
+    display: grid;
+    gap: var(--spacing-1);
+    text-decoration: none;
+    color: inherit;
+    cursor: pointer;
+  }
+
+  .journal-card:hover .inline-link {
+    color: var(--color-accent);
+  }
+
+  .journal-card-body {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: var(--spacing-2);
+    border-top: 1px solid var(--color-text);
+    padding-block: var(--spacing-1);
+  }
+
+  .journal-card-image {
+    overflow: hidden;
+  }
+
+  .journal-card-image img {
+    width: 100%;
+    aspect-ratio: 1 / 1;
+    object-fit: cover;
+    display: block;
+    transition: transform var(--transition-base);
+  }
+
+  .journal-card:hover img {
+    transform: scale(1.03);
+  }
+
+  .journal-card-content {
+    display: grid;
+    grid-template-rows: auto 1fr auto;
+  }
+
+  .journal-card-date {
+    font-size: var(--font-base-size);
+    color: var(--color-text);
+  }
+
+  .journal-card-title {
+    display: grid;
+    gap: var(--spacing-1);
+    align-content: center;
+  }
+
+  /* Journal grid layout */
+  .journal-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    column-gap: var(--spacing-2);
+    row-gap: var(--spacing-2);
+  }
+
+  @media (min-width: 750px) {
+    .journal-grid {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+
+  @media (min-width: 1024px) {
+    .journal-grid {
+      grid-template-columns: repeat(3, 1fr);
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .journal-card-image img {
+      transition: none;
+    }
+  }
+{% endstylesheet %}

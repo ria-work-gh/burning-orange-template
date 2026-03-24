@@ -233,7 +233,8 @@
     "featured_collection": {
       "view_all": "See all",
       "previous": "Previous products",
-      "next": "Next products"
+      "next": "Next products",
+      "carousel_label": "Featured collection carousel"
     },
     "product_recommendations": {
       "heading": "You may also like"

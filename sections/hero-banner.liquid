@@ -42,7 +42,7 @@
         -%}
         <a href="{{ pill_product.url }}" class="hero-product-pill" {{ block.shopify_attributes }}>
           {%- if pill_product.featured_image != blank -%}
-            <div class="journal-card-image-wrapper">
+            <div class="pill-image">
               {{
                 pill_product.featured_image
                 | image_url: width: 300
@@ -53,12 +53,12 @@
               }}
             </div>
           {%- endif -%}
-          <div class="journal-card-content">
-            <span class="journal-date">{{ 'sections.hero.new_in' | t }} — {% if pill_product.type == 'Bundles' %}Set{% else %}{{ pill_product.type }}{% endif %}</span>
-            <div class="journal-card-lower">
-              <h3 class="text-medium">{{ pill_product.title }}</h3>
-              <span class="text-cap inline-link">{{ 'sections.hero.shop_now' | t }}</span>
+          <div class="pill-content">
+            <span class="pill-label text-light">{{ block.settings.label | default: 'Featured product' }}</span>
+            <div class="pill-title">
+              <h3>{{ pill_product.title }}</h3>
             </div>
+            <span class="text-cap inline-link">{{ 'sections.hero.shop_now' | t }}</span>
           </div>
         </a>
       {%- endif -%}
@@ -143,7 +143,7 @@
     grid-template-columns: 1fr 1fr;
     gap: var(--spacing-1);
     padding: var(--spacing-1);
-    width: clamp(280px, 30vw, 500px);
+    width: clamp(280px, 30vw, 600px);
     text-decoration: none;
     color: inherit;
   }
@@ -154,6 +154,37 @@
 
   .hero-product-pill:hover img {
     transform: scale(1.03);
+  }
+
+  /* Product pill internals */
+  .pill-image {
+    overflow: hidden;
+  }
+
+  .pill-image img {
+    width: 100%;
+    aspect-ratio: 1 / 1;
+    object-fit: cover;
+    transition: transform var(--transition-base);
+  }
+
+  .pill-content {
+    display: grid;
+    grid-template-rows: auto 1fr auto;
+  }
+
+  .pill-label {
+    /* color: var(--color-text); */
+  }
+
+  .pill-title {
+    /* align-self: center; */
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .pill-image img {
+      transition: none;
+    }
   }
 
 {% endstylesheet %}

@@ -5,13 +5,41 @@
   {%- endif -%}
 
   {%- if section.settings.collection != blank -%}
-    <div class="featured-products-grid">
-      {%- for product in section.settings.collection.products limit: section.settings.products_to_show -%}
-        {% render 'product-card', product: product %}
-      {%- endfor -%}
-    </div>
+    {%- if section.settings.enable_carousel -%}
+      <product-carousel aria-roledescription="carousel" aria-label="{{ 'sections.featured_collection.carousel_label' | t }}">
+        <div class="product-carousel-viewport">
+          <div class="product-carousel-container">
+            {%- for product in section.settings.collection.products limit: section.settings.products_to_show -%}
+              <div class="product-carousel-slide" role="group" aria-roledescription="slide" aria-label="{{ forloop.index }} / {{ forloop.length }}">
+                {% render 'product-card', product: product %}
+              </div>
+            {%- endfor -%}
+          </div>
+        </div>
+
+        <div class="product-carousel-controls">
+          <button class="product-carousel-prev" type="button" aria-label="{{ 'sections.featured_collection.previous' | t }}" disabled>
+            {% render 'icon-chevron' %}
+          </button>
+          <button class="product-carousel-next" type="button" aria-label="{{ 'sections.featured_collection.next' | t }}">
+            {% render 'icon-chevron' %}
+          </button>
+        </div>
+
+        <div class="product-carousel-live visually-hidden" aria-live="polite"></div>
+      </product-carousel>
+
+      <script src="{{ 'embla-carousel.umd.js' | asset_url }}" defer></script>
+      <script src="{{ 'product-carousel.js' | asset_url }}" defer></script>
+    {%- else -%}
+      <div class="product-grid">
+        {%- for product in section.settings.collection.products limit: section.settings.products_to_show -%}
+          {% render 'product-card', product: product %}
+        {%- endfor -%}
+      </div>
+    {%- endif -%}
   {%- else -%}
-    <div class="featured-products-grid">
+    <div class="product-grid">
       {%- for i in (1..section.settings.products_to_show) -%}
         <div class="placeholder-card" aria-hidden="true"></div>
       {%- endfor -%}
@@ -27,27 +55,91 @@
     gap: var(--spacing-2);
   }
 
-  .featured-products-grid {
-    display: grid;
-    gap: var(--spacing-3) var(--spacing-2);
-    grid-template-columns: repeat(2, 1fr);
+  .placeholder-card {
+    aspect-ratio: 3 / 4;
+    background: var(--color-input-bg);
+  }
+
+  /* Carousel layout */
+  .product-carousel-viewport {
+    overflow: hidden;
+  }
+
+  .product-carousel-container {
+    display: flex;
+    gap: var(--spacing-2);
+  }
+
+  .product-carousel-slide {
+    flex: 0 0 calc(50% - var(--spacing-2) / 2);
+    min-width: 0;
   }
 
   @media (min-width: 750px) {
-    .featured-products-grid {
-      grid-template-columns: repeat(3, 1fr);
+    .product-carousel-slide {
+      flex: 0 0 calc(33.333% - var(--spacing-2) * 2 / 3);
     }
   }
 
   @media (min-width: 1024px) {
-    .featured-products-grid {
-      grid-template-columns: repeat(4, 1fr);
+    .product-carousel-slide {
+      flex: 0 0 calc(25% - var(--spacing-2) * 3 / 4);
     }
   }
 
-  .placeholder-card {
-    aspect-ratio: 3 / 4;
-    background: var(--color-input-bg);
+  .product-carousel-controls {
+    display: flex;
+    justify-content: flex-end;
+    gap: var(--spacing-1);
+    padding-top: var(--spacing-2);
+  }
+
+  .product-carousel-prev,
+  .product-carousel-next {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 40px;
+    height: 40px;
+    border: 1px solid var(--color-text);
+    transition: opacity var(--transition-fast);
+  }
+
+  .product-carousel-prev:disabled,
+  .product-carousel-next:disabled {
+    opacity: 0.3;
+    cursor: default;
+  }
+
+  .product-carousel-prev:not(:disabled):hover,
+  .product-carousel-next:not(:disabled):hover {
+    background: var(--color-text);
+    color: var(--color-background);
+  }
+
+  .product-carousel-prev .icon {
+    transform: rotate(90deg);
+  }
+
+  .product-carousel-next .icon {
+    transform: rotate(-90deg);
+  }
+
+  /* No-JS fallback */
+  product-carousel:not(.is-initialized) .product-carousel-viewport {
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+  }
+
+  product-carousel:not(.is-initialized) .product-carousel-controls {
+    display: none;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .product-carousel-container {
+      transition: none !important;
+    }
   }
 {% endstylesheet %}
 
@@ -76,6 +168,12 @@
       "max": 12,
       "step": 1,
       "default": 4
+    },
+    {
+      "type": "checkbox",
+      "id": "enable_carousel",
+      "label": "Enable carousel",
+      "default": false
     },
     {
       "type": "color_scheme",

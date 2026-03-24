@@ -62,8 +62,8 @@
   .hotspot-section {
     background-color: var(--color-input-bg);
     height: 85vh;
-    padding: var(--spacing-2);
-    margin: var(--spacing-2);
+    padding: 0;
+    margin: 0;
     box-sizing: border-box;
     display: flex;
     align-items: center;
@@ -109,6 +109,9 @@
   }
 
   .hotspot-content {
+    width: 300px;
+    flex-shrink: 0;
+    box-sizing: border-box;
     padding: var(--spacing-1);
     text-align: left;
     opacity: 0;
@@ -149,7 +152,7 @@
   }
 
   .hotspot-description {
-    font-size: var(--font-detail-size);
+    font-size: var(--font-mini-size);
     line-height: 1.5;
     color: var(--color-text);
   }
@@ -193,6 +196,10 @@
     .hotspot-plus {
       width: 16px;
       height: 16px;
+    }
+
+    .hotspot-content {
+      width: 250px;
     }
   }
 
@@ -253,7 +260,7 @@
     }
 
     .hotspot-card-description {
-      font-size: var(--font-detail-size);
+      font-size: var(--font-mini-size);
       line-height: var(--font-base-height);
       color: var(--color-text);
     }

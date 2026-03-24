@@ -32,7 +32,7 @@
     <div class="collection-products" data-products>
       {%- paginate collection.products by section.settings.products_per_page -%}
         {%- if collection.products.size > 0 -%}
-          <div class="collection-grid">
+          <div class="product-grid">
             {%- for product in collection.products -%}
               {% render 'product-card', product: product %}
             {%- endfor -%}
@@ -91,25 +91,6 @@
     gap: var(--spacing-3);
   }
 
-  /* Product grid: 2 → 3 → 4 columns */
-  .collection-grid {
-    display: grid;
-    gap: var(--spacing-3) var(--spacing-2);
-    grid-template-columns: repeat(2, 1fr);
-  }
-
-  @media (min-width: 750px) {
-    .collection-grid {
-      grid-template-columns: repeat(3, 1fr);
-    }
-  }
-
-  @media (min-width: 1024px) {
-    .collection-grid {
-      grid-template-columns: repeat(4, 1fr);
-    }
-  }
-
   /* Loading state */
   .collection.is-loading .collection-products {
     opacity: 0.5;
@@ -128,7 +109,7 @@
     display: inline-flex;
     align-items: center;
     gap: var(--spacing-1);
-    font-size: var(--font-detail-size);
+    font-size: var(--font-mini-size);
     color: var(--color-text-muted);
     transition: color var(--transition-fast);
   }
