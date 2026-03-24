@@ -34,7 +34,10 @@
       {%- for filter in collection.filters -%}
         {%- if filter.type == 'price_range' -%}
           <details class="filter-dropdown">
-            <summary class="filter-dropdown-summary text-medium">{{ filter.label }}</summary>
+            <summary class="filter-dropdown-summary text-medium">
+              {{ filter.label }}
+              <span class="filter-dropdown-icon" aria-hidden="true">+</span>
+            </summary>
             <div class="filter-dropdown-content">
               <form class="filter-price-range" data-price-filter action="{{ collection.url }}" method="get">
                 <div class="filter-price-field">
@@ -64,7 +67,10 @@
           </details>
         {%- else -%}
           <details class="filter-dropdown">
-            <summary class="filter-dropdown-summary text-medium">{{ filter.label }}</summary>
+            <summary class="filter-dropdown-summary text-medium">
+              {{ filter.label }}
+              <span class="filter-dropdown-icon" aria-hidden="true">+</span>
+            </summary>
             <div class="filter-dropdown-content">
               {%- for value in filter.values -%}
                 <a
@@ -190,13 +196,15 @@
     text-align: left;
   }
 
-  .filter-dropdown-summary::after {
-    content: '+';
+  .filter-dropdown-icon {
+    flex-shrink: 0;
+    transition: transform var(--transition-fast);
     font-size: var(--font-base-size);
+    line-height: 1;
   }
 
-  .filter-dropdown[open] .filter-dropdown-summary::after {
-    content: '\2212';
+  .filter-dropdown[open] .filter-dropdown-icon {
+    transform: rotate(45deg);
   }
 
   /* Filter options grid */

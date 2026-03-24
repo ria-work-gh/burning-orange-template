@@ -118,8 +118,13 @@
               {%- when 'accordion' -%}
                 {%- if block.settings.content != blank -%}
                   <details class="pdp-dropdown" {{ block.shopify_attributes }}>
-                    <summary class="pdp-dropdown-summary text-medium">{{ block.settings.heading }}</summary>
-                    <div class="pdp-dropdown-content typeset">{{ block.settings.content }}</div>
+                    <summary class="pdp-dropdown-summary text-medium">
+                      {{ block.settings.heading }}
+                      <span class="pdp-dropdown-icon" aria-hidden="true">+</span>
+                    </summary>
+                    <div class="pdp-dropdown-content">
+                      <div class="pdp-dropdown-body typeset">{{ block.settings.content }}</div>
+                    </div>
                   </details>
                 {%- endif -%}
               {%- when '@app' -%}
@@ -399,16 +404,18 @@
     display: none;
   }
 
-  .pdp-dropdown summary::after {
-    content: '+';
+  .pdp-dropdown-icon {
+    flex-shrink: 0;
+    transition: transform var(--transition-fast);
     font-size: var(--font-base-size);
+    line-height: 1;
   }
 
-  .pdp-dropdown[open] summary::after {
-    content: '\2212';
+  details[open] .pdp-dropdown-icon {
+    transform: rotate(45deg);
   }
 
-  .pdp-dropdown-content {
+  .pdp-dropdown-body {
     padding-bottom: var(--spacing-2);
     display: grid;
     gap: var(--spacing-1);

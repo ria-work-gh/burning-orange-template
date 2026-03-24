@@ -16,8 +16,10 @@
               {{ block.settings.question }}
               <span class="faq-icon" aria-hidden="true">+</span>
             </summary>
-            <div class="faq-answer typeset">
-              {{ block.settings.answer }}
+            <div class="faq-answer">
+              <div class="faq-answer-body typeset">
+                {{ block.settings.answer }}
+              </div>
             </div>
           </details>
         {%- endfor -%}
@@ -83,7 +85,7 @@
     transform: rotate(45deg);
   }
 
-  .faq-answer {
+  .faq-answer-body {
     padding: 0 0 var(--spacing-2) 0;
   }
 {% endstylesheet %}
