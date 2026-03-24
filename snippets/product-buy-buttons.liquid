@@ -9,19 +9,34 @@
     {% render 'quantity-selector' %}
   {%- endif -%}
 
+  {%- liquid
+    assign is_preorder = false
+    if product.metafields.custom.pre_order
+      assign is_preorder = true
+    endif
+  -%}
+
   <button
     type="submit"
     class="button text-cap"
-    data-add-text="{{ 'products.product.add_to_cart' | t }}"
+    data-add-text="{%- if is_preorder -%}{{ 'products.product.pre_order' | t }}{%- else -%}{{ 'products.product.add_to_cart' | t }}{%- endif -%}"
     data-sold-text="{{ 'products.product.sold_out' | t }}"
     {% unless product.selected_or_first_available_variant.available %}disabled{% endunless %}
   >
     {%- if product.selected_or_first_available_variant.available -%}
-      {{ 'products.product.add_to_cart' | t }}
+      {%- if is_preorder -%}
+        {{ 'products.product.pre_order' | t }}
+      {%- else -%}
+        {{ 'products.product.add_to_cart' | t }}
+      {%- endif -%}
     {%- else -%}
       {{ 'products.product.sold_out' | t }}
     {%- endif -%}
   </button>
+
+  {%- if is_preorder and product.metafields.custom.pre_order_ship_date != blank -%}
+    <p class="preorder-ship-date">{{ 'products.product.pre_order_ship_date' | t: date: product.metafields.custom.pre_order_ship_date }}</p>
+  {%- endif -%}
 </div>
 
 <div data-error class="form-error" role="alert" hidden></div>

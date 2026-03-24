@@ -34,6 +34,14 @@
         {{ item.product.metafields.custom.color_name | downcase }}
       </span>
     {%- endif -%}
+    {%- if item.product.metafields.custom.pre_order -%}
+      <span class="cart-item-preorder">
+        {{ 'products.product.pre_order' | t }}
+        {%- if item.product.metafields.custom.pre_order_ship_date != blank -%}
+          · {{ 'products.product.pre_order_ship_date' | t: date: item.product.metafields.custom.pre_order_ship_date }}
+        {%- endif -%}
+      </span>
+    {%- endif -%}
     <div class="cart-col-item-actions">
       {% render 'quantity-selector',
         value: item.quantity,
