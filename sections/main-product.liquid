@@ -102,7 +102,13 @@
     {%- endif -%}
   {%- endfor -%}
 
-  {%- if has_accordions or pdp_collection != blank -%}
+  {%- assign bundle_products = product.metafields.custom.bundle_includes.value -%}
+  {%- assign has_bundle_includes = false -%}
+  {%- if bundle_products != blank and bundle_products.size > 0 -%}
+    {%- assign has_bundle_includes = true -%}
+  {%- endif -%}
+
+  {%- if has_accordions or pdp_collection != blank or has_bundle_includes -%}
     <div class="pdp-collection">
       <div class="pdp-collection-left">
         {%- if has_accordions -%}
@@ -123,8 +129,12 @@
         {%- endif -%}
       </div>
 
-      {%- if pdp_collection != blank -%}
-        <div class="pdp-collection-right">
+      <div class="pdp-collection-right">
+        {%- if has_bundle_includes -%}
+          {% render 'bundle-includes', product: product %}
+        {%- endif -%}
+
+        {%- if pdp_collection != blank -%}
           <span class="text-cap">{{ pdp_collection.title }} collection</span>
           <div class="pdp-collection-grid">
             {%- comment -%} Bundles first {%- endcomment -%}
@@ -139,8 +149,8 @@
               {%- endif -%}
             {%- endfor -%}
           </div>
-        </div>
-      {%- endif -%}
+        {%- endif -%}
+      </div>
     </div>
   {%- endif -%}
 </section>
@@ -419,6 +429,60 @@
     opacity: 1;
     transform: translateY(0);
     pointer-events: auto;
+  }
+
+  .bundle-includes {
+    margin-bottom: var(--spacing-3);
+    max-width: 65ch;
+  }
+
+  .bundle-includes > .text-cap {
+    display: block;
+    margin-bottom: var(--spacing-2);
+  }
+
+  .bundle-includes-list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+
+  .bundle-includes-item {
+    border-top: 1px solid var(--color-text);
+  }
+
+  .bundle-includes-link {
+    display: grid;
+    grid-template-columns: 96px 1fr auto;
+    gap: var(--spacing-2);
+    align-items: start;
+    padding: var(--spacing-2) 0;
+    text-decoration: none;
+    color: inherit;
+  }
+
+  .bundle-includes-thumb {
+    width: 96px;
+    height: 96px;
+    overflow: hidden;
+    background-color: var(--color-input-bg);
+  }
+
+  .bundle-includes-thumb img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  .bundle-includes-title {
+    font-size: var(--font-base-size);
+    line-height: var(--font-base-height);
+  }
+
+  .bundle-includes-qty {
+    font-size: var(--font-base-size);
+    line-height: var(--font-base-height);
+    color: var(--color-text-muted);
   }
 
   @media (prefers-reduced-motion: reduce) {

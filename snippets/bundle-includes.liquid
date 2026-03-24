@@ -1,0 +1,34 @@
+{%- comment -%}
+  Renders products included in a bundle from custom.bundle_includes metafield.
+  Quantities from custom.bundle_quantities (position-matched). Defaults to 1 if omitted.
+  Expects: product (product object)
+{%- endcomment -%}
+
+{%- assign bundle_products = product.metafields.custom.bundle_includes.value -%}
+{%- assign bundle_quantities = product.metafields.custom.bundle_quantities.value -%}
+
+{%- if bundle_products != blank and bundle_products.size > 0 -%}
+  <div class="bundle-includes">
+    <span class="text-cap">{{ 'products.product.bundle_includes_heading' | t }}</span>
+    <ul class="bundle-includes-list">
+      {%- for item in bundle_products -%}
+        {%- assign qty = bundle_quantities[forloop.index0] | default: 1 -%}
+        <li class="bundle-includes-item">
+          <a href="{{ item.url }}" class="bundle-includes-link">
+            {%- if item.featured_image -%}
+              <div class="bundle-includes-thumb">
+                {{ item.featured_image | image_url: width: 200 | image_tag:
+                    loading: 'lazy',
+                    width: item.featured_image.width,
+                    height: item.featured_image.height
+                }}
+              </div>
+            {%- endif -%}
+            <span class="bundle-includes-title">{{ item.title }}</span>
+            <span class="bundle-includes-qty">&times;{{ qty }}</span>
+          </a>
+        </li>
+      {%- endfor -%}
+    </ul>
+  </div>
+{%- endif -%}
