@@ -1,14 +1,12 @@
-{% layout 'theme' %}
-
 <style>
   .gift-card {
-    padding: var(--spacing-4) var(--spacing-2);
+    padding: calc(var(--header-height, 80px) + var(--spacing-4)) var(--spacing-2) var(--spacing-4);
     text-align: center;
   }
 
   @media (min-width: 600px) {
     .gift-card {
-      padding: var(--spacing-5) var(--spacing-3);
+      padding: calc(var(--header-height, 80px) + var(--spacing-5)) var(--spacing-3) var(--spacing-5);
     }
   }
 
@@ -28,7 +26,7 @@
   .gift-card-image img {
     width: 100%;
     height: auto;
-    border-radius: 8px;
+    border-radius: var(--radius-sm);
   }
 
   .gift-card-amount {
@@ -41,22 +39,18 @@
 
   .gift-card-code {
     text-align: center;
-    font-size: var(--type-medium-size);
+    font-size: var(--font-medium-size);
     letter-spacing: 0.1em;
     margin-top: var(--spacing-1);
   }
 
-  .gift-card-qr {
-    margin-bottom: var(--spacing-2);
-  }
-
   .gift-card-expiry {
     margin-bottom: var(--spacing-3);
-    color: var(--color-text-light);
+    color: var(--color-text-muted);
   }
 
   .gift-card-expired {
-    color: #dc2626;
+    color: hsl(0, 70%, 45%);
   }
 
   .gift-card-actions {
@@ -98,15 +92,16 @@
     </h1>
 
     {%- comment -%} Gift card image {%- endcomment -%}
-    <div class="gift-card-image">
-      <img
-        src="{{ 'gift-card/card.jpg' | shopify_asset_url }}"
-        alt="{{ shop.name }} {{ 'gift_cards.issued.title' | t }}"
-        width="570"
-        height="360"
-        loading="eager"
-      >
-    </div>
+    {%- if settings.gift_card_image != blank -%}
+      <div class="gift-card-image">
+        {{ settings.gift_card_image | image_url: width: 570 | image_tag:
+            alt: shop.name,
+            loading: 'eager',
+            width: settings.gift_card_image.width,
+            height: settings.gift_card_image.height
+        }}
+      </div>
+    {%- endif -%}
 
     {%- comment -%} Amount {%- endcomment -%}
     {%- assign formatted_value = gift_card.balance | money -%}
@@ -134,19 +129,9 @@
       >
     </div>
 
-    {%- comment -%} QR code {%- endcomment -%}
-    <div class="gift-card-qr">
-      <img
-        src="{{ gift_card.qr_code_url }}"
-        alt="{{ 'gift_cards.issued.qr_code_alt' | t: code: gift_card.code | format_code }}"
-        width="120"
-        height="120"
-      >
-    </div>
-
     {%- comment -%} Expiry {%- endcomment -%}
     {%- if gift_card.expires_on -%}
-      <p class="gift-card-expiry text-mini {% if gift_card.expired %}gift-card-expired{% endif %}">
+      <p class="gift-card-expiry text-mini {%- if gift_card.expired %} gift-card-expired{%- endif -%}">
         {%- if gift_card.expired -%}
           {{ 'gift_cards.issued.expired' | t: expiry: gift_card.expires_on | date: format: 'abbreviated_date' }}
         {%- else -%}

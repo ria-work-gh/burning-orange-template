@@ -30,6 +30,8 @@
     "product": {
       "add_to_cart": "Add to cart",
       "sold_out": "Sold out",
+      "pre_order": "Pre-order",
+      "pre_order_ship_date": "Estimated to ship: {{ date }}",
       "sale": "Sale",
       "price": "Price",
       "compare_at_price": "Regular price",
@@ -43,6 +45,8 @@
       "gallery_label": "Product media gallery",
       "gallery_navigation": "Gallery navigation",
       "gallery_thumbnails": "Gallery thumbnails",
+      "previous_media": "Previous media",
+      "next_media": "Next media",
       "new": "New",
       "quick_add": "Quick add",
       "choose_options": "Choose options",
@@ -170,8 +174,7 @@
       "no_expiry": "No expiry date",
       "add_to_apple_wallet": "Add to Apple Wallet",
       "print": "Print gift card",
-      "shop_link": "Continue shopping",
-      "qr_code_alt": "QR code for gift card {{ code }}"
+      "shop_link": "Continue shopping"
     }
   },
   "accessibility": {
@@ -197,7 +200,7 @@
       "password_label": "Password",
       "password_placeholder": "Enter store password",
       "enter": "Enter",
-      "admin_link": "Are you the store owner? Log in here",
+      "enter_with_password": "Enter with password",
       "newsletter_heading": "Be the first to know"
     }
   },
@@ -206,7 +209,9 @@
       "title": "Page not found",
       "message": "The page you're looking for doesn't exist or has been moved.",
       "search_placeholder": "Search our store",
-      "popular_links": "Popular links"
+      "popular_links": "Popular links",
+      "back_home": "Back home",
+      "shop_now": "Shop now"
     }
   },
   "contact": {
@@ -234,7 +239,8 @@
       "view_all": "See all",
       "previous": "Previous products",
       "next": "Next products",
-      "carousel_label": "Featured collection carousel"
+      "carousel_label": "Featured collection carousel",
+      "slide_announce": "Showing products [first] to [last] of [total]"
     },
     "product_recommendations": {
       "heading": "You may also like"
