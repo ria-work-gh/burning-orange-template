@@ -10,7 +10,7 @@
   {%- endif -%}
 
   <div class="page-contact-form-wrapper">
-    {% form 'contact', class: 'page-contact-form' %}
+    {%- form 'contact', class: 'page-contact-form' -%}
       {%- if form.posted_successfully? -%}
         <p class="form-success" role="alert">
           {{ 'pages.contact.success' | t }}
@@ -88,22 +88,21 @@
       <button type="submit" class="button">
         {{ 'pages.contact.submit' | t }}
       </button>
-    {% endform %}
+    {%- endform -%}
   </div>
 </div>
 
 {% stylesheet %}
   .page-contact {
-    padding: var(--spacing-4) var(--spacing-2);
+    padding: calc(var(--header-height, 80px) + var(--spacing-4)) var(--spacing-2) var(--spacing-4);
     max-width: 720px;
     margin-inline: auto;
-    color: var(--color-text);
-    background-color: var(--color-bg);
+    text-align: center;
   }
 
   @media (min-width: 600px) {
     .page-contact {
-      padding: var(--spacing-5) var(--spacing-3);
+      padding: calc(var(--header-height, 80px) + var(--spacing-5)) var(--spacing-3) var(--spacing-5);
     }
   }
 
@@ -111,17 +110,24 @@
     margin-top: var(--spacing-3);
   }
 
+  .page-contact-form {
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-2);
+    text-align: left;
+  }
+
   .form-success {
     padding: var(--spacing-1);
-    background: var(--color-success, #d4edda);
-    border-radius: 4px;
+    background: hsla(120, 40%, 85%, 0.5);
+    border-radius: var(--radius-sm);
     margin-bottom: var(--spacing-2);
   }
 
   .page-contact-errors {
     padding: var(--spacing-1);
-    background: var(--color-error-bg, #f8d7da);
-    border-radius: 4px;
+    background: hsla(0, 70%, 90%, 0.5);
+    border-radius: var(--radius-sm);
     margin-bottom: var(--spacing-2);
   }
 {% endstylesheet %}
