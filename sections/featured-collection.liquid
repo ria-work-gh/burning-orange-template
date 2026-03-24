@@ -26,7 +26,7 @@
           </button>
         </div>
 
-        <div class="product-carousel-live visually-hidden" aria-live="polite"></div>
+        <div class="product-carousel-live visually-hidden" aria-live="polite" data-announce-template="{{ 'sections.featured_collection.slide_announce' | t }}"></div>
       </product-carousel>
 
       <script src="{{ 'embla-carousel.umd.js' | asset_url }}" defer></script>
@@ -53,6 +53,8 @@
     padding: var(--spacing-2);
     display: grid;
     gap: var(--spacing-2);
+ 
+    overflow-x: hidden;
   }
 
   .placeholder-card {
@@ -62,7 +64,8 @@
 
   /* Carousel layout */
   .product-carousel-viewport {
-    overflow: hidden;
+    /* Don't apply overflow: hidden; to avoid having the slides cut off. instead apply this to the section.*/
+    /* overflow: hidden; */
   }
 
   .product-carousel-container {
@@ -99,22 +102,18 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    width: 40px;
-    height: 40px;
-    border: 1px solid var(--color-text);
+    padding: 0;
+    border: none;
+    background: none;
+    cursor: pointer;
+    color: currentColor;
     transition: opacity var(--transition-fast);
   }
 
   .product-carousel-prev:disabled,
   .product-carousel-next:disabled {
     opacity: 0.3;
-    cursor: default;
-  }
-
-  .product-carousel-prev:not(:disabled):hover,
-  .product-carousel-next:not(:disabled):hover {
-    background: var(--color-text);
-    color: var(--color-background);
+    cursor: not-allowed;
   }
 
   .product-carousel-prev .icon {
@@ -132,7 +131,8 @@
     scrollbar-width: none;
   }
 
-  product-carousel:not(.is-initialized) .product-carousel-controls {
+  product-carousel:not(.is-initialized) .product-carousel-controls,
+  product-carousel:not(.is-scrollable) .product-carousel-controls {
     display: none;
   }
 

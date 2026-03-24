@@ -11,6 +11,10 @@
  *         <div class="product-gallery-slide" data-media-id="..." data-media-type="...">...</div>
  *       </div>
  *     </div>
+ *     <div class="product-gallery-controls">
+ *       <button class="product-gallery-prev">...</button>
+ *       <button class="product-gallery-next">...</button>
+ *     </div>
  *     <div class="product-gallery-live-region" aria-live="polite"></div>
  *   </product-gallery>
  */
@@ -19,6 +23,8 @@ class ProductGallery extends HTMLElement {
     this.slides = this.querySelectorAll('.product-gallery-slide');
     this.liveRegion = this.querySelector('.product-gallery-live-region');
     this.viewport = this.querySelector('.product-gallery-viewport');
+    this.prevBtn = this.querySelector('.product-gallery-prev');
+    this.nextBtn = this.querySelector('.product-gallery-next');
 
     if (this.slides.length < 2) return;
 
@@ -35,7 +41,7 @@ class ProductGallery extends HTMLElement {
 
   _init() {
     this.embla = window.EmblaCarousel(this.viewport, {
-      align: 'center',
+      align: 'start',
       containScroll: 'trimSnaps',
       loop: true
     });
@@ -44,9 +50,15 @@ class ProductGallery extends HTMLElement {
 
     this._onSelect = this._onSlideChange.bind(this);
     this._onVariantChanged = (e) => this._handleVariantChange(e.detail.variant);
+    this._onPrevClick = () => this.embla.scrollPrev();
+    this._onNextClick = () => this.embla.scrollNext();
 
     this.embla.on('select', this._onSelect);
+    this.embla.on('reInit', this._onSelect);
     document.addEventListener('product:variant-changed', this._onVariantChanged);
+
+    if (this.prevBtn) this.prevBtn.addEventListener('click', this._onPrevClick);
+    if (this.nextBtn) this.nextBtn.addEventListener('click', this._onNextClick);
 
     this._onSlideChange();
   }
@@ -54,10 +66,13 @@ class ProductGallery extends HTMLElement {
   disconnectedCallback() {
     if (this.embla) {
       this.embla.off('select', this._onSelect);
+      this.embla.off('reInit', this._onSelect);
       this.embla.destroy();
     }
 
     document.removeEventListener('product:variant-changed', this._onVariantChanged);
+    if (this.prevBtn) this.prevBtn.removeEventListener('click', this._onPrevClick);
+    if (this.nextBtn) this.nextBtn.removeEventListener('click', this._onNextClick);
   }
 
   _onSlideChange() {
@@ -77,6 +92,10 @@ class ProductGallery extends HTMLElement {
         slide.setAttribute('aria-hidden', 'true');
       }
     });
+
+    // Update arrow disabled states
+    if (this.prevBtn) this.prevBtn.disabled = !this.embla.canScrollPrev();
+    if (this.nextBtn) this.nextBtn.disabled = !this.embla.canScrollNext();
 
     // Announce to screen readers
     if (this.liveRegion) {

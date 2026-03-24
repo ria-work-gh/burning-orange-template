@@ -98,6 +98,15 @@
       </div>
     </div>
 
+    <div class="product-gallery-controls">
+      <button class="product-gallery-prev" type="button" aria-label="{{ 'products.product.previous_media' | t }}">
+        {% render 'icon-chevron' %}
+      </button>
+      <button class="product-gallery-next" type="button" aria-label="{{ 'products.product.next_media' | t }}">
+        {% render 'icon-chevron' %}
+      </button>
+    </div>
+
     <div class="product-gallery-live-region visually-hidden" aria-live="polite" aria-atomic="true"></div>
   </product-gallery>
 {%- endif -%}
@@ -143,7 +152,7 @@
     flex: 0 0 auto;
     min-width: 0;
     height: 100%;
-    margin-right: var(--spacing-2);
+    margin-right: 0;
   }
 
   .product-gallery-slide-inner {
@@ -168,6 +177,60 @@
     height: 100%;
     border: 0;
     display: block;
+  }
+
+  /* Arrow controls — absolute bottom-right */
+  .product-gallery-controls {
+    display: none;
+    position: absolute;
+    bottom: var(--spacing-2);
+    right: var(--spacing-2);
+    gap: var(--spacing-1);
+    z-index: 1;
+    background: hsla(45, 33%, 85%, 0.85);
+    backdrop-filter: blur(var(--blur-md));
+    -webkit-backdrop-filter: blur(var(--blur-md));
+    padding: var(--spacing-1);
+  }
+
+  product-gallery.is-initialized .product-gallery-controls {
+    display: flex;
+  }
+
+  .product-gallery-prev,
+  .product-gallery-next {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0;
+    border: none;
+    background: none;
+    cursor: pointer;
+    color: currentColor;
+    transition: opacity var(--transition-fast);
+  }
+
+  .product-gallery-prev:disabled,
+  .product-gallery-next:disabled {
+    opacity: 0.3;
+    cursor: not-allowed;
+  }
+
+  .product-gallery-prev .icon {
+    transform: rotate(90deg);
+  }
+
+  .product-gallery-next .icon {
+    transform: rotate(-90deg);
+  }
+
+  /* Grab cursor for drag affordance */
+  .product-gallery-viewport {
+    cursor: grab;
+  }
+
+  .product-gallery-viewport:active {
+    cursor: grabbing;
   }
 
   /* Reduced motion */
