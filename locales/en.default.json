@@ -239,6 +239,10 @@
     "tabs": {
       "navigation": "Tab navigation",
       "step": "Step"
+    },
+    "hotspot_image": {
+      "hotspot_label": "View details: {{ title }}",
+      "hotspot_label_generic": "View details"
     }
   },
   "share": {

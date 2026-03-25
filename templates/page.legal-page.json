@@ -16,6 +16,7 @@
         "heading": "Featured pieces",
         "collection": "new-in",
         "products_to_show": 4,
+        "enable_carousel": false,
         "color_scheme": "scheme-1"
       }
     },
@@ -42,7 +43,7 @@
       "name": "Rich text",
       "settings": {
         "color_scheme": "",
-        "text_alignment": "center",
+        "text_alignment": "left",
         "narrow_width": true
       }
     }

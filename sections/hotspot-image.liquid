@@ -1,62 +1,76 @@
 {%- comment -%} Hotspot image: full image with positioned hotspot markers and popovers. {%- endcomment -%}
 
-<hotspot-image class="hotspot-section{% if section.settings.image_fill %} hotspot-section-fill{% endif %}{% if section.settings.mobile_cards %} hotspot-section-mobile-cards{% endif %} color-{{ section.settings.color_scheme }}">
-  <div class="hotspot-container">
-    {%- if section.settings.image != blank -%}
+{%- if section.settings.image != blank -%}
+  <hotspot-image class="hotspot-section{% if section.settings.image_fill %} hotspot-section-fill{% endif %}{% if section.settings.mobile_cards %} hotspot-section-mobile-cards{% endif %} color-{{ section.settings.color_scheme }}">
+    <div class="hotspot-container">
       {{
         section.settings.image
         | image_url: width: 2000
         | image_tag:
           class: 'hotspot-image',
           loading: 'lazy',
+          sizes: '(min-width: 1000px) 1000px, 100vw',
+          alt: section.settings.image.alt,
           width: section.settings.image.width,
           height: section.settings.image.height
       }}
-    {%- endif -%}
 
-    {%- for block in section.blocks -%}
-      <button
-        class="hotspot-marker"
-        style="left: {{ block.settings.x }}%; top: {{ block.settings.y }}%;"
-        data-hotspot="{{ block.id }}"
-        {{ block.shopify_attributes }}
-      >
-        <svg class="hotspot-plus" width="20" height="20" viewBox="0 0 20 20" fill="none" aria-hidden="true" focusable="false">
-          <path d="M10 2V18M2 10H18" stroke="white" stroke-width="2.5" stroke-linecap="round"/>
-        </svg>
-        <div class="hotspot-content">
-          {%- if block.settings.title != blank -%}
-            <h3 class="hotspot-title">{{ block.settings.title }}</h3>
-          {%- endif -%}
-          {%- if block.settings.description != blank -%}
-            <p class="hotspot-description">{{ block.settings.description }}</p>
-          {%- endif -%}
-        </div>
-      </button>
-    {%- endfor -%}
+      {%- for block in section.blocks -%}
+        {%- if block.settings.title != blank -%}
+          {%- assign hotspot_label = 'sections.hotspot_image.hotspot_label' | t: title: block.settings.title -%}
+        {%- else -%}
+          {%- assign hotspot_label = 'sections.hotspot_image.hotspot_label_generic' | t -%}
+        {%- endif -%}
 
-    {%- if section.settings.mobile_cards -%}
-      <div class="hotspot-cards">
-        <div class="hotspot-cards-viewport">
-          <div class="hotspot-cards-container">
-            {%- for block in section.blocks -%}
-              <div class="hotspot-card" {{ block.shopify_attributes }}>
-                {%- if block.settings.title != blank -%}
-                  <h3 class="hotspot-card-title">{{ block.settings.title }}</h3>
-                {%- endif -%}
-                {%- if block.settings.description != blank -%}
-                  <p class="hotspot-card-description">{{ block.settings.description }}</p>
-                {%- endif -%}
-              </div>
-            {%- endfor -%}
+        <div class="hotspot-point" style="left: {{ block.settings.x }}%; top: {{ block.settings.y }}%;" {{ block.shopify_attributes }}>
+          <button
+            class="hotspot-marker"
+            data-hotspot="{{ block.id }}"
+            aria-expanded="false"
+            aria-controls="hotspot-content-{{ block.id }}"
+            aria-label="{{ hotspot_label }}"
+          >
+            <svg class="hotspot-plus" width="20" height="20" viewBox="0 0 20 20" fill="none" aria-hidden="true" focusable="false">
+              <path d="M10 2V18M2 10H18" stroke="white" stroke-width="2.5" stroke-linecap="round"/>
+            </svg>
+          </button>
+          <div class="hotspot-popover" id="hotspot-content-{{ block.id }}" aria-hidden="true">
+            {%- if block.settings.title != blank -%}
+              <h3 class="hotspot-title">{{ block.settings.title }}</h3>
+            {%- endif -%}
+            {%- if block.settings.description != blank -%}
+              <p class="hotspot-description">{{ block.settings.description }}</p>
+            {%- endif -%}
           </div>
         </div>
-      </div>
-    {%- endif -%}
-  </div>
-</hotspot-image>
+      {%- endfor -%}
 
-<script type="module" src="{{ 'hotspot-image.js' | asset_url }}"></script>
+      {%- if section.settings.mobile_cards -%}
+        <div class="hotspot-cards">
+          <div class="hotspot-cards-viewport">
+            <div class="hotspot-cards-container">
+              {%- for block in section.blocks -%}
+                <div class="hotspot-card" {{ block.shopify_attributes }}>
+                  {%- if block.settings.title != blank -%}
+                    <h3 class="hotspot-card-title">{{ block.settings.title }}</h3>
+                  {%- endif -%}
+                  {%- if block.settings.description != blank -%}
+                    <p class="hotspot-card-description">{{ block.settings.description }}</p>
+                  {%- endif -%}
+                </div>
+              {%- endfor -%}
+            </div>
+          </div>
+        </div>
+      {%- endif -%}
+    </div>
+  </hotspot-image>
+
+  <script type="module" src="{{ 'hotspot-image.js' | asset_url }}"></script>
+  {%- if section.settings.mobile_cards -%}
+    <script src="{{ 'embla-carousel.umd.js' | asset_url }}" defer></script>
+  {%- endif -%}
+{%- endif -%}
 
 {% stylesheet %}
   .hotspot-section {
@@ -83,64 +97,52 @@
     display: block;
   }
 
-  .hotspot-marker {
+  .hotspot-point {
     position: absolute;
-    width: 40px;
-    min-height: 40px;
-    max-height: 40px;
     transform: translate(-50%, -50%);
+    z-index: 1;
+  }
+
+  .hotspot-point.is-active {
+    z-index: 2;
+  }
+
+  .hotspot-marker {
+    width: 40px;
+    height: 40px;
     background-color: var(--color-accent);
     display: flex;
     align-items: center;
     justify-content: center;
     cursor: pointer;
-    overflow: hidden;
-    z-index: 1;
-    /* hover-out: box shrinks after text gone (0.15s delay), colour with it */
-    transition: width 0.3s ease 0.15s, max-height 0.3s ease 0.15s, background-color 0.3s ease 0.15s;
   }
 
   .hotspot-plus {
-    position: absolute;
     display: block;
     flex-shrink: 0;
-    /* hover-out: plus reappears after box shrinks */
-    transition: opacity 0.15s ease 0.45s;
   }
 
-  .hotspot-content {
+  .hotspot-popover {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) scale(0.96);
     width: 300px;
-    flex-shrink: 0;
     box-sizing: border-box;
     padding: var(--spacing-1);
     text-align: left;
-    opacity: 0;
-    pointer-events: none;
-    /* hover-out: text fades first */
-    transition: opacity 0.15s ease;
-  }
-
-  .hotspot-marker.is-active {
-    width: 300px;
-    max-height: 300px;
-    background-color: hsla(45, 33%, 85%, 0.85);
+    background-color: color-mix(in srgb, var(--color-input-bg-pressed) 85%, transparent);
     backdrop-filter: blur(var(--blur-md));
     -webkit-backdrop-filter: blur(var(--blur-md));
-    /* hover-in: box expands after plus gone */
-    transition: width 0.3s ease 0.15s, max-height 0.3s ease 0.15s, background-color 0.3s ease 0.15s;
-  }
-
-  .hotspot-marker.is-active .hotspot-plus {
     opacity: 0;
-    /* hover-in: plus fades first */
-    transition: opacity 0.15s ease;
+    pointer-events: none;
+    transition: opacity var(--transition-base), transform var(--transition-base);
   }
 
-  .hotspot-marker.is-active .hotspot-content {
+  .hotspot-popover.is-active {
     opacity: 1;
+    transform: translate(-50%, -50%) scale(1);
     pointer-events: auto;
-    /* hover-in: text appears after box expanded */
-    transition: opacity 0.15s ease 0.45s;
   }
 
   .hotspot-title {
@@ -157,7 +159,7 @@
     color: var(--color-text);
   }
 
-.hotspot-section-fill {
+  .hotspot-section-fill {
     padding: 0;
   }
 
@@ -179,18 +181,10 @@
       height: auto;
       aspect-ratio: 3 / 4;
     }
-  }
 
-  @media (max-width: 749px) {
     .hotspot-marker {
       width: 32px;
-      min-height: 32px;
-      max-height: 32px;
-    }
-
-    .hotspot-marker.is-active {
-      width: 250px;
-      max-height: 300px;
+      height: 32px;
     }
 
     .hotspot-plus {
@@ -198,13 +192,12 @@
       height: 16px;
     }
 
-    .hotspot-content {
+    .hotspot-popover {
       width: 250px;
     }
   }
 
   @media (prefers-reduced-motion: reduce) {
-    .hotspot-marker,
     .hotspot-popover {
       transition: none;
     }
@@ -215,7 +208,7 @@
   }
 
   @media (max-width: 749px) {
-    .hotspot-section-mobile-cards .hotspot-marker {
+    .hotspot-section-mobile-cards .hotspot-point {
       display: none;
     }
 
@@ -234,7 +227,9 @@
     }
 
     .hotspot-cards-viewport {
-      overflow: visible;
+      overflow-x: auto;
+      scroll-snap-type: x mandatory;
+      -webkit-overflow-scrolling: touch;
       margin-left: var(--spacing-1);
     }
 
@@ -247,7 +242,8 @@
     .hotspot-card {
       flex: 0 0 calc(80% - var(--spacing-1));
       min-width: 0;
-      background-color: hsla(45, 33%, 85%, 0.85);
+      scroll-snap-align: start;
+      background-color: color-mix(in srgb, var(--color-input-bg-pressed) 85%, transparent);
       backdrop-filter: blur(var(--blur-md));
       -webkit-backdrop-filter: blur(var(--blur-md));
       padding: var(--spacing-1);
@@ -282,6 +278,7 @@
       "type": "checkbox",
       "id": "image_fill",
       "label": "Image fill container",
+      "info": "Hotspot positions may shift slightly in fill mode due to image cropping",
       "default": false
     },
     {
@@ -293,7 +290,8 @@
     {
       "type": "color_scheme",
       "id": "color_scheme",
-      "label": "Color scheme"
+      "label": "Color scheme",
+      "default": "scheme-1"
     }
   ],
   "blocks": [

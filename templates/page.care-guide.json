@@ -13,7 +13,7 @@
       "type": "intro-section",
       "name": "Intro section",
       "settings": {
-        "heading": "Shop",
+        "heading": "{{ page.title }}",
         "heading_tag": "h1",
         "description": "",
         "color_scheme": ""

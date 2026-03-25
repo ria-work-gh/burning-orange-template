@@ -92,7 +92,7 @@
       "settings": {
         "image": "{{ product.metafields.custom.hotspot_image.value }}",
         "image_fill": false,
-        "mobile_cards": true,
+        "mobile_cards": false,
         "color_scheme": "scheme-1"
       }
     },
