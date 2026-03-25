@@ -151,6 +151,9 @@ summary::-webkit-details-marker {
   --transition-base: 300ms ease;
   --transition-slow: 500ms ease;
 
+  /* Layout */
+  --header-height: 100px;
+
   /* Z-Index */
   --z-dropdown: 50;
   --z-header: 100;

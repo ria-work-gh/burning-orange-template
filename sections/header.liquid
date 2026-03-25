@@ -102,6 +102,16 @@
     lastScrollY = currentScrollY;
   }
 
+  var headerGroup = header.closest('.header-group') || header;
+
+  function updateHeaderHeight() {
+    document.documentElement.style.setProperty('--header-height', headerGroup.offsetHeight + 'px');
+  }
+
+  window.addEventListener('resize', updateHeaderHeight, { passive: true });
+  new MutationObserver(updateHeaderHeight).observe(headerGroup, { childList: true, subtree: true });
+  updateHeaderHeight();
+
   window.addEventListener('scroll', handleScroll, { passive: true });
   handleScroll();
 {% endjavascript %}

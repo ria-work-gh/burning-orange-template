@@ -127,6 +127,8 @@
   .product-gallery-single video {
     height: 100%;
     width: auto;
+    max-width: calc(100vw - var(--spacing-2) * 2);
+    object-fit: cover;
     display: block;
   }
 
@@ -139,7 +141,6 @@
 
   /* Embla essentials */
   .product-gallery-viewport {
-    overflow: hidden;
     height: 100%;
   }
 
@@ -152,7 +153,7 @@
     flex: 0 0 auto;
     min-width: 0;
     height: 100%;
-    margin-right: 0;
+    margin-right: var(--spacing-2);
   }
 
   .product-gallery-slide-inner {
@@ -160,15 +161,12 @@
     height: 100%;
   }
 
-  .product-gallery-slide img {
-    height: 100%;
-    width: auto;
-    display: block;
-  }
-
+  .product-gallery-slide img,
   .product-gallery-slide video {
     height: 100%;
     width: auto;
+    max-width: calc(100vw - var(--spacing-2) * 2);
+    object-fit: cover;
     display: block;
   }
 

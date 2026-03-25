@@ -17,13 +17,14 @@
     text-align: left;
     max-width: 75ch;
     margin-inline: auto;
-    padding: calc(var(--spacing-5) * 2) var(--spacing-2) var(--spacing-4);
+    padding: calc(var(--header-height, 80px) + var(--spacing-4)) var(--spacing-2) var(--spacing-4);
     display: grid;
     gap: var(--spacing-2);
   }
 
   @media (min-width: 750px) {
     .intro-section {
+      padding: calc(var(--header-height, 80px) + var(--spacing-5)) var(--spacing-3) var(--spacing-5);
       text-align: center;
     }
   }
