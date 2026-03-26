@@ -20,6 +20,9 @@
  */
 class AnnouncementBar extends HTMLElement {
   connectedCallback() {
+    // Always show in the theme editor so merchants can select and configure it
+    if (Shopify.designMode) return;
+
     const storageKey = this.getDismissKey();
 
     // If previously dismissed, remove immediately
