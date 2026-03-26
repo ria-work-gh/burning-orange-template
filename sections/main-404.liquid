@@ -1,5 +1,15 @@
 {%- comment -%} 404 page — minimal full-viewport centered layout {%- endcomment -%}
 <div class="page-404 color-{{ section.settings.color_scheme }}">
+  {%- if section.settings.image != blank -%}
+    <div class="page-404-image">
+      {{ section.settings.image | image_url: width: 400 | image_tag:
+          loading: 'eager',
+          width: section.settings.image.width,
+          height: section.settings.image.height
+      }}
+    </div>
+  {%- endif -%}
+
   <h1 class="page-404-heading text-cap">
     {{ section.settings.heading }}
   </h1>
@@ -31,6 +41,16 @@
     align-items: center;
   }
 
+  .page-404-image {
+    max-width: 200px;
+    margin-bottom: var(--spacing-2);
+  }
+
+  .page-404-image img {
+    width: 100%;
+    height: auto;
+  }
+
   .page-404-message {
     margin-top: var(--spacing-1);
     color: var(--color-text-light);
@@ -47,6 +67,11 @@
   "tag": "section",
   "class": "page-404-section",
   "settings": [
+    {
+      "type": "image_picker",
+      "id": "image",
+      "label": "Image"
+    },
     {
       "type": "text",
       "id": "heading",

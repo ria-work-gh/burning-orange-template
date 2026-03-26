@@ -190,6 +190,7 @@ Each snippet is owned by ONE section/area. When modifying a snippet, read its ow
 | Snippet | Owner | Used By |
 |---------|-------|---------|
 | `product-card` | `sections/main-collection.liquid` | featured-collection, collection, search |
+| `color-swatch` | `sections/main-product.liquid` | main-product, product-card, cart-item |
 | `product-price` | `sections/main-product.liquid` | product-card, main-product |
 | `product-variant-selector` | `sections/main-product.liquid` | main-product |
 | `product-buy-buttons` | `sections/main-product.liquid` | main-product |

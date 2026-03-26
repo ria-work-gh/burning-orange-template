@@ -1,0 +1,35 @@
+{%- comment -%}
+  Renders a color swatch dot. Supports single-color and split two-color swatches.
+
+  Expects:
+    - color: metaobject with .color (primary hex) and optional .second_color
+    - class: CSS class name for sizing (e.g., 'pdp-swatch', 'cart-swatch')
+
+  Usage:
+    {% render 'color-swatch', color: product.metafields.custom.color.value, class: 'pdp-swatch' %}
+{%- endcomment -%}
+
+{%- if color != blank and color.color != blank -%}
+  <span class="{{ class }} color-swatch" style="--hex: {{ color.color }}">
+    {%- if color.second_color != blank -%}
+      <span class="color-swatch-half" style="--hex-2: {{ color.second_color }}"></span>
+    {%- endif -%}
+  </span>
+{%- endif -%}
+
+{% stylesheet %}
+  .color-swatch {
+    position: relative;
+    background-color: var(--hex);
+    border: 1px solid hsla(0, 0%, 0%, 0.1);
+    display: inline-block;
+    flex-shrink: 0;
+  }
+
+  .color-swatch-half {
+    position: absolute;
+    inset: 0;
+    background-color: var(--hex-2);
+    clip-path: polygon(100% 0, 100% 100%, 0 100%);
+  }
+{% endstylesheet %}

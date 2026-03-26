@@ -26,12 +26,10 @@
 
   <div class="cart-col-description">
     <a href="{{ item.url }}" class="cart-item-title">{{ item.product.title }}</a>
-    {%- if item.product.metafields.custom.color_name != blank -%}
+    {%- if item.product.metafields.custom.color.value != blank -%}
       <span class="cart-item-variant">
-        {%- if item.product.metafields.custom.color_hex != blank -%}
-          <span class="cart-swatch" style="--hex: {{ item.product.metafields.custom.color_hex }}"></span>
-        {%- endif -%}
-        {{ item.product.metafields.custom.color_name | downcase }}
+        {% render 'color-swatch', color: item.product.metafields.custom.color.value, class: 'cart-swatch' %}
+        {{ item.product.metafields.custom.color.value.name | downcase }}
       </span>
     {%- endif -%}
     {%- if item.product.metafields.custom.pre_order -%}

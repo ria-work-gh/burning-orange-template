@@ -41,7 +41,7 @@ class ProductGallery extends HTMLElement {
 
   _init() {
     this.embla = window.EmblaCarousel(this.viewport, {
-      align: 'start',
+      align: 'center',
       containScroll: false,
       loop: true
     });
