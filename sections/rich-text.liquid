@@ -1,5 +1,5 @@
 {%- if section.blocks.size > 0 -%}
-  <section
+  <div
     class="rich-text color-{{ section.settings.color_scheme }}"
     style="text-align: {{ section.settings.text_alignment }};"
   >
@@ -33,7 +33,7 @@
         {%- endcase -%}
       {%- endfor -%}
     </div>
-  </section>
+  </div>
 {%- endif -%}
 
 {% stylesheet %}

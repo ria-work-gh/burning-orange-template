@@ -1,4 +1,4 @@
-<section class="faq color-{{ section.settings.color_scheme }}">
+<div class="faq color-{{ section.settings.color_scheme }}">
   <div class="faq-container{% if section.settings.narrow_width %} faq-narrow{% endif %}">
     {%- if section.settings.heading != blank -%}
       <h2 class="faq-heading text-large">{{ section.settings.heading }}</h2>
@@ -11,7 +11,7 @@
     {%- if section.blocks.size > 0 -%}
       <div class="faq-list">
         {%- for block in section.blocks -%}
-          <details class="faq-item" {{ block.shopify_attributes }}>
+          <details id="faq-{{ block.id }}" class="faq-item" {{ block.shopify_attributes }}>
             <summary class="faq-question">
               {{ block.settings.question }}
               <span class="faq-icon" aria-hidden="true">+</span>
@@ -26,7 +26,28 @@
       </div>
     {%- endif -%}
   </div>
-</section>
+</div>
+
+{%- if section.blocks.size > 0 -%}
+  <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "FAQPage",
+      "mainEntity": [
+        {%- for block in section.blocks -%}
+          {
+            "@type": "Question",
+            "name": {{ block.settings.question | json }},
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": {{ block.settings.answer | strip_html | json }}
+            }
+          }{%- unless forloop.last -%},{%- endunless -%}
+        {%- endfor -%}
+      ]
+    }
+  </script>
+{%- endif -%}
 
 {% stylesheet %}
   .faq {
@@ -57,6 +78,10 @@
   }
 
   .faq-item {
+    border-top: 1px solid var(--color-text-light);
+  }
+
+  .faq-item:not(:has(+ .faq-item)) {
     border-bottom: 1px solid var(--color-text-light);
   }
 
@@ -67,7 +92,6 @@
     padding: var(--spacing-2) 0;
     cursor: pointer;
     list-style: none;
-    font-weight: bold;
   }
 
   .faq-question::-webkit-details-marker {
@@ -87,6 +111,8 @@
 
   .faq-answer-body {
     padding: 0 0 var(--spacing-2) 0;
+    line-height: var(--font-prose-height);
+    max-width: 70ch;
   }
 {% endstylesheet %}
 

@@ -1,6 +1,6 @@
 {%- comment -%} Tabs section — JS builds nav buttons from panel data attributes {%- endcomment -%}
 
-<section class="tabs color-{{ section.settings.color_scheme }}">
+<div class="tabs color-{{ section.settings.color_scheme }}">
   {%- if section.blocks.size > 0 -%}
     <div class="tabs-layout">
       <div class="tabs-nav">
@@ -13,7 +13,7 @@
       </div>
     </div>
   {%- endif -%}
-</section>
+</div>
 
 <script src="{{ 'embla-carousel.umd.js' | asset_url }}" defer></script>
 

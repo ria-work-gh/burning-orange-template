@@ -52,6 +52,7 @@
       .color-{{ scheme.id }} {
         --color-background: {{ scheme.settings.background }};
         --color-text: {{ scheme.settings.text }};
+        --color-text-light: {{ scheme.settings.text_light }};
         --color-text-muted: {{ scheme.settings.text | color_modify: 'alpha', 0.5 }};
 
         --color-accent: {{ scheme.settings.button_background }};

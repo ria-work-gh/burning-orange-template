@@ -170,6 +170,7 @@ summary::-webkit-details-marker {
   /* Colors */
   --color-background: #fdfdf4;
   --color-text: hsl(0, 0%, 0%);
+  --color-text-light: #808080;
   --color-text-muted: hsla(0, 0%, 0%, 0.5);
   --color-accent: hsl(15, 48%, 56%);
   --color-accent-dark: hsl(15, 48%, 40%);
