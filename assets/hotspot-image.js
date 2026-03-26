@@ -44,55 +44,11 @@ class HotspotImage extends HTMLElement {
       }
     };
     document.addEventListener('keydown', this._onKeydown);
-
-    this.cardsViewport = this.querySelector('.hotspot-cards-viewport');
-    if (this.cardsViewport) {
-      this._mobileQuery = window.matchMedia('(max-width: 749px)');
-      this._onMobileChange = () => this._handleMobileCards();
-      this._mobileQuery.addEventListener('change', this._onMobileChange);
-      this._handleMobileCards();
-    }
   }
 
   disconnectedCallback() {
     document.removeEventListener('click', this._onDocClick);
     document.removeEventListener('keydown', this._onKeydown);
-    if (this._mobileQuery) {
-      this._mobileQuery.removeEventListener('change', this._onMobileChange);
-    }
-    if (this.emblaCards) {
-      this.emblaCards.destroy();
-    }
-  }
-
-  _handleMobileCards() {
-    if (this._mobileQuery.matches) {
-      if (!this.emblaCards) this._initCards();
-    } else {
-      if (this.emblaCards) {
-        this.emblaCards.destroy();
-        this.emblaCards = null;
-      }
-    }
-  }
-
-  _initCards() {
-    if (typeof window.EmblaCarousel === 'undefined') {
-      var script = document.querySelector('script[src*="embla-carousel"]');
-      if (script) {
-        script.addEventListener('load', () => this._initEmblaCards(), { once: true });
-      }
-      return;
-    }
-    this._initEmblaCards();
-  }
-
-  _initEmblaCards() {
-    if (!this._mobileQuery.matches) return;
-    this.emblaCards = window.EmblaCarousel(this.cardsViewport, {
-      align: 'start',
-      containScroll: 'trimSnaps'
-    });
   }
 
   show(point) {

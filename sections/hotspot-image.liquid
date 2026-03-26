@@ -1,8 +1,8 @@
 {%- comment -%} Hotspot image: full image with positioned hotspot markers and popovers. {%- endcomment -%}
 
 {%- if section.settings.image != blank -%}
-  <hotspot-image class="hotspot-section{% if section.settings.image_fill %} hotspot-section-fill{% endif %}{% if section.settings.mobile_cards %} hotspot-section-mobile-cards{% endif %} color-{{ section.settings.color_scheme }}">
-    <div class="hotspot-container">
+  <hotspot-image class="hotspot-section color-{{ section.settings.color_scheme }}">
+    <div class="hotspot-container" style="--image-w: {{ section.settings.image.width }}; --image-h: {{ section.settings.image.height }}">
       {{
         section.settings.image
         | image_url: width: 2000
@@ -45,31 +45,10 @@
         </div>
       {%- endfor -%}
 
-      {%- if section.settings.mobile_cards -%}
-        <div class="hotspot-cards">
-          <div class="hotspot-cards-viewport">
-            <div class="hotspot-cards-container">
-              {%- for block in section.blocks -%}
-                <div class="hotspot-card" {{ block.shopify_attributes }}>
-                  {%- if block.settings.title != blank -%}
-                    <h3 class="hotspot-card-title">{{ block.settings.title }}</h3>
-                  {%- endif -%}
-                  {%- if block.settings.description != blank -%}
-                    <p class="hotspot-card-description">{{ block.settings.description }}</p>
-                  {%- endif -%}
-                </div>
-              {%- endfor -%}
-            </div>
-          </div>
-        </div>
-      {%- endif -%}
     </div>
   </hotspot-image>
 
   <script type="module" src="{{ 'hotspot-image.js' | asset_url }}"></script>
-  {%- if section.settings.mobile_cards -%}
-    <script src="{{ 'embla-carousel.umd.js' | asset_url }}" defer></script>
-  {%- endif -%}
 {%- endif -%}
 
 {% stylesheet %}
@@ -86,14 +65,17 @@
 
   .hotspot-container {
     position: relative;
-    max-width: 1000px;
-    max-height: 100%;
+    container-type: inline-size;
+    aspect-ratio: var(--image-w) / var(--image-h);
+    --max-h: calc(85vh - var(--spacing-2) * 2);
+    width: min(100%, 1000px, calc(var(--max-h) * var(--image-w) / var(--image-h)));
+    max-height: var(--max-h);
   }
 
   .hotspot-image {
-    max-width: 100%;
-    max-height: calc(85vh - var(--spacing-2) * 2);
-    object-fit: contain;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
     display: block;
   }
 
@@ -108,8 +90,8 @@
   }
 
   .hotspot-marker {
-    width: 40px;
-    height: 40px;
+    width: clamp(28px, 4cqi, 44px);
+    height: clamp(28px, 4cqi, 44px);
     background-color: var(--color-accent);
     display: flex;
     align-items: center;
@@ -120,6 +102,8 @@
   .hotspot-plus {
     display: block;
     flex-shrink: 0;
+    width: 50%;
+    height: 50%;
   }
 
   .hotspot-popover {
@@ -159,37 +143,9 @@
     color: var(--color-text);
   }
 
-  .hotspot-section-fill {
-    padding: 0;
-  }
-
-  .hotspot-section-fill .hotspot-container {
-    width: 100%;
-    max-width: none;
-    height: 100%;
-  }
-
-  .hotspot-section-fill .hotspot-image {
-    width: 100%;
-    height: 100%;
-    max-height: none;
-    object-fit: cover;
-  }
-
   @media (max-width: 749px) {
     .hotspot-section {
       height: auto;
-      aspect-ratio: 3 / 4;
-    }
-
-    .hotspot-marker {
-      width: 32px;
-      height: 32px;
-    }
-
-    .hotspot-plus {
-      width: 16px;
-      height: 16px;
     }
 
     .hotspot-popover {
@@ -203,64 +159,6 @@
     }
   }
 
-  .hotspot-cards {
-    display: none;
-  }
-
-  @media (max-width: 749px) {
-    .hotspot-section-mobile-cards .hotspot-point {
-      display: none;
-    }
-
-    .hotspot-section-mobile-cards .hotspot-container {
-      position: relative;
-    }
-
-    .hotspot-section-mobile-cards .hotspot-cards {
-      display: block;
-      position: absolute;
-      bottom: var(--spacing-1);
-      left: 0;
-      right: 0;
-      overflow: hidden;
-      z-index: 1;
-    }
-
-    .hotspot-cards-viewport {
-      overflow-x: auto;
-      scroll-snap-type: x mandatory;
-      -webkit-overflow-scrolling: touch;
-      margin-left: var(--spacing-1);
-    }
-
-    .hotspot-cards-container {
-      display: flex;
-      gap: var(--spacing-1);
-      padding-right: var(--spacing-1);
-    }
-
-    .hotspot-card {
-      flex: 0 0 calc(80% - var(--spacing-1));
-      min-width: 0;
-      scroll-snap-align: start;
-      background-color: color-mix(in srgb, var(--color-input-bg-pressed) 85%, transparent);
-      backdrop-filter: blur(var(--blur-md));
-      -webkit-backdrop-filter: blur(var(--blur-md));
-      padding: var(--spacing-1);
-    }
-
-    .hotspot-card-title {
-      font-size: var(--font-base-size);
-      line-height: var(--font-base-height);
-      margin-bottom: var(--spacing-1);
-    }
-
-    .hotspot-card-description {
-      font-size: var(--font-mini-size);
-      line-height: var(--font-base-height);
-      color: var(--color-text);
-    }
-  }
 {% endstylesheet %}
 
 {% schema %}
@@ -273,19 +171,6 @@
       "type": "image_picker",
       "id": "image",
       "label": "Image"
-    },
-    {
-      "type": "checkbox",
-      "id": "image_fill",
-      "label": "Image fill container",
-      "info": "Hotspot positions may shift slightly in fill mode due to image cropping",
-      "default": false
-    },
-    {
-      "type": "checkbox",
-      "id": "mobile_cards",
-      "label": "Show as cards on mobile",
-      "default": false
     },
     {
       "type": "color_scheme",
