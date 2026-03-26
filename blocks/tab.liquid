@@ -6,10 +6,9 @@
   id="panel-{{ block.id }}"
   aria-labelledby="tab-{{ block.id }}"
   data-tab-heading="{{ block.settings.heading | escape }}"
+  data-tab-slug="{{ block.settings.heading | handleize }}"
   {%- if block.settings.image != blank -%}
-    data-tab-image-url="{{ block.settings.image | image_url: width: 200 }}"
-    data-tab-image-width="{{ block.settings.image.width }}"
-    data-tab-image-height="{{ block.settings.image.height }}"
+    data-tab-image="{{ block.settings.image | image_url: width: 80 }}"
   {%- endif -%}
   {{ block.shopify_attributes }}
 >

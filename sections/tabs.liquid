@@ -4,9 +4,7 @@
   {%- if section.blocks.size > 0 -%}
     <div class="tabs-layout">
       <div class="tabs-nav">
-        <div class="tabs-nav-viewport">
-          <div class="tabs-nav-container" role="tablist" aria-label="{{ 'sections.tabs.navigation' | t }}"></div>
-        </div>
+        <div class="tabs-nav-container" role="tablist" aria-label="{{ 'sections.tabs.navigation' | t }}"></div>
       </div>
       <div class="tabs-panels">
         {% content_for 'blocks' %}
@@ -15,20 +13,17 @@
   {%- endif -%}
 </div>
 
-<script src="{{ 'embla-carousel.umd.js' | asset_url }}" defer></script>
-
 <noscript>
-  <style>.tabs-panel { display: block !important; }</style>
+  <style>
+    .tabs-nav { display: none; }
+    .tabs-panel { display: flex !important; flex-direction: column; gap: var(--spacing-3); }
+  </style>
 </noscript>
 
 {% stylesheet %}
   .tabs {
     width: 100%;
-    padding: var(--spacing-4) var(--spacing-2);
-  }
-
-  .tabs-panels {
-    padding-inline: 0;
+    padding: var(--spacing-2) var(--spacing-2) var(--spacing-4);
   }
 
   @media (min-width: 900px) {
@@ -36,7 +31,7 @@
       width: 83%;
       max-width: 1200px;
       margin-inline: auto;
-      padding: var(--spacing-5) 0;
+      padding: var(--spacing-2) 0 var(--spacing-5);
     }
   }
 
@@ -48,7 +43,6 @@
 
   @media (min-width: 900px) {
     .tabs-layout {
-      display: grid;
       grid-template-columns: repeat(10, 1fr);
       column-gap: 0;
     }
@@ -65,66 +59,40 @@
     }
   }
 
-  /* Tab navigation — Embla slider on mobile/tablet */
-  .tabs-nav {
-    border-top: 1px solid var(--color-text);
-  }
-
-  .tabs-nav-viewport {
-    overflow: hidden;
-  }
-
+  /* Tab navigation */
   .tabs-nav-container {
     display: flex;
+    flex-direction: column;
+    gap: var(--spacing-1);
   }
 
   .tabs-button {
-    position: relative;
-    display: block;
-    overflow: hidden;
-    aspect-ratio: 1 / 1;
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-1);
+    padding: var(--spacing-1) 0;
+    font-family: inherit;
+    font-size: var(--font-medium-size);
     color: var(--color-text);
-    flex: 0 0 50%;
-    min-width: 0;
-    border-right: 1px solid var(--color-text);
+    background: none;
+    border: none;
+    cursor: pointer;
+    opacity: 0.35;
+    transition: opacity var(--transition-fast);
   }
 
-  @media (min-width: 600px) and (max-width: 899px) {
-    .tabs-button {
-      flex: 0 0 33.333%;
-      border-right: 1px solid var(--color-text);
-    }
-
-    .tabs-button:last-child {
-      border-right: 0;
-    }
+  .tabs-button-image {
+    width: 32px;
+    height: 32px;
+    object-fit: contain;
   }
 
-  /* Desktop: 2-column grid instead of slider */
-  @media (min-width: 900px) {
-    .tabs-nav-viewport {
-      overflow: visible;
-    }
+  .tabs-button:hover {
+    opacity: 0.65;
+  }
 
-    .tabs-nav-container {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-    }
-
-    .tabs-button {
-      flex: none;
-      border-right: 0;
-    }
-
-    /* Horizontal divider between rows (not on last row) */
-    .tabs-button:not(:nth-last-child(-n+2)) {
-      border-bottom: 1px solid var(--color-text);
-    }
-
-    /* Vertical divider between columns */
-    .tabs-button:nth-child(odd):not(:last-child) {
-      border-right: 1px solid var(--color-text);
-    }
+  .tabs-button.is-active {
+    opacity: 1;
   }
 
   .tabs-button:focus-visible {
@@ -132,52 +100,13 @@
     outline-offset: 2px;
   }
 
-  .tabs-button-image {
-    display: block;
-    width: 100%;
-    height: 100%;
-    opacity: 1;
-    transition: opacity var(--transition-fast);
+  @media (min-width: 900px) {
+    .tabs-button {
+      text-align: left;
+    }
   }
 
-  .tabs-button-image img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-  }
-
-  /* On hover/active: hide image, show centered label with bg */
-  .tabs-button:hover .tabs-button-image,
-  .tabs-button.is-active .tabs-button-image {
-    opacity: 0;
-  }
-
-  .tabs-button.is-active {
-    background-color: var(--color-input-bg);
-  }
-
-  /* Label — centered, hidden by default, visible on hover and when active */
-  .tabs-button-label {
-    position: absolute;
-    inset: 0;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    padding: var(--spacing-s);
-    font-size: var(--font-mini-size);
-    text-transform: uppercase;
-    letter-spacing: 0.1em;
-    text-align: center;
-    opacity: 0;
-    transition: opacity var(--transition-fast);
-  }
-
-  .tabs-button:hover .tabs-button-label,
-  .tabs-button.is-active .tabs-button-label {
-    opacity: 1;
-  }
-
-  /* Panels — hidden by default, JS activates the first */
+  /* Panels */
   .tabs-panel {
     display: none;
     counter-reset: step-counter;
@@ -189,7 +118,7 @@
     gap: var(--spacing-3);
   }
 
-  /* Steps — number left, content (label + text + images) right */
+  /* Steps */
   .tabs-step {
     counter-increment: step-counter;
     display: grid;
@@ -226,6 +155,7 @@
   }
 
   .tabs-step-text {
+    font-size: var(--font-medium-size);
     max-width: 60ch;
   }
 
@@ -241,7 +171,6 @@
     object-fit: cover;
   }
 
-  /* Split step — two portrait images side by side */
   .tabs-step-split {
     display: grid;
     grid-template-columns: 1fr 1fr;
@@ -262,7 +191,7 @@
 
   @media (prefers-reduced-motion: reduce) {
     .tabs-button {
-      transition: none;
+      transition: none !important;
     }
   }
 {% endstylesheet %}
@@ -270,58 +199,46 @@
 {% javascript %}
   function initTabsSection(section) {
     var tablist = section.querySelector('[role="tablist"]');
-    var viewport = section.querySelector('.tabs-nav-viewport');
-    if (!tablist || !viewport) return;
+    if (!tablist) return;
 
     var panels = section.querySelectorAll('[role="tabpanel"]');
     if (!panels.length) return;
 
-    /* Clear previous buttons (handles editor re-renders) */
     tablist.innerHTML = '';
 
-    /* Build tab buttons from panel data attributes */
-    panels.forEach(function(panel, i) {
+    panels.forEach(function(panel) {
       var button = document.createElement('button');
-      button.className = 'tabs-button' + (i === 0 ? ' is-active' : '');
+      button.className = 'tabs-button';
       button.setAttribute('role', 'tab');
       button.setAttribute('id', panel.getAttribute('aria-labelledby'));
-      button.setAttribute('aria-selected', i === 0 ? 'true' : 'false');
+      button.setAttribute('aria-selected', 'false');
       button.setAttribute('aria-controls', panel.id);
-      if (i > 0) button.setAttribute('tabindex', '-1');
+      button.setAttribute('tabindex', '-1');
+      button.setAttribute('data-tab-slug', panel.getAttribute('data-tab-slug') || '');
 
-      var imageUrl = panel.getAttribute('data-tab-image-url');
+      var imageUrl = panel.getAttribute('data-tab-image');
       if (imageUrl) {
-        var imgSpan = document.createElement('span');
-        imgSpan.className = 'tabs-button-image';
         var img = document.createElement('img');
+        img.className = 'tabs-button-image';
         img.src = imageUrl;
+        img.alt = '';
         img.loading = 'lazy';
-        img.width = panel.getAttribute('data-tab-image-width') || '';
-        img.height = panel.getAttribute('data-tab-image-height') || '';
-        imgSpan.appendChild(img);
-        button.appendChild(imgSpan);
+        img.width = 40;
+        img.height = 40;
+        button.appendChild(img);
       }
 
-      var label = document.createElement('span');
-      label.className = 'tabs-button-label';
-      label.textContent = panel.getAttribute('data-tab-heading') || '';
+      var label = document.createTextNode(panel.getAttribute('data-tab-heading') || '');
       button.appendChild(label);
 
       tablist.appendChild(button);
-
-      /* Set panel initial state */
-      if (i === 0) {
-        panel.classList.add('is-active');
-        panel.hidden = false;
-      } else {
-        panel.classList.remove('is-active');
-        panel.hidden = true;
-      }
+      panel.classList.remove('is-active');
+      panel.hidden = true;
     });
 
     var buttons = tablist.querySelectorAll('[role="tab"]');
 
-    function activateTab(button) {
+    function activateTab(button, updateUrl) {
       buttons.forEach(function(btn) {
         btn.classList.remove('is-active');
         btn.setAttribute('aria-selected', 'false');
@@ -343,7 +260,29 @@
         panel.classList.add('is-active');
         panel.hidden = false;
       }
+
+      if (updateUrl !== false) {
+        var slug = button.getAttribute('data-tab-slug');
+        if (slug) {
+          var url = new URL(window.location);
+          url.searchParams.set('tab', slug);
+          history.replaceState({}, '', url);
+        }
+      }
     }
+
+    /* Determine initial tab from URL query param */
+    var initialIndex = 0;
+    var tabParam = new URLSearchParams(window.location.search).get('tab');
+    if (tabParam) {
+      buttons.forEach(function(btn, i) {
+        if (btn.getAttribute('data-tab-slug') === tabParam) {
+          initialIndex = i;
+        }
+      });
+    }
+
+    activateTab(buttons[initialIndex], false);
 
     buttons.forEach(function(button) {
       button.addEventListener('click', function() {
@@ -373,56 +312,10 @@
       buttons[newIndex].focus();
       activateTab(buttons[newIndex]);
     });
-
-    /* Embla slider for tablet/mobile */
-    var emblaInstance = null;
-    var desktopMql = window.matchMedia('(min-width: 900px)');
-
-    function initEmbla() {
-      if (typeof window.EmblaCarousel === 'undefined') return;
-      if (emblaInstance) return;
-      var slideCount = tablist.querySelectorAll('[role="tab"]').length;
-      var middleIndex = Math.floor(slideCount / 2);
-      emblaInstance = window.EmblaCarousel(viewport, {
-        align: 'center',
-        loop: true,
-        startIndex: middleIndex
-      });
-    }
-
-    function destroyEmbla() {
-      if (emblaInstance) {
-        emblaInstance.destroy();
-        emblaInstance = null;
-      }
-    }
-
-    function handleBreakpoint(e) {
-      if (e.matches) {
-        destroyEmbla();
-      } else {
-        initEmbla();
-      }
-    }
-
-    desktopMql.addEventListener('change', handleBreakpoint);
-    handleBreakpoint(desktopMql);
-
-    /* If Embla script hasn't loaded yet, wait for it */
-    if (!desktopMql.matches && typeof window.EmblaCarousel === 'undefined') {
-      var script = document.querySelector('script[src*="embla-carousel"]');
-      if (script) {
-        script.addEventListener('load', function() {
-          if (!desktopMql.matches) initEmbla();
-        }, { once: true });
-      }
-    }
   }
 
-  /* Initialize on page load */
   document.querySelectorAll('.tabs-section').forEach(initTabsSection);
 
-  /* Re-initialize when the theme editor re-renders the section */
   document.addEventListener('shopify:section:load', function(e) {
     var section = e.target;
     if (section.classList.contains('tabs-section')) {
@@ -430,7 +323,6 @@
     }
   });
 
-  /* Switch to the correct tab when a block is selected in the editor */
   document.addEventListener('shopify:block:select', function(e) {
     var section = e.target.closest('.tabs-section');
     if (!section) return;
