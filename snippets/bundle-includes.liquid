@@ -24,7 +24,13 @@
                 }}
               </div>
             {%- endif -%}
-            <span class="bundle-includes-title">{{ item.title }}</span>
+            <div class="bundle-includes-info">
+              <span class="bundle-includes-title">{{ item.title }}</span>
+              {%- if item.description != blank -%}
+                <p class="bundle-includes-excerpt">{{ item.description | strip_html }}</p>
+                <span class="bundle-includes-read-more">{{ 'products.product.bundle_read_more' | t }}</span>
+              {%- endif -%}
+            </div>
             <span class="bundle-includes-qty">&times;{{ qty }}</span>
           </a>
         </li>
