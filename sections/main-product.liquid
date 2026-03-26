@@ -209,6 +209,7 @@
     width: 100%;
     aspect-ratio: 3 / 4;
     max-height: 75vh;
+    overflow: hidden;
     position: relative;
   }
 
@@ -478,9 +479,33 @@
     object-fit: cover;
   }
 
+  .bundle-includes-info {
+    min-width: 0;
+  }
+
   .bundle-includes-title {
     font-size: var(--font-base-size);
     line-height: var(--font-base-height);
+  }
+
+  .bundle-includes-excerpt {
+    margin: var(--spacing-1) 0 0;
+    font-size: var(--font-mini-size);
+    line-height: var(--font-mini-height);
+    color: var(--color-text-muted);
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+
+  .bundle-includes-read-more {
+    display: inline-block;
+    margin-top: var(--spacing-1);
+    font-size: var(--font-mini-size);
+    line-height: var(--font-mini-height);
+    text-decoration: underline;
+    text-underline-offset: 2px;
   }
 
   .bundle-includes-qty {

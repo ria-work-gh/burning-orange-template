@@ -114,13 +114,14 @@
 {% stylesheet %}
   .product-gallery,
   .product-gallery-single {
-    position: relative;
-    display: block;
-    height: 100%;
+    position: absolute;
+    inset: 0;
   }
 
   .product-gallery-single .product-gallery-slide-inner {
     height: 100%;
+    display: flex;
+    justify-content: center;
   }
 
   .product-gallery-single img,
@@ -129,6 +130,14 @@
     height: 100%;
     object-fit: cover;
     display: block;
+  }
+
+  @media (min-aspect-ratio: 9/16) {
+    .product-gallery-single img,
+    .product-gallery-single video {
+      width: auto;
+      height: 100%;
+    }
   }
 
   .product-gallery-single iframe {
