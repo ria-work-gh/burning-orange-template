@@ -72,10 +72,7 @@
       </span>
       {%- unless is_bundle -%}
         {%- if product.metafields.custom.color.value != blank -%}
-          <span class="product-card-variant">
-            {% render 'color-swatch', color: product.metafields.custom.color.value, class: 'product-card-swatch' %}
-            {{ product.metafields.custom.color.value.name | downcase }}
-          </span>
+          {% render 'color-swatch', color: product.metafields.custom.color.value, class: 'product-card-swatch' %}
         {%- endif -%}
       {%- endunless -%}
     </div>
@@ -167,17 +164,9 @@
     font-size: var(--font-mini-size);
   }
 
-  .product-card-variant {
-    color: var(--color-text-muted);
-    font-size: var(--font-mini-size);
-    display: flex;
-    align-items: center;
-  }
-
   .product-card-swatch {
     height: 8px;
     width: 8px;
-    margin-right: var(--spacing-1);
   }
 
   /* Info: title + price */
