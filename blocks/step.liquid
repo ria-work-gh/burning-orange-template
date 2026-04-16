@@ -3,7 +3,7 @@
 <div class="tabs-step" {{ block.shopify_attributes }}>
   <span class="tabs-step-number" aria-hidden="true"></span>
   <div class="tabs-step-content">
-    <span class="tabs-step-label">{{ 'sections.tabs.step' | t }}</span>
+    <span class="tabs-step-label">{% if block.settings.label != blank %}{{ block.settings.label }}{% else %}{{ 'sections.tabs.step' | t }}{% endif %}</span>
     {%- if block.settings.text != blank -%}
       <div class="tabs-step-text typeset">
         {{ block.settings.text }}
@@ -43,6 +43,12 @@
 {
   "name": "Step",
   "settings": [
+    {
+      "type": "text",
+      "id": "label",
+      "label": "Step label",
+      "info": "Defaults to \"Step\" if left blank"
+    },
     {
       "type": "richtext",
       "id": "text",
