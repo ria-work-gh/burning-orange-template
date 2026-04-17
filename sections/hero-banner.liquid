@@ -6,7 +6,9 @@
       | image_url: width: 2400
       | image_tag:
         loading: 'eager',
+        fetchpriority: 'high',
         sizes: '100vw',
+        widths: '600,900,1200,1500,1800,2400,3000',
         width: section.settings.image.width,
         height: section.settings.image.height
     }}
@@ -45,9 +47,12 @@
             <div class="pill-image">
               {{
                 pill_product.featured_image
-                | image_url: width: 300
+                | image_url: width: 400
                 | image_tag:
                   loading: 'lazy',
+                  alt: pill_product.featured_image.alt | default: pill_product.title,
+                  sizes: 'clamp(140px, 15vw, 300px)',
+                  widths: '150,200,300,400,600',
                   width: pill_product.featured_image.width,
                   height: pill_product.featured_image.height
               }}

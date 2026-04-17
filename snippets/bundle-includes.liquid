@@ -19,6 +19,8 @@
               <div class="bundle-includes-thumb">
                 {{ item.featured_image | image_url: width: 200 | image_tag:
                     loading: 'lazy',
+                    sizes: '80px',
+                    widths: '80,120,160,240',
                     width: item.featured_image.width,
                     height: item.featured_image.height
                 }}

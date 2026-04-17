@@ -97,6 +97,8 @@
         {{ settings.gift_card_image | image_url: width: 570 | image_tag:
             alt: shop.name,
             loading: 'eager',
+            sizes: 'min(90vw, 285px)',
+            widths: '285,400,570,800',
             width: settings.gift_card_image.width,
             height: settings.gift_card_image.height
         }}

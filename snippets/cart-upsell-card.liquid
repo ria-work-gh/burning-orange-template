@@ -8,6 +8,8 @@
     {%- if product.featured_image != blank -%}
       {{ product.featured_image | image_url: width: 300 | image_tag:
           loading: 'lazy',
+          sizes: '120px',
+          widths: '120,180,240,360',
           width: product.featured_image.width,
           height: product.featured_image.height,
           class: 'upsell-card-image'

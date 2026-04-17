@@ -36,10 +36,12 @@
             <div class="hero-slideshow__media">
               {{
                 block.settings.image
-                | image_url: width: 1920
+                | image_url: width: 2400
                 | image_tag:
                   loading: forloop.first | ternary: 'eager', 'lazy',
+                  fetchpriority: forloop.first | ternary: 'high', 'auto',
                   sizes: '100vw',
+                  widths: '600,900,1200,1500,1800,2400,3000',
                   class: 'hero-slideshow__img',
                   width: block.settings.image.width,
                   height: block.settings.image.height

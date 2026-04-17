@@ -16,6 +16,8 @@
       <a href="{{ item.url }}">
         {{ item.image | image_url: width: 300 | image_tag:
             loading: 'lazy',
+            sizes: '100px',
+            widths: '100,150,200,300',
             class: 'cart-item-image',
             width: item.image.width,
             height: item.image.height

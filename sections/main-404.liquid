@@ -4,6 +4,8 @@
     <div class="page-404-image">
       {{ section.settings.image | image_url: width: 400 | image_tag:
           loading: 'eager',
+          sizes: '200px',
+          widths: '200,300,400',
           width: section.settings.image.width,
           height: section.settings.image.height
       }}

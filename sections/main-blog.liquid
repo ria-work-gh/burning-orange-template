@@ -9,9 +9,11 @@
         <a href="{{ featured_article.url }}" class="journal-feature">
           <div class="journal-feature-image-wrapper">
             {%- if featured_article.image -%}
-              {{ featured_article.image | image_url: width: 1200 | image_tag:
+              {{ featured_article.image | image_url: width: 1600 | image_tag:
                 loading: 'eager',
+                fetchpriority: 'high',
                 sizes: '(min-width: 750px) 50vw, 100vw',
+                widths: '400,600,800,1000,1200,1600',
                 width: featured_article.image.width,
                 height: featured_article.image.height
               }}
