@@ -16,21 +16,21 @@
           "type": "accordion",
           "settings": {
             "heading": "Dimensions",
-            "content": "<p>{{ product.metafields.custom.dimensions | metafield_tag }}</p>"
+            "content": "{{ product.metafields.custom.dimensions_new | metafield_tag }}"
           }
         },
         "accordion_material": {
           "type": "accordion",
           "settings": {
             "heading": "Material",
-            "content": "<p>{{ product.metafields.custom.material | metafield_tag }}</p>"
+            "content": "{{ product.metafields.custom.material_new | metafield_tag }}"
           }
         },
         "accordion_origin": {
           "type": "accordion",
           "settings": {
             "heading": "Origin",
-            "content": "<p>{{ product.metafields.custom.origin | metafield_tag }}</p>"
+            "content": "{{ product.metafields.custom.origin_new | metafield_tag }}"
           }
         }
       },
