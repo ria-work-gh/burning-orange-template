@@ -64,17 +64,17 @@
         "hotspot_8fLnyk": {
           "type": "hotspot",
           "settings": {
-            "x": 41,
-            "y": 66,
+            "x": 23,
+            "y": 58,
             "title": "Material",
-            "description": "Weather-tested and built to age gracefully, developing a richer character with every season."
+            "description": "Crafted from responsibly sourced acacia wood, showcasing rich natural grains and treated to endure the elements beautifully."
           }
         },
         "hotspot_PkatJm": {
           "type": "hotspot",
           "settings": {
-            "x": 56,
-            "y": 28,
+            "x": 39,
+            "y": 34,
             "title": "Comfort",
             "description": "Gently curved for natural support — designed to sink into, whether for morning coffee or long evenings outside."
           }
@@ -82,10 +82,10 @@
         "hotspot_JpwJnH": {
           "type": "hotspot",
           "settings": {
-            "x": 50,
-            "y": 50,
+            "x": 62,
+            "y": 51,
             "title": "Craftsmanship",
-            "description": "Each seat is hand-woven using sustainably sourced rattan, with patterns perfected over generations of craft."
+            "description": "Hand-woven in Indonesia with time-honoured techniques, bringing a traditional basket weave to a modern silhouette."
           }
         }
       },
@@ -128,7 +128,7 @@
         "link_Pt6YU7"
       ],
       "settings": {
-        "image": "shopify://shop_images/placeholder-hero.png",
+        "image": "shopify://shop_images/Burning_Orange_550.jpg",
         "image_position": "left",
         "image_width": "half",
         "image_ratio": "square",

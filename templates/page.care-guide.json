@@ -22,36 +22,71 @@
     "tabs": {
       "type": "tabs",
       "blocks": {
-        "tab_hpkT8W": {
+        "tab_pagodas": {
           "type": "tab",
-          "name": "Tab",
           "settings": {
-            "heading": "blanket",
-            "image": "shopify://shop_images/blanket.png"
+            "heading": "Pagodas",
+            "image": "shopify://shop_images/pagoda_8a4b391f-6787-4591-8090-103447cf9b2f.png"
           },
           "blocks": {
-            "step_NqdUTk": {
+            "step_pagodas_1": {
               "type": "step",
-              "name": "Step",
               "settings": {
-                "text": "<p>Describe this care step.</p>",
-                "image": "shopify://shop_images/lifestyle-chair-placeholder.png",
-                "image_2": "shopify://shop_images/aboutpage.png"
+                "label": "Initial Setup & Creasing",
+                "text": "<p>Because your parasol canopy is made of high-grade polyester, it may arrive with fold lines from the packaging. Simply open the parasol in a dry area and leave it for <strong>48 hours</strong> to allow the creases to smooth out naturally.<br/><br/></p>",
+                "image": "shopify://shop_images/Burning_Orange_478_1.jpg",
+                "image_2": "shopify://shop_images/Burning_Orange_378.jpg"
               },
               "blocks": {}
             },
-            "step_xWMhDN": {
+            "step_pagodas_2": {
               "type": "step",
               "settings": {
-                "text": "<p>Describe this care step.</p>",
-                "image": "shopify://shop_images/48e678ab2842a5cd7c0370800d9ea3dc2643289a_22199b60-7360-4527-9060-6755a23ff570.png"
+                "label": "Stability & The Base",
+                "text": "<p>To ensure your parasol remains upright and safe, the correct base is essential.</p><p><strong>Freestanding:</strong> If the parasol is standing alone, a minimum <strong>25kg base</strong> is required to prevent tilting or lifting.</p><p><strong>Table Use:</strong> If the parasol is being placed through a central hole in a heavy garden table, a <strong>20kg base</strong> is generally sufficient for stability.</p><p><strong>Pole Fit:</strong> The pole diameter is <strong>32mm</strong>. Ensure your base has a tightening bolt or an adapter specifically for 32mm poles. If the fit is too loose, the parasol may tilt, putting unnecessary stress on the frame.</p>",
+                "image": "shopify://shop_images/Burning_Orange_146.jpg",
+                "image_2": "shopify://shop_images/Burning_Orange_310.jpg"
+              },
+              "blocks": {}
+            },
+            "step_pagodas_3": {
+              "type": "step",
+              "settings": {
+                "label": "Wind and Rain Safety",
+                "text": "<p>Your parasol is designed as a premium sunshade.</p><p><strong>Wind:</strong> Even a moderate breeze can catch a 250cm canopy. Always close the parasol when the wind picks up.</p><p><strong>Rain:</strong> While the polyester is water-resistant, it isn’t designed to withstand heavy rain. If the parasol does get caught in a downpour, leave it fully open until it is completely dry. Storing a damp parasol can lead to fabric mildew and damage to the wood grain.<br/><br/></p>",
+                "image": "shopify://shop_images/Burning_Orange_360.jpg",
+                "image_2": "shopify://shop_images/Burning-Orange_513_edit.jpg"
+              },
+              "blocks": {}
+            },
+            "step_LDge8Q": {
+              "type": "step",
+              "name": "Step",
+              "settings": {
+                "label": "Cleaning the Canopy",
+                "text": "<p><strong>Spot Cleaning:</strong> For dust, pollen, or marks, use a soft sponge with warm, mild soapy water.</p><p><strong>Maintain the Finish:</strong> Do not use bleach, biological detergents, or stiff scrubbing brushes. These can strip the UV-protective coating and reduce the color fastness of the fabric.</p><p><strong>Wood Care:</strong> Simply wipe the beechwood pole with a clean, dry cloth to remove any outdoor grit.</p>",
+                "image": "shopify://shop_images/Burning_Orange_434.jpg",
+                "image_2": "shopify://shop_images/Burning-Orange_109_edit.jpg"
+              },
+              "blocks": {}
+            },
+            "step_7HXBqm": {
+              "type": "step",
+              "name": "Step",
+              "settings": {
+                "label": "Storage",
+                "text": "<p>When not in use, the best way to keep your parasol looking new is to use the provided carry bag.</p><p><strong>UV Protection:</strong> Storing it in the bag prevents unnecessary sun exposure when not in use, keeping the colors vibrant for longer.</p><p><strong>Dry Environment:</strong> Store the bagged parasol in a cool, dry place (such as a garage or shed). Avoid damp environments to protect the integrity of the FSC beechwood.</p>",
+                "image": "shopify://shop_images/Burning_Orange_255.jpg"
               },
               "blocks": {}
             }
           },
           "block_order": [
-            "step_NqdUTk",
-            "step_xWMhDN"
+            "step_pagodas_1",
+            "step_pagodas_2",
+            "step_pagodas_3",
+            "step_LDge8Q",
+            "step_7HXBqm"
           ]
         },
         "tab_chairs": {
@@ -64,25 +99,49 @@
             "step_chairs_1": {
               "type": "step",
               "settings": {
-                "text": "<p>Wipe down with a damp cloth to remove dust and surface dirt.</p>",
-                "image": "shopify://shop_images/outdoor_ac029168-4cc9-417f-836b-21988266e986.png"
+                "label": "The Nature of Acacia",
+                "text": "<p>Acacia is a dense, durable hardwood famous for its rich grain. As a natural product, it \"breathes\" with the environment. You may notice small hairline cracks or slight color changes—these are normal characteristics of organic wood and do not affect the chair's strength.<br/><br/></p>",
+                "image": "shopify://shop_images/Burning_Orange_389.jpg"
               },
               "blocks": {}
             },
             "step_chairs_2": {
               "type": "step",
               "settings": {
-                "text": "<p>Apply wood oil along the grain using a soft lint-free cloth.</p>",
-                "image": "shopify://shop_images/48e678ab2842a5cd7c0370800d9ea3dc2643289a_22199b60-7360-4527-9060-6755a23ff570.png",
-                "image_2": "shopify://shop_images/placeholder-hero.png"
+                "label": "Seasonal Maintenance",
+                "text": "<p>Your chairs arrive with a factory-applied protective coat. However, to prevent the wood from drying out and to maintain its glow:</p><p><strong>Annual Refresh</strong>: Once or twice a year, apply a thin coat of Hardwood or Teak Oil using a soft, lint-free cloth.</p><p><strong>Application</strong>: Ensure the wood is clean and dry before applying. Wipe away any excess oil after 15 minutes to ensure a non-tacky finish.<br/><br/></p>",
+                "image": "shopify://shop_images/Burning_Orange_186.jpg",
+                "image_2": "shopify://shop_images/Burning_Orange_548.jpg"
               },
               "blocks": {}
             },
             "step_chairs_3": {
               "type": "step",
               "settings": {
-                "text": "<p>Allow to dry for 24 hours before use. Reapply every 6 months.</p>",
-                "image": "shopify://shop_images/Frame_1171277165.png"
+                "label": "Caring for the Synthetic Basket Weave",
+                "text": "<p>The seat is hand-woven from high-quality synthetic rattan, designed for comfort and weather resistance.</p><p><strong>Routine Cleaning</strong>: Use a soft brush or vacuum attachment to remove dust from the weave.</p><p><strong>Deep Clean</strong>: For spills, use a soft cloth with a mixture of warm water and mild dish soap. Avoid harsh chemical cleaners or pressure washers, which can damage the tension of the fibers.</p>",
+                "image": "shopify://shop_images/Burning_Orange_551.jpg"
+              },
+              "blocks": {}
+            },
+            "step_KrYmzi": {
+              "type": "step",
+              "name": "Step",
+              "settings": {
+                "label": "Storage & Longevity",
+                "text": "<p>The folding design is your best tool for preservation. To keep your chairs looking new for years:</p><p><strong>Inclement Weather</strong>: Fold and move the chairs to a sheltered area during heavy rain or storms.</p><p><strong>Winter Storage</strong>: Store in a cool, dry place (like a shed or garage) during the off-season. Avoid overly heated indoor spaces, as extreme low humidity can cause natural wood to contract.<br/><br/></p>",
+                "image": "shopify://shop_images/Burning_Orange_523.jpg",
+                "image_2": "shopify://shop_images/orange_chair_d6.png"
+              },
+              "blocks": {}
+            },
+            "step_AiKT69": {
+              "type": "step",
+              "name": "Step",
+              "settings": {
+                "label": "Quick Hardware Check",
+                "text": "<p>Occasionally check the folding pivot points and screws. A quick tighten with a screwdriver once a season ensures the frame remains sturdy and smooth to operate.</p>",
+                "image": "shopify://shop_images/Burning_Orange_409.jpg"
               },
               "blocks": {}
             }
@@ -90,53 +149,51 @@
           "block_order": [
             "step_chairs_1",
             "step_chairs_2",
-            "step_chairs_3"
+            "step_chairs_3",
+            "step_KrYmzi",
+            "step_AiKT69"
           ]
         },
-        "tab_pagodas": {
+        "tab_hpkT8W": {
           "type": "tab",
+          "name": "Tab",
+          "disabled": true,
           "settings": {
-            "heading": "Pagodas",
-            "image": "shopify://shop_images/pagoda_8a4b391f-6787-4591-8090-103447cf9b2f.png"
+            "heading": "blanket",
+            "image": "shopify://shop_images/blanket.png"
           },
           "blocks": {
-            "step_pagodas_1": {
+            "step_NqdUTk": {
               "type": "step",
+              "name": "Step",
               "settings": {
-                "text": "<p>Brush off loose debris with a soft-bristle brush.</p>",
-                "image": "shopify://shop_images/placeholder-hero.png",
-                "image_2": "shopify://shop_images/placeholder-hero.png"
+                "label": "",
+                "text": "<p>Describe this care step.</p>",
+                "image": "shopify://shop_images/lifestyle-chair-placeholder.png",
+                "image_2": "shopify://shop_images/aboutpage.png"
               },
               "blocks": {}
             },
-            "step_pagodas_2": {
+            "step_xWMhDN": {
               "type": "step",
               "settings": {
-                "text": "<p>Wash with mild soap and warm water. Rinse thoroughly.</p>",
-                "image": "shopify://shop_images/ambient-texture_a42cbebe-3011-4c7f-893e-52afe12933ea.png"
-              },
-              "blocks": {}
-            },
-            "step_pagodas_3": {
-              "type": "step",
-              "settings": {
-                "text": "<p>Dry completely before storing. Cover during winter months.</p>",
-                "image": "shopify://shop_images/about.png"
+                "label": "",
+                "text": "<p>Describe this care step.</p>",
+                "image": "shopify://shop_images/48e678ab2842a5cd7c0370800d9ea3dc2643289a_22199b60-7360-4527-9060-6755a23ff570.png"
               },
               "blocks": {}
             }
           },
           "block_order": [
-            "step_pagodas_1",
-            "step_pagodas_2",
-            "step_pagodas_3"
+            "step_NqdUTk",
+            "step_xWMhDN"
           ]
         }
       },
       "block_order": [
-        "tab_hpkT8W",
+        "tab_pagodas",
         "tab_chairs",
-        "tab_pagodas"
+        "tab_hpkT8W"
       ],
       "settings": {
         "color_scheme": "scheme-1"

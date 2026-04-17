@@ -34,7 +34,7 @@
         "text_F736CW"
       ],
       "settings": {
-        "image": "shopify://shop_images/Burning_Orange_513.jpg",
+        "image": "shopify://shop_images/Burning-Orange_513_edit.jpg",
         "overlay_opacity": 10,
         "height": "full"
       }
@@ -57,7 +57,7 @@
           "settings": {
             "collection": "saffra",
             "description": "Captures the fleeting warmth of the upper sky. A composition of burnt corals and sun-baked peach, it reflects the radiant, soft-focus light of the golden hour.",
-            "image": "shopify://shop_images/Burning_Orange_109.jpg"
+            "image": "shopify://shop_images/Burning-Orange_109_edit.jpg"
           }
         },
         "collection_2": {
@@ -65,7 +65,7 @@
           "settings": {
             "collection": "rubra",
             "description": "Drawn from the saturated depth of a low-hanging sun. Showcasing burnt ochres and earth-reds, it echoes the heavy, rusted glow of the final horizon.",
-            "image": "shopify://shop_images/Burning_Orange_340.jpg"
+            "image": "shopify://shop_images/Burning-Orange_340_edit.jpg"
           }
         },
         "collection_3": {
