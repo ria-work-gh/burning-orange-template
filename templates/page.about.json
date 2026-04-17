@@ -12,8 +12,8 @@
     "hero_banner": {
       "type": "hero-banner",
       "settings": {
-        "image": "shopify://shop_images/48e678ab2842a5cd7c0370800d9ea3dc2643289a.png",
-        "overlay_opacity": 30,
+        "image": "shopify://shop_images/Burning_Orange_294.jpg",
+        "overlay_opacity": 0,
         "height": "full"
       }
     },
@@ -46,7 +46,7 @@
         "heading_block"
       ],
       "settings": {
-        "image": "shopify://shop_images/lifestyle-window-placeholder.png",
+        "image": "shopify://shop_images/Burning_Orange_523.jpg",
         "image_position": "right",
         "image_width": "half",
         "image_ratio": "square",
@@ -60,7 +60,7 @@
         "image_1": {
           "type": "image",
           "settings": {
-            "image": "shopify://shop_images/outdoor.png",
+            "image": "shopify://shop_images/Burning_Orange_551.jpg",
             "alt": "",
             "caption": "",
             "narrow": false
@@ -69,7 +69,7 @@
         "image_2": {
           "type": "image",
           "settings": {
-            "image": "shopify://shop_images/Frame_1171277164.png",
+            "image": "shopify://shop_images/Burning_Orange_109.jpg",
             "alt": "",
             "caption": "",
             "narrow": false
@@ -78,7 +78,7 @@
         "image_3": {
           "type": "image",
           "settings": {
-            "image": "shopify://shop_images/about.png",
+            "image": "shopify://shop_images/Burning_Orange_310.jpg",
             "alt": "",
             "caption": "",
             "narrow": false
@@ -87,7 +87,7 @@
         "image_4": {
           "type": "image",
           "settings": {
-            "image": "shopify://shop_images/lifestyle-chair-placeholder.png",
+            "image": "shopify://shop_images/Burning_Orange_481.jpg",
             "alt": "",
             "caption": "",
             "narrow": false
@@ -132,7 +132,7 @@
         "caption_CeLBHV"
       ],
       "settings": {
-        "image": "shopify://shop_images/placeholder-hero.png",
+        "image": "shopify://shop_images/Burning_Orange_249.jpg",
         "image_position": "left",
         "image_width": "half",
         "image_ratio": "square",
@@ -146,6 +146,7 @@
         "heading": "Featured pieces",
         "collection": "new-in",
         "products_to_show": 4,
+        "enable_carousel": false,
         "color_scheme": "scheme-1"
       }
     }

@@ -14,6 +14,7 @@
       "blocks": {
         "product_pill_NJxghA": {
           "type": "product_pill",
+          "disabled": true,
           "settings": {
             "product": "viridis-collection"
           }
@@ -21,7 +22,7 @@
         "text_F736CW": {
           "type": "text",
           "settings": {
-            "text": "We create spaces, objects, and moments that honour the golden warmth of being outdoors.",
+            "text": "We create spaces, objects, and moments defined by the golden glow of the fading sun.",
             "button_url": "",
             "alignment": "center",
             "vertical_alignment": "middle"
@@ -33,8 +34,8 @@
         "text_F736CW"
       ],
       "settings": {
-        "image": "shopify://shop_images/outdoor.png",
-        "overlay_opacity": 20,
+        "image": "shopify://shop_images/Burning_Orange_513.jpg",
+        "overlay_opacity": 10,
         "height": "full"
       }
     },
@@ -54,25 +55,25 @@
         "collection_1": {
           "type": "collection",
           "settings": {
-            "collection": "rubra",
-            "description": "Warm terracotta and burnt coral hues that capture the rich, glowing essence of a golden hour sunset.",
-            "image": "shopify://shop_images/lifestyle-window-placeholder.png"
+            "collection": "saffra",
+            "description": "Captures the fleeting warmth of the upper sky. A composition of burnt corals and sun-baked peach, it reflects the radiant, soft-focus light of the golden hour.",
+            "image": "shopify://shop_images/Burning_Orange_109.jpg"
           }
         },
         "collection_2": {
           "type": "collection",
           "settings": {
-            "collection": "saffra",
-            "description": "Soft creams and gentle neutrals designed to create serene spaces made for calm, quiet reflection and ease.",
-            "image": "shopify://shop_images/aboutpage.png"
+            "collection": "rubra",
+            "description": "Drawn from the saturated depth of a low-hanging sun. Showcasing burnt ochres and earth-reds, it echoes the heavy, rusted glow of the final horizon.",
+            "image": "shopify://shop_images/Burning_Orange_340.jpg"
           }
         },
         "collection_3": {
           "type": "collection",
           "settings": {
             "collection": "viridis",
-            "description": "Earthy greens and natural tones inspired by lush gardens. A palette that brings the outdoors in.",
-            "image": "shopify://shop_images/Frame_1171277165.png"
+            "description": "An ode to the deepening pigments of the British landscape. Drawn from natural tones and mineral greens, it evokes the muted, quiet brilliance of the final light.",
+            "image": "shopify://shop_images/Burning_Orange_280.jpg"
           }
         }
       },
@@ -99,7 +100,7 @@
         "heading_block": {
           "type": "heading",
           "settings": {
-            "heading": "We met with a shared question: how do we make objects that feel as alive as the places that inspire them? Objects that carry the warmth of long afternoons and the quiet of early mornings."
+            "heading": "It began with a shared vision: to capture the escapism we found as the sun sets. That daily transition—the moment the world slows—became our blueprint. We design intentional objects for the British garden that hold onto the warmth of golden hour, creating a dedicated space to pause in the fading light."
           }
         },
         "link_block": {
@@ -116,7 +117,7 @@
         "link_block"
       ],
       "settings": {
-        "image": "shopify://shop_images/about.png",
+        "image": "shopify://shop_images/Burning_Orange_409.jpg",
         "image_position": "left",
         "image_width": "half",
         "image_ratio": "square",

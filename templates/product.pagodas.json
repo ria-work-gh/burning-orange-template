@@ -26,8 +26,16 @@
             "content": "<p>{{ product.metafields.custom.material | metafield_tag }}</p>"
           }
         },
+        "accordion_EiU69q": {
+          "type": "accordion",
+          "settings": {
+            "heading": "Care Instructions",
+            "content": "<p>{{ product.metafields.custom.care_instructions | metafield_tag }}</p>"
+          }
+        },
         "accordion_origin": {
           "type": "accordion",
+          "disabled": true,
           "settings": {
             "heading": "Origin",
             "content": "<p>{{ product.metafields.custom.origin | metafield_tag }}</p>"
@@ -37,6 +45,7 @@
       "block_order": [
         "accordion_dimensions",
         "accordion_material",
+        "accordion_EiU69q",
         "accordion_origin"
       ],
       "settings": {
@@ -49,10 +58,10 @@
         "hotspot_NNgTM4": {
           "type": "hotspot",
           "settings": {
-            "x": 57,
+            "x": 70,
             "y": 32,
-            "title": "text",
-            "description": "text"
+            "title": "Maximum UV Guard",
+            "description": "UPF 50+ certification ensures premium protection for long afternoons in the shade."
           }
         },
         "hotspot_GFeWCX": {
@@ -60,8 +69,8 @@
           "settings": {
             "x": 50,
             "y": 65,
-            "title": "Presence",
-            "description": "A statement centrepiece for any outdoor space, blending sculptural form with everyday function."
+            "title": "FSC Certified Beechwood Pole",
+            "description": "Durable, responsibly sourced timber built for beauty and longevity."
           }
         },
         "hotspot_AtwKW8": {
@@ -69,17 +78,17 @@
           "settings": {
             "x": 50,
             "y": 10,
-            "title": "Canopy",
-            "description": "Draped in naturally dyed, UV-resistant fabric — offering shade that's as considered as it is effortless."
+            "title": "Designer Aesthetic",
+            "description": "Curated colour palettes and silhouettes designed to elevate any outdoor space."
           }
         },
         "hotspot_mQDn7e": {
           "type": "hotspot",
           "settings": {
-            "x": 34,
+            "x": 30,
             "y": 32,
-            "title": "Frame",
-            "description": "Built on a solid hardwood frame, shaped and sanded by hand for a clean, architectural silhouette."
+            "title": "Pro Grade Colour",
+            "description": "We dye the yarn over digital printing for ultimate sun resistance and long-lasting vibrance."
           }
         }
       },
@@ -91,8 +100,6 @@
       ],
       "settings": {
         "image": "{{ product.metafields.custom.hotspot_image.value }}",
-        "image_fill": false,
-        "mobile_cards": false,
         "color_scheme": "scheme-1"
       }
     },
