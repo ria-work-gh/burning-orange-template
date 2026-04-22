@@ -10,6 +10,11 @@
     {% render 'cart-item', item: item %}
 {%- endcomment -%}
 
+{%- assign max_qty = 99 -%}
+{%- if item.variant.inventory_management == 'shopify' and item.variant.inventory_policy == 'deny' and item.variant.inventory_quantity > 0 -%}
+  {%- assign max_qty = item.variant.inventory_quantity -%}
+{%- endif -%}
+
 <div class="cart-item-row" data-key="{{ item.key }}">
   <div class="cart-col-item">
     {%- if item.image -%}
@@ -47,7 +52,7 @@
         value: item.quantity,
         name: 'updates[]',
         min: 0,
-        max: item.variant.inventory_quantity | default: 99,
+        max: max_qty,
         data_key: item.key
       %}
     </div>
@@ -75,7 +80,7 @@
       value: item.quantity,
       name: 'updates[]',
       min: 0,
-      max: item.variant.inventory_quantity | default: 99,
+      max: max_qty,
       data_key: item.key
     %}
   </div>
@@ -97,7 +102,7 @@
       value: item.quantity,
       name: 'updates[]',
       min: 0,
-      max: item.variant.inventory_quantity | default: 99,
+      max: max_qty,
       data_key: item.key
     %}
     <button
