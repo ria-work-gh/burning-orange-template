@@ -197,6 +197,12 @@
     pointer-events: none;
   }
 
+  .cart-item-row.is-loading {
+    opacity: 0.6;
+    pointer-events: none;
+    transition: opacity var(--transition-fast);
+  }
+
   /* Body scroll lock */
   body.drawer-open {
     overflow: hidden;

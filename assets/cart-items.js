@@ -69,7 +69,9 @@ class CartItems extends HTMLElement {
    * @param {number} quantity - The new desired quantity (0 to remove).
    */
   async updateItem(key, quantity) {
-    this.classList.add('is-loading');
+    const row = this.querySelector(`.cart-item-row[data-key="${CSS.escape(key)}"]`);
+    row?.classList.add('is-loading');
+    row?.setAttribute('aria-busy', 'true');
 
     try {
       const response = await fetch('/cart/change.js', {
@@ -105,7 +107,8 @@ class CartItems extends HTMLElement {
         errorEl.textContent = error.message;
         errorEl.hidden = false;
       }
-      this.classList.remove('is-loading');
+      row?.classList.remove('is-loading');
+      row?.removeAttribute('aria-busy');
     }
   }
 
@@ -124,7 +127,6 @@ class CartItems extends HTMLElement {
     if (newCartItems) {
       this.innerHTML = newCartItems.innerHTML;
     }
-    this.classList.remove('is-loading');
   }
 }
 
