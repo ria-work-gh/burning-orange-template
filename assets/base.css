@@ -366,7 +366,7 @@ body {
   border-bottom: 1px solid var(--color-text);
   border-radius: 0;
   font-size: var(--font-mini-size);
-  transition: background-color var(--transition-fast);
+  transition: background-color var(--transition-base);
 }
 
 .input:hover {

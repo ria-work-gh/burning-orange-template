@@ -11,14 +11,16 @@
   <div class="product-gallery product-gallery-single">
     <div class="product-gallery-slide-inner">
       {%- if media.media_type == 'image' -%}
-        {{ media | image_url: width: 1600 | image_tag:
-          loading: 'eager',
-          fetchpriority: 'high',
-          sizes: '(min-width: 900px) 50vw, 100vw',
-          widths: '400,600,800,1000,1200,1600,2000',
-          alt: media.alt | default: product.title,
-          width: media.width,
-          height: media.height
+        {{
+          media
+          | image_url: width: 1600
+          | image_tag:
+            loading: 'eager',
+            fetchpriority: 'high',
+            sizes: '(min-width: 900px) 50vw, 100vw',
+            widths: '400,600,800,1000,1200,1600,2000',
+            alt: media.alt
+          | default: product.title, width: media.width, height: media.height
         }}
       {%- elsif media.media_type == 'video' -%}
         {{ media | video_tag: autoplay: false, controls: true }}
@@ -60,20 +62,25 @@
             role="group"
             aria-roledescription="slide"
             aria-label="{{ 'accessibility.slide_number' | t: number: forloop.index, total: product.media.size }}"
-            {% unless forloop.first %}aria-hidden="true"{% endunless %}
+            {% unless forloop.first %}
+              aria-hidden="true"
+            {% endunless %}
             data-media-id="{{ media.id }}"
             data-media-type="{{ media.media_type }}"
           >
             <div class="product-gallery-slide-inner">
               {%- if media.media_type == 'image' -%}
-                {{ media | image_url: width: 1600 | image_tag:
-                  loading: forloop.first | ternary: 'eager', 'lazy',
-                  fetchpriority: forloop.first | ternary: 'high', 'auto',
-                  sizes: '(min-width: 900px) 50vw, 100vw',
-                  widths: '400,600,800,1000,1200,1600,2000',
-                  alt: media.alt | default: product.title,
-                  width: media.width,
-                  height: media.height
+                {{
+                  media
+                  | image_url: width: 1600
+                  | image_tag: loading: forloop.first
+                  | ternary: 'eager', 'lazy', fetchpriority: forloop.first
+                  | ternary: 'high',
+                    'auto',
+                    sizes: '(min-width: 900px) 50vw, 100vw',
+                    widths: '400,600,800,1000,1200,1600,2000',
+                    alt: media.alt
+                  | default: product.title, width: media.width, height: media.height
                 }}
               {%- elsif media.media_type == 'video' -%}
                 {{ media | video_tag: autoplay: false, controls: true }}
@@ -209,12 +216,7 @@
     position: absolute;
     bottom: var(--spacing-2);
     right: var(--spacing-2);
-    gap: var(--spacing-1);
     z-index: 1;
-    background: hsla(45, 33%, 85%, 0.85);
-    backdrop-filter: blur(var(--blur-md));
-    -webkit-backdrop-filter: blur(var(--blur-md));
-    padding: var(--spacing-1);
   }
 
   product-gallery.is-initialized .product-gallery-controls {
@@ -223,21 +225,36 @@
 
   .product-gallery-prev,
   .product-gallery-next {
+    padding: var(--spacing-1);
     display: flex;
     align-items: center;
     justify-content: center;
-    padding: 0;
     border: none;
     background: none;
     cursor: pointer;
     color: currentColor;
-    transition: opacity var(--transition-fast);
+    background: hsla(45, 33%, 85%, 0.85);
+    backdrop-filter: blur(var(--blur-md));
+    -webkit-backdrop-filter: blur(var(--blur-md));
+    transition: opacity var(--transition-fast), background-color var(--transition-fast);
   }
 
+  .product-gallery-prev:hover,
+  .product-gallery-next:hover {
+    background-color: rgba(212, 202, 170, 0.9);
+  }
+  .product-gallery-prev:active .icon,
+  .product-gallery-next:active .icon {
+    opacity: 0.5;
+  }
   .product-gallery-prev:disabled,
   .product-gallery-next:disabled {
     opacity: 0.3;
     cursor: not-allowed;
+  }
+  .product-gallery-prev .icon,
+  .product-gallery-next .icon {
+    transition: opacity var(--transition-fast);
   }
 
   .product-gallery-prev .icon {
