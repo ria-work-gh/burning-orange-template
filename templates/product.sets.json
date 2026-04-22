@@ -12,6 +12,12 @@
     "main": {
       "type": "main-product",
       "blocks": {
+        "discount_message_cLkJCz": {
+          "type": "discount_message",
+          "settings": {
+            "message": "{{ product.metafields.custom.preorder_ship_date.value }}"
+          }
+        },
         "accordion_dimensions": {
           "type": "accordion",
           "settings": {
@@ -35,6 +41,7 @@
         }
       },
       "block_order": [
+        "discount_message_cLkJCz",
         "accordion_dimensions",
         "accordion_material",
         "accordion_origin"
