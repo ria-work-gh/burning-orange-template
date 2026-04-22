@@ -93,6 +93,14 @@ class HeroSlideshow extends HTMLElement {
       this._startAutoplay();
     }
 
+    // Pause any background videos when user prefers reduced motion
+    if (this._prefersReducedMotion) {
+      this.querySelectorAll('video').forEach((video) => {
+        video.removeAttribute('autoplay');
+        video.pause();
+      });
+    }
+
     // Sync initial state
     this._onSlideChange();
   }

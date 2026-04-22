@@ -18,6 +18,7 @@
             href="{{ routes.cart_url }}"
             class="header-nav-link text-cap"
             aria-label="{{ 'accessibility.cart_count' | t: count: cart.item_count }}"
+            {%- if settings.cart_type == 'drawer' %} aria-controls="cart-drawer" aria-expanded="false"{% endif -%}
           >
             {{ 'header.cart' | t }} ( <span class="cart-count">{{ cart.item_count }}</span> )
           </a>
@@ -34,6 +35,7 @@
             href="{{ routes.cart_url }}"
             class="header-nav-link text-cap"
             aria-label="{{ 'accessibility.cart_count' | t: count: cart.item_count }}"
+            {%- if settings.cart_type == 'drawer' %} aria-controls="cart-drawer" aria-expanded="false"{% endif -%}
           >
             {{ 'header.cart' | t }} ( <span class="cart-count">{{ cart.item_count }}</span> )
           </a>

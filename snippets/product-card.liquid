@@ -52,9 +52,19 @@
           <span class="badge badge-sale product-card-badge">{{ product.metafields.custom.promo_badge }}</span>
         {%- elsif product.compare_at_price > product.price -%}
           <span class="badge badge-sale product-card-badge">
-            -{{ product.compare_at_price | minus: product.price | times: 100.0 | divided_by: product.compare_at_price | round }}%
+            -
+            {{-
+              product.compare_at_price
+              | minus: product.price
+              | times: 100.0
+              | divided_by: product.compare_at_price
+              | round
+            -}}
+            %
           </span>
         {%- endif -%}
+      {%- else -%}
+        <span class="badge product-card-badge">{{ 'products.product.sold_out' | t }}</span>
       {%- endif -%}
     </div>
 
@@ -126,7 +136,9 @@
     position: absolute;
     inset: 0;
     opacity: 0;
-    transition: opacity var(--transition-base);
+    filter: blur(10px);
+    /* transform: scale(1.1); */
+    transition: opacity var(--transition-base), filter var(--transition-base), transform var(--transition-base);
   }
   .product-card-main-image {
     transition: opacity var(--transition-base);
@@ -134,6 +146,8 @@
 
   @media (hover: hover) {
     .product-card:hover .has-hover-image .product-card-hover-image {
+      filter: blur(0px);
+      transform: scale(1);
       opacity: 1;
     }
     .product-card:hover .has-hover-image .product-card-main-image {

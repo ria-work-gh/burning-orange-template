@@ -18,7 +18,7 @@
 {%- else -%}
   {%- if current_variant.compare_at_price > current_variant.price -%}
     <dl class="product-price">
-      <dt class="visually-hidden">{{ 'products.product.price' | t }}</dt>
+      <dt class="visually-hidden">{{ 'products.product.sale_price' | t }}</dt>
       <dd class="price-sale">{{ current_variant.price | money }}</dd>
       <dt class="visually-hidden">{{ 'products.product.compare_at_price' | t }}</dt>
       <dd class="price-compare">

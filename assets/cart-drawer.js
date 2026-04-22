@@ -97,6 +97,7 @@ class CartDrawer extends HTMLElement {
     this.setAttribute('aria-hidden', 'false');
     this.backdrop?.classList.add('is-visible');
     document.body.classList.add('drawer-open');
+    this.syncTriggers(true);
 
     document.addEventListener('keydown', this.handleKeydown);
     this.trapFocus();
@@ -111,6 +112,7 @@ class CartDrawer extends HTMLElement {
     this.setAttribute('aria-hidden', 'true');
     this.backdrop?.classList.remove('is-visible');
     document.body.classList.remove('drawer-open');
+    this.syncTriggers(false);
 
     document.removeEventListener('keydown', this.handleKeydown);
 
@@ -118,6 +120,13 @@ class CartDrawer extends HTMLElement {
       this.previouslyFocused.focus();
       this.previouslyFocused = null;
     }
+  }
+
+  syncTriggers(isOpen) {
+    const id = this.id || 'cart-drawer';
+    document.querySelectorAll(`[aria-controls="${id}"]`).forEach((el) => {
+      el.setAttribute('aria-expanded', isOpen ? 'true' : 'false');
+    });
   }
 
   /**

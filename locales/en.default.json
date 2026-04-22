@@ -34,6 +34,7 @@
       "pre_order_ship_date": "Estimated to ship: {{ date }}",
       "sale": "Sale",
       "price": "Price",
+      "sale_price": "Sale price",
       "compare_at_price": "Regular price",
       "quantity": "Quantity",
       "decrease_quantity": "Decrease quantity",

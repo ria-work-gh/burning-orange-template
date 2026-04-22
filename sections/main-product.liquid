@@ -19,7 +19,7 @@
       {%- if color != blank -%}
         <div class="pdp-tags">
           <div class="pdp-tag-wrapper" data-color-tag>
-            <div class="tag-popover" data-color-popover>
+            <div class="tag-popover" id="pdp-color-popover" data-color-popover>
               {%- if siblings != blank -%}
                 {%- for sibling in siblings -%}
                   {%- assign sibling_color = sibling.metafields.custom.color.value -%}
@@ -32,7 +32,13 @@
                 {%- endfor -%}
               {%- endif -%}
             </div>
-            <button type="button" class="pdp-tag" data-color-trigger aria-expanded="false">
+            <button
+              type="button"
+              class="pdp-tag"
+              data-color-trigger
+              aria-expanded="false"
+              aria-controls="pdp-color-popover"
+            >
               {% render 'color-swatch', color: color, class: 'pdp-swatch' %}
               {{ color.name | downcase }}
             </button>
@@ -415,8 +421,8 @@
 
   .pdp-dropdown-body {
     padding-bottom: var(--spacing-2);
-    display: grid;
-    gap: var(--spacing-1);
+    /* display: grid; */
+    /* gap: var(--spacing-1); */
     /* line-height: 1.6; */
   }
 
