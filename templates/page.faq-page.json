@@ -20,15 +20,148 @@
       "type": "intro-section",
       "name": "Intro section",
       "settings": {
-        "heading": "Headline",
+        "heading": "Our Frequently asked questions",
         "heading_tag": "h1",
-        "description": "<p>Description</p>",
+        "description": "",
+        "color_scheme": ""
+      }
+    },
+    "faq_accordion_TcaKWg": {
+      "type": "faq-accordion",
+      "blocks": {
+        "question_zE4ybn": {
+          "type": "question",
+          "settings": {
+            "question": "Does the parasol come with a base?",
+            "answer": "<p>No, the parasol does not come with a base. To ensure your parasol remains stable and safe, we recommend a base with a <strong>minimum weight of 25kg</strong> and a holder that secures a <strong>32mm pole securely</strong>. Please get in touch if you’d like our recommendation. </p>"
+          }
+        },
+        "question_7yRQ8E": {
+          "type": "question",
+          "settings": {
+            "question": "Can I use my parasol on the beach?",
+            "answer": "<p>Our parasols are designed primarily for garden and patio use. While they can be used at the beach if secured properly, we recommend caution. Fine sand can migrate into the metal joints and mechanisms, which may compromise their smooth operation over time.</p>"
+          }
+        },
+        "question_keeHtH": {
+          "type": "question",
+          "settings": {
+            "question": "Is the canopy waterproof?",
+            "answer": "<p>Our parasols are designed for sun protection rather than shelter from rain. They are <strong>not rainproof</strong>, and we recommend moving them to a dry, sheltered area during wet weather. Similarly, always close and store your parasol during <strong>strong winds</strong> to prevent damage.</p>"
+          }
+        },
+        "question_FfPn3m": {
+          "type": "question",
+          "settings": {
+            "question": "Does the fabric offer sun protection?",
+            "answer": "<p>Yes! Our canopies are rated <strong>UPF 50+</strong>, providing maximum UV protection so you can enjoy the outdoors safely.</p>"
+          }
+        },
+        "question_H3Vhe3": {
+          "type": "question",
+          "settings": {
+            "question": "Why is my canopy creased upon arrival?",
+            "answer": "<p>We use a high-quality, heavy-duty polyester that naturally holds creases after being packaged for transit. Simply set up your parasol and leave it open; the creases will naturally drop out within <strong>48 hours</strong>.</p>"
+          }
+        },
+        "question_zibz9x": {
+          "type": "question",
+          "settings": {
+            "question": "How do I clean the canopy?",
+            "answer": "<p>To keep your parasol looking fresh, spot clean with a damp cloth and mild soapy water. Avoid harsh chemicals or machine washing, as this can damage the UV-protective coating.</p>"
+          }
+        }
+      },
+      "block_order": [
+        "question_zE4ybn",
+        "question_7yRQ8E",
+        "question_keeHtH",
+        "question_FfPn3m",
+        "question_H3Vhe3",
+        "question_zibz9x"
+      ],
+      "name": "FAQ",
+      "settings": {
+        "heading": "Sun Pagoda FAQs",
+        "subheading": "",
+        "narrow_width": true,
+        "color_scheme": ""
+      }
+    },
+    "faq_accordion_cmE6dG": {
+      "type": "faq-accordion",
+      "blocks": {
+        "question_iNrz9m": {
+          "type": "question",
+          "settings": {
+            "question": "Can I leave my chairs outside year-round?",
+            "answer": "<p>While Acacia wood is naturally hardy and excellent for outdoor use, we do not recommend leaving the chairs exposed to the elements indefinitely. To prolong the life of the wood and the weave, <strong>store them in a dry place when not in use</strong>. Their convenient foldable design makes them easy to tuck away in a shed or garage.<br/><br/></p>"
+          }
+        },
+        "question_Pfqapy": {
+          "type": "question",
+          "settings": {
+            "question": "Why do you use synthetic rattan instead of natural rattan?",
+            "answer": "<p>We use a high-quality synthetic weave because it is significantly more durable for outdoor environments. Unlike natural rattan, which can become brittle and crack when exposed to moisture and sun, our synthetic alternative is weather-resistant and much easier to maintain.<br/><br/></p>"
+          }
+        },
+        "question_4Fn4mX": {
+          "type": "question",
+          "settings": {
+            "question": "Does the wood require maintenance?",
+            "answer": "<p>To maintain the rich color of the Acacia wood, you may wish to apply a light coat of outdoor furniture oil once a year. If left untreated, the wood will naturally weather to a beautiful silvery-grey over time.</p>"
+          }
+        }
+      },
+      "block_order": [
+        "question_iNrz9m",
+        "question_Pfqapy",
+        "question_4Fn4mX"
+      ],
+      "name": "FAQ",
+      "settings": {
+        "heading": "Lounge Chair FAQs",
+        "subheading": "",
+        "narrow_width": true,
+        "color_scheme": ""
+      }
+    },
+    "faq_accordion_Ux8EFe": {
+      "type": "faq-accordion",
+      "blocks": {
+        "question_bdpQtE": {
+          "type": "question",
+          "settings": {
+            "question": "How will my items be delivered?",
+            "answer": "<p>Our chairs arrive fully assembled and ready to unfold. Parasols typically come in two sections that easily screw together.</p>"
+          }
+        },
+        "question_wLriJm": {
+          "type": "question",
+          "settings": {
+            "question": "What if my order arrives damaged?",
+            "answer": "<p>Please inspect your items upon delivery. If there is any sign of transit damage, contact our support team within 48 hours with photos so we can arrange a replacement for you immediately.</p>"
+          }
+        }
+      },
+      "block_order": [
+        "question_bdpQtE",
+        "question_wLriJm"
+      ],
+      "name": "FAQ",
+      "settings": {
+        "heading": "General FAQs",
+        "subheading": "",
+        "narrow_width": true,
         "color_scheme": ""
       }
     }
   },
   "order": [
     "main",
-    "intro_section_LaWUnU"
+    "intro_section_LaWUnU",
+    "faq_accordion_TcaKWg",
+    "faq_accordion_cmE6dG",
+    "faq_accordion_Ux8EFe"
   ]
 }
