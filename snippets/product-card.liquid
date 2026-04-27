@@ -46,9 +46,7 @@
         <div class="product-card-placeholder"></div>
       {%- endif -%}
       {%- if product.available -%}
-        {%- if product.metafields.custom.pre_order -%}
-          <span class="badge product-card-badge">{{ 'products.product.pre_order' | t }}</span>
-        {%- elsif product.metafields.custom.promo_badge != blank -%}
+        {%- if product.metafields.custom.promo_badge != blank -%}
           <span class="badge badge-sale product-card-badge">{{ product.metafields.custom.promo_badge }}</span>
         {%- elsif product.compare_at_price > product.price -%}
           <span class="badge badge-sale product-card-badge">
