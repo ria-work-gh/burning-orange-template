@@ -106,12 +106,30 @@
 
   var headerGroup = header.closest('.header-group') || header;
 
+  // Only measure when the header-group is in its fully expanded resting state.
+  // Why: scroll toggles .nav-hidden / .is-hidden which animate height via CSS
+  // transition. iOS fires resize during scroll-up (URL bar), which would
+  // otherwise capture a mid-transition or collapsed offsetHeight and snap the
+  // CSS var, causing layout shift in any consumer using --header-height
+  // (intro padding, hero min-height, sticky tabs).
   function updateHeaderHeight() {
+    if (container.classList.contains('nav-hidden')) return;
+    var bar = headerGroup.querySelector('announcement-bar');
+    if (bar && bar.classList.contains('is-hidden')) return;
     document.documentElement.style.setProperty('--header-height', headerGroup.offsetHeight + 'px');
   }
 
   window.addEventListener('resize', updateHeaderHeight, { passive: true });
   new MutationObserver(updateHeaderHeight).observe(headerGroup, { childList: true, subtree: true });
+
+  // Re-measure once the expand transition completes so a resize-while-scrolled
+  // is reconciled when the user returns to the top.
+  headerGroup.addEventListener('transitionend', function (e) {
+    if (e.propertyName === 'grid-template-rows' || e.propertyName === 'max-height') {
+      updateHeaderHeight();
+    }
+  });
+
   updateHeaderHeight();
 
   window.addEventListener('scroll', handleScroll, { passive: true });

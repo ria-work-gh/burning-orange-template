@@ -1,7 +1,7 @@
 <div class="faq color-{{ section.settings.color_scheme }}">
   <div class="faq-container{% if section.settings.narrow_width %} faq-narrow{% endif %}">
     {%- if section.settings.heading != blank -%}
-      <h2 class="faq-heading text-large">{{ section.settings.heading }}</h2>
+      <h2 class="faq-heading text-medium">{{ section.settings.heading }}</h2>
     {%- endif -%}
 
     {%- if section.settings.subheading != blank -%}
@@ -54,12 +54,6 @@
     padding: var(--spacing-4) var(--spacing-2);
   }
 
-  @media (min-width: 600px) {
-    .faq {
-      padding: var(--spacing-5) var(--spacing-3);
-    }
-  }
-
   .faq-narrow {
     max-width: 720px;
     margin-inline: auto;
@@ -74,7 +68,7 @@
   }
 
   .faq-list {
-    margin-top: var(--spacing-3);
+    margin-top: var(--spacing-2);
   }
 
   .faq-item {
