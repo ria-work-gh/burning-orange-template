@@ -15,7 +15,7 @@
       "type": "announcement-bar",
       "name": "Announcement bar",
       "settings": {
-        "text": "Free shipping on orders over £150",
+        "text": "Free shipping until May 31st",
         "link": "",
         "dismissible": true,
         "color_scheme": "scheme-2"

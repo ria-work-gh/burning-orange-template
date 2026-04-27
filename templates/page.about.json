@@ -20,7 +20,7 @@
     "quote": {
       "type": "quote",
       "settings": {
-        "subheading": "Our philosophy",
+        "subheading": "",
         "body": "We create spaces, objects and moments defined by the golden glow of the fading sun.",
         "color_scheme": ""
       }
@@ -50,7 +50,7 @@
         "image_position": "right",
         "image_width": "half",
         "image_ratio": "square",
-        "image_caption": "It began with a single idea: that the objects we surround ourselves with should carry the warmth of the sun and the care of human hands.",
+        "image_caption": "",
         "color_scheme": "scheme-1"
       }
     },
@@ -121,6 +121,7 @@
         },
         "caption_CeLBHV": {
           "type": "caption",
+          "disabled": true,
           "settings": {
             "text": "← One of us brought a background in textile design, the other in furniture making. Today, we remain a small team with an outsized commitment to craft. Every piece still passes through our hands before it leaves the workshop."
           }

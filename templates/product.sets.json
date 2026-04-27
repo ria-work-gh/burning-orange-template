@@ -15,21 +15,21 @@
         "discount_message_cLkJCz": {
           "type": "discount_message",
           "settings": {
-            "message": "{{ product.metafields.custom.preorder_ship_date.value }}"
-          }
-        },
-        "accordion_dimensions": {
-          "type": "accordion",
-          "settings": {
-            "heading": "Dimensions",
-            "content": "{{ product.metafields.custom.dimensions_new | metafield_tag }}"
+            "message": "You save 10% when buying as a set"
           }
         },
         "accordion_material": {
           "type": "accordion",
           "settings": {
-            "heading": "Material",
+            "heading": "Sun Pagoda",
             "content": "{{ product.metafields.custom.material_new | metafield_tag }}"
+          }
+        },
+        "accordion_dimensions": {
+          "type": "accordion",
+          "settings": {
+            "heading": "Lounge Chair",
+            "content": "{{ product.metafields.custom.dimensions_new | metafield_tag }}"
           }
         },
         "accordion_origin": {
@@ -42,8 +42,8 @@
       },
       "block_order": [
         "discount_message_cLkJCz",
-        "accordion_dimensions",
         "accordion_material",
+        "accordion_dimensions",
         "accordion_origin"
       ],
       "settings": {
@@ -56,10 +56,10 @@
         "hotspot_MR6EFQ": {
           "type": "hotspot",
           "settings": {
-            "x": 39,
-            "y": 76,
-            "title": "Material",
-            "description": "Weather-tested and built to age gracefully, developing a richer character with every season."
+            "x": 22,
+            "y": 70,
+            "title": "Lounge Chair",
+            "description": "Bold, hand-woven details on a minimalist, lightweight frame."
           }
         },
         "hotspot_AMidRn": {
@@ -67,17 +67,17 @@
           "settings": {
             "x": 50,
             "y": 50,
-            "title": "Shape",
-            "description": "Gently curved for natural support — designed to sink into, whether for morning coffee or long evenings outside."
+            "title": "The Complete Set",
+            "description": "A sun-washed sanctuary curated for long lunches and effortless style."
           }
         },
         "hotspot_PQpwgG": {
           "type": "hotspot",
           "settings": {
-            "x": 68,
-            "y": 36,
-            "title": "Craftsmanship",
-            "description": "Each seat is hand-woven using sustainably sourced rattan, with patterns perfected over generations of craft."
+            "x": 75,
+            "y": 28,
+            "title": "Sun Pagoda",
+            "description": "An iconic silhouette that provides a striking centrepiece to your terrace."
           }
         }
       },
@@ -87,7 +87,7 @@
         "hotspot_PQpwgG"
       ],
       "settings": {
-        "image": "shopify://shop_images/outdoor_ac029168-4cc9-417f-836b-21988266e986.png",
+        "image": "shopify://shop_images/Burning_Orange_434.jpg",
         "color_scheme": "scheme-1"
       }
     },
@@ -97,13 +97,13 @@
         "subheader_DA9qP7": {
           "type": "subheader",
           "settings": {
-            "text": "Learn about our craft"
+            "text": "Thoughtful objects for intentional moments"
           }
         },
         "heading_block": {
           "type": "heading",
           "settings": {
-            "heading": "Each piece is thoughtfully crafted by skilled artisans who honour traditional techniques and sustainable practices. We work directly with makers who share our commitment to quality, ethical sourcing, and timeless design."
+            "heading": "We prioritise honest materials and versatile designs that transition effortlessly from the garden to shelter. By working directly with expert manufacturers, we translate our sun-drenched inspirations into functional, reliable pieces. Produced in small, considered batches, our collections bring a joyful sense of escape to the very edges of your home."
           }
         },
         "link_k6qdjx": {

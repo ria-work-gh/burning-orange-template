@@ -12,6 +12,12 @@
     "main": {
       "type": "main-product",
       "blocks": {
+        "discount_message_tE4e3U": {
+          "type": "discount_message",
+          "settings": {
+            "message": "Shipping from mid-May"
+          }
+        },
         "accordion_dimensions": {
           "type": "accordion",
           "settings": {
@@ -29,7 +35,7 @@
         "accordion_EiU69q": {
           "type": "accordion",
           "settings": {
-            "heading": "Care Instructions",
+            "heading": "Care and Usage",
             "content": "{{ product.metafields.custom.care_instructions_new | metafield_tag }}"
           }
         },
@@ -43,6 +49,7 @@
         }
       },
       "block_order": [
+        "discount_message_tE4e3U",
         "accordion_dimensions",
         "accordion_material",
         "accordion_EiU69q",
@@ -109,13 +116,13 @@
         "subheader_Xmhwap": {
           "type": "subheader",
           "settings": {
-            "text": "Learn about our craft"
+            "text": "Thoughtful objects for intentional moments"
           }
         },
         "heading_block": {
           "type": "heading",
           "settings": {
-            "heading": "Each piece is thoughtfully crafted by skilled artisans who honour traditional techniques and sustainable practices. We work directly with makers who share our commitment to quality, ethical sourcing, and timeless design."
+            "heading": "We prioritise honest materials and versatile designs that transition effortlessly from the garden to shelter. By working directly with expert manufacturers, we translate our sun-drenched inspirations into functional, reliable pieces. Produced in small, considered batches, our collections bring a joyful sense of escape to the very edges of your home."
           }
         },
         "link_74F4cz": {

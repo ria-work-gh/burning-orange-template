@@ -27,8 +27,8 @@
         "type": "newsletter-popup",
         "settings": {
           "image": "shopify://shop_images/Burning_Orange_484.jpg",
-          "heading": "Sign up for 10% off your first order",
-          "subtitle": "Also, get early access to sales, first look at new collections and more exclusive benefits.",
+          "heading": "Sign up for 20% off your first order",
+          "subtitle": "Exclusive to our first 100 customers. Also, get early access to sales, first look at new collections and more exclusive benefits.",
           "delay_seconds": 5
         }
       }
