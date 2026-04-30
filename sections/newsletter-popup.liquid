@@ -1,4 +1,6 @@
 {%- comment -%} Newsletter popup: fixed bottom-right slide-in with image + newsletter form. {%- endcomment -%}
+{%- comment -%} Skip render for logged-in customers who already accept marketing. {%- endcomment -%}
+{%- unless customer != blank and customer.accepts_marketing -%}
 <newsletter-popup data-delay="{{ section.settings.delay_seconds | times: 1000 }}" aria-hidden="true">
   <button class="popup-close text-cap" data-close aria-label="{{ 'general.close' | t }}">{{ 'general.close' | t }}</button>
 
@@ -31,6 +33,7 @@
 </newsletter-popup>
 
 <script src="{{ 'newsletter-popup.js' | asset_url }}" defer></script>
+{%- endunless -%}
 
 {% stylesheet %}
   newsletter-popup {

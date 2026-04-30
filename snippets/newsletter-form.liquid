@@ -2,6 +2,9 @@
   <input type="hidden" name="contact[tags]" value="newsletter">
   {%- if form.posted_successfully? -%}
     <p class="form-success" role="alert">{{ 'newsletter.success' | t }}</p>
+    <script>
+      try { localStorage.setItem('newsletter-subscribed', '1'); } catch (e) {}
+    </script>
   {%- endif -%}
   {%- if form.errors -%}
     <p class="form-error" role="alert">{{ form.errors.translated_fields.email | default: 'newsletter.error' | t }}</p>

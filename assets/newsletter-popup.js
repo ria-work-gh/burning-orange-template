@@ -31,6 +31,7 @@ class NewsletterPopup extends HTMLElement {
     }
 
     if (sessionStorage.getItem('newsletter-popup-dismissed')) return;
+    if (localStorage.getItem('newsletter-subscribed')) return;
 
     this.timer = setTimeout(() => this.show(), this.delay);
   }
