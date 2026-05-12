@@ -34,7 +34,7 @@
   {%- endif -%}
   "logo": {
     "@type": "ImageObject",
-    "url": {{ shop.brand.logo | image_url: width: 600 | prepend: 'https:' | json }}
+    "url": {%- if shop.brand.logo != blank -%}{{ shop.brand.logo | image_url: width: 600 | prepend: 'https:' | json }}{%- else -%}{{ 'logo.svg' | asset_url | prepend: 'https:' | json }}{%- endif -%}
   }
 }
 </script>
