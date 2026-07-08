@@ -13,9 +13,10 @@
   "sections": {
     "announcement_bar_qyp8Kh": {
       "type": "announcement-bar",
+      "disabled": true,
       "name": "Announcement bar",
       "settings": {
-        "text": "Free shipping until May 31st",
+        "text": "Free UK shipping until May 31st",
         "link": "",
         "dismissible": true,
         "color_scheme": "scheme-2"

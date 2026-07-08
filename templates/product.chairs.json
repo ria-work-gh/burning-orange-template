@@ -43,7 +43,7 @@
         "discount_message": {
           "type": "discount_message",
           "settings": {
-            "message": "10% off two or more lounge chairs, across all collections"
+            "message": ""
           }
         }
       },

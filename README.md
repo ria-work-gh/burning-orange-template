@@ -85,7 +85,7 @@ All spacing, typography, and color values live in `assets/base.css` under `:root
 
 ### Font
 
-The theme ships with Antarctica Beta (variable font). To swap it:
+The theme ships with Litteratur (variable font). To swap it:
 
 1. Add your font file(s) to `assets/`
 2. Update the `@font-face` declaration in `layout/theme.liquid`

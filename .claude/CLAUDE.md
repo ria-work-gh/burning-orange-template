@@ -223,7 +223,7 @@ Each snippet is owned by ONE section/area. When modifying a snippet, read its ow
 
 **Transitions:** fast `0.2s ease`, slow `0.5s ease`
 
-**Font:** Antarctica Beta variable font — single family for body and headings
+**Font:** Litteratur variable font — single family for body and headings
 
 Authoritative values live in `assets/base.css` `:root` block.
 
