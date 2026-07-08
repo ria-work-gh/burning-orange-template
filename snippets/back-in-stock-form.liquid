@@ -1,0 +1,60 @@
+{% comment %}
+  Renders the "notify me when back in stock" widget shown beneath the disabled
+  Sold Out button when a variant is unavailable. Captures an email and subscribes
+  it to Klaviyo Back in Stock for the current variant (see assets/back-in-stock.js).
+
+  Rendered INSIDE the product <form> (main-product.liquid), so it must NOT contain
+  a <form> element — nested forms are invalid. The <notify-me> web component posts
+  to Klaviyo's client API on submit.
+
+  Controlled by theme settings: back_in_stock_enabled, klaviyo_public_api_key,
+  back_in_stock_message.
+
+  Expects: product (product object)
+{% endcomment %}
+
+{%- if settings.back_in_stock_enabled -%}
+  {%- liquid
+    assign variant = product.selected_or_first_available_variant
+    assign item_name = product.metafields.custom.color.value.name | default: product.title
+  -%}
+
+  <notify-me
+    class="notify-me"
+    data-variant-id="{{ variant.id }}"
+    {% if settings.klaviyo_public_api_key != blank %}data-klaviyo-key="{{ settings.klaviyo_public_api_key }}"{% endif %}
+  >
+    <p class="notify-me-prompt text-cap">
+      {%- if settings.back_in_stock_message != blank -%}
+        {{ settings.back_in_stock_message }}
+      {%- else -%}
+        {{ 'products.product.back_in_stock_prompt' | t }}
+      {%- endif -%}
+    </p>
+
+    <div class="notify-me-input-wrap">
+      <label for="notify-email-{{ variant.id }}" class="visually-hidden">
+        {{- 'products.product.back_in_stock_placeholder' | t -}}
+      </label>
+      <input
+        type="email"
+        id="notify-email-{{ variant.id }}"
+        class="input"
+        data-notify-email
+        placeholder="{{ 'products.product.back_in_stock_placeholder' | t }}"
+        autocomplete="email"
+        required
+      >
+      <button type="button" class="notify-me-submit text-cap" data-notify-submit>
+        {{- 'products.product.back_in_stock_submit' | t -}}
+      </button>
+    </div>
+
+    <p class="form-success" role="alert" data-notify-success hidden>
+      {{- 'products.product.back_in_stock_success' | t: product: item_name -}}
+    </p>
+    <p class="form-error" role="alert" data-notify-error hidden>
+      {{- 'products.product.back_in_stock_error' | t -}}
+    </p>
+  </notify-me>
+{%- endif -%}

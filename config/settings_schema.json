@@ -152,5 +152,32 @@
         "default": "portrait"
       }
     ]
+  },
+  {
+    "name": "Back in stock",
+    "settings": [
+      {
+        "type": "paragraph",
+        "content": "Replaces the plain Sold Out state on product pages with an email capture that subscribes shoppers to Klaviyo Back in Stock. Klaviyo notifies them automatically when the sold-out variant is restocked."
+      },
+      {
+        "type": "checkbox",
+        "id": "back_in_stock_enabled",
+        "label": "Show back-in-stock email capture",
+        "default": true
+      },
+      {
+        "type": "text",
+        "id": "klaviyo_public_api_key",
+        "label": "Klaviyo public API key",
+        "info": "Your 6-character public API key (Site ID) from Klaviyo → Settings → API keys. Until this is set, the form works but only simulates sign-up (no data sent to Klaviyo)."
+      },
+      {
+        "type": "text",
+        "id": "back_in_stock_message",
+        "label": "Prompt message",
+        "info": "Optional. Overrides the default prompt shown above the email field."
+      }
+    ]
   }
 ]

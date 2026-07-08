@@ -165,6 +165,7 @@
 </section>
 
 <script src="{{ 'product-form.js' | asset_url }}" defer></script>
+<script src="{{ 'back-in-stock.js' | asset_url }}" defer></script>
 <script src="{{ 'embla-carousel.umd.js' | asset_url }}" defer></script>
 <script src="{{ 'product-gallery.js' | asset_url }}" defer></script>
 <script src="{{ 'quantity-selector.js' | asset_url }}" defer></script>
@@ -323,8 +324,73 @@
 
   .pdp-actions {
     display: flex;
+    flex-wrap: wrap;
     align-items: stretch;
     gap: var(--spacing-2);
+  }
+
+  .notify-me {
+    width: 100%;
+    max-width: 65ch;
+    display: grid;
+    gap: var(--spacing-1);
+  }
+
+  .notify-me-prompt {
+    color: var(--color-text-muted);
+  }
+
+  /* Inline submit inset into the field, matching the footer newsletter form */
+  .notify-me-input-wrap {
+    display: flex;
+    align-items: center;
+    position: relative;
+  }
+
+  .notify-me-input-wrap .input {
+    width: 100%;
+    padding-right: 90px;
+  }
+
+  .notify-me-submit {
+    position: absolute;
+    right: var(--spacing-1);
+    padding: var(--spacing-1);
+    color: var(--color-text-muted);
+    font-size: var(--font-mini-size);
+    transition: color var(--transition-fast);
+  }
+
+  .notify-me-submit:hover {
+    color: var(--color-accent);
+  }
+
+  .notify-me-submit:disabled {
+    opacity: 0.6;
+    pointer-events: none;
+  }
+
+  .notify-me-submit.is-loading {
+    color: transparent;
+  }
+
+  .notify-me-submit.is-loading::after {
+    content: "";
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 12px;
+    height: 12px;
+    margin: -6px 0 0 -6px;
+    border: 2px solid var(--color-text-muted);
+    border-right-color: transparent;
+    border-radius: 50%;
+    animation: spin 0.6s linear infinite;
+  }
+
+  .notify-me.is-subscribed .notify-me-prompt,
+  .notify-me.is-subscribed .notify-me-input-wrap {
+    display: none;
   }
 
   .pdp-actions .buy-buttons {

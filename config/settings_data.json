@@ -12,6 +12,8 @@
     "favicon": "shopify://shop_images/favicon.png",
     "cart_type": "drawer",
     "product_card_aspect_ratio": "portrait",
+    "back_in_stock_enabled": true,
+    "klaviyo_public_api_key": "X7Fd3r",
     "sections": {
       "cart-drawer": {
         "type": "cart-drawer",

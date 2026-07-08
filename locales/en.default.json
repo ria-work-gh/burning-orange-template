@@ -53,7 +53,12 @@
       "choose_options": "Choose options",
       "details_heading": "Product details",
       "bundle_includes_heading": "Includes",
-      "bundle_read_more": "Read more"
+      "bundle_read_more": "Read more",
+      "back_in_stock_prompt": "Sign up and we'll email you when it's back in stock",
+      "back_in_stock_placeholder": "Your email address",
+      "back_in_stock_submit": "Notify me",
+      "back_in_stock_success": "You're on the list — we'll email you when {{ product }} is back in stock.",
+      "back_in_stock_error": "Something went wrong. Please try again."
     }
   },
   "collections": {

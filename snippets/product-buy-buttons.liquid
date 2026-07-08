@@ -1,29 +1,32 @@
 {% comment %}
   Renders the add-to-cart form with optional quantity selector.
+  When the selected variant is sold out, renders the "notify me when back in
+  stock" widget (back-in-stock-form snippet) beneath the disabled button.
   Must be rendered inside the product <form> (provided by main-product.liquid).
   Expects: product (product object), show_quantity (boolean, default true)
 {% endcomment %}
 
+{%- liquid
+  assign variant = product.selected_or_first_available_variant
+  assign is_preorder = false
+  if product.metafields.custom.pre_order
+    assign is_preorder = true
+  endif
+-%}
+
 <div class="buy-buttons">
-  {%- if show_quantity -%}
+  {%- if show_quantity and variant.available -%}
     {% render 'quantity-selector' %}
   {%- endif -%}
-
-  {%- liquid
-    assign is_preorder = false
-    if product.metafields.custom.pre_order
-      assign is_preorder = true
-    endif
-  -%}
 
   <button
     type="submit"
     class="button text-cap"
     data-add-text="{%- if is_preorder -%}{{ 'products.product.pre_order' | t }}{%- else -%}{{ 'products.product.add_to_cart' | t }}{%- endif -%}"
     data-sold-text="{{ 'products.product.sold_out' | t }}"
-    {% unless product.selected_or_first_available_variant.available %}disabled{% endunless %}
+    {% unless variant.available %}disabled{% endunless %}
   >
-    {%- if product.selected_or_first_available_variant.available -%}
+    {%- if variant.available -%}
       {%- if is_preorder -%}
         {{ 'products.product.pre_order' | t }}
       {%- else -%}
@@ -38,5 +41,9 @@
     <p class="preorder-ship-date">{{ 'products.product.pre_order_ship_date' | t: date: product.metafields.custom.pre_order_ship_date }}</p>
   {%- endif -%}
 </div>
+
+{%- unless variant.available -%}
+  {% render 'back-in-stock-form', product: product %}
+{%- endunless -%}
 
 <div data-error class="form-error" role="alert" hidden></div>
