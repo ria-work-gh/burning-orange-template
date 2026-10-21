@@ -1,5 +1,9 @@
 {%- comment -%} Hero banner: full-viewport image with text and product pill blocks. {%- endcomment -%}
 <div class="hero-banner{% if section.settings.height == 'compact' %} compact{% endif %}">
+  {%- if section.settings.page_heading != blank -%}
+    <h1 class="visually-hidden">{{ section.settings.page_heading }}</h1>
+  {%- endif -%}
+
   {%- if section.settings.image != blank -%}
     {{
       section.settings.image
@@ -200,6 +204,12 @@
   "tag": "section",
   "class": "hero-section",
   "settings": [
+    {
+      "type": "text",
+      "id": "page_heading",
+      "label": "Page heading (H1)",
+      "info": "Hidden on screen but read by search engines and screen readers. Only use on pages without another main heading."
+    },
     {
       "type": "image_picker",
       "id": "image",
