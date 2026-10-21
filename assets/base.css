@@ -174,6 +174,7 @@ summary::-webkit-details-marker {
   --color-text-muted: hsla(0, 0%, 0%, 0.5);
   --color-accent: hsl(15, 48%, 56%);
   --color-accent-dark: hsl(15, 48%, 40%);
+  --color-green: #4A5D4A;
 
   --color-input-bg: hsl(45, 33%, 95%);
   --color-input-bg-hover: hsl(45, 33%, 90%);

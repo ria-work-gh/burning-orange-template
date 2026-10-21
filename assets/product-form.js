@@ -50,8 +50,34 @@ class ProductForm extends HTMLElement {
     this.addEventListener('change', (e) => {
       if (e.target.matches('input[type="radio"]')) {
         this.handleVariantChange();
+      } else if (e.target.matches('input[name="quantity"]')) {
+        this.updateKlarnaAmount();
       }
     });
+  }
+
+  /**
+   * Set the Klarna placement's purchase amount to variant price x quantity
+   * (minor units) and ask Klarna's script to re-render it. Falls back to the
+   * server-rendered amount if the variant can't be resolved.
+   */
+  updateKlarnaAmount() {
+    const placement = this.querySelector('klarna-placement');
+    if (!placement) return;
+
+    const variantId = parseInt(this.form.querySelector('input[name="id"]')?.value);
+    const variant = this.currentVariant
+      || this.productData?.variants?.find((v) => v.id === variantId);
+    if (!variant) return;
+
+    const quantityInput = this.querySelector('input[name="quantity"]');
+    const quantity = (quantityInput && parseInt(quantityInput.value)) || 1;
+
+    placement.setAttribute('data-purchase-amount', variant.price * quantity);
+
+    if (window.KlarnaOnsiteService) {
+      window.KlarnaOnsiteService.push({ eventName: 'refresh-placements' });
+    }
   }
 
   /**
@@ -128,6 +154,10 @@ class ProductForm extends HTMLElement {
 
       // Re-cache submit button (lives inside swapped buy-buttons region)
       this.submitButton = this.form.querySelector('[type="submit"]');
+
+      // The swapped klarna-placement carries the single-unit amount from the
+      // server; reapply the current quantity and refresh Klarna's render.
+      this.updateKlarnaAmount();
     } finally {
       if (requestId === this.renderRequestId) {
         this.classList.remove('is-loading');

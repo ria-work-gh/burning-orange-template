@@ -1,3 +1,12 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin language editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
 {
   "general": {
     "continue_shopping": "Continue shopping",
@@ -52,6 +61,9 @@
       "quick_add": "Quick add",
       "choose_options": "Choose options",
       "details_heading": "Product details",
+      "in_stock_notice": "In stock — ready to dispatch",
+      "reviews_open": "Open reviews",
+      "reviews_close": "Close reviews",
       "bundle_includes_heading": "Includes",
       "bundle_read_more": "Read more",
       "back_in_stock_prompt": "Sign up and we'll email you when it's back in stock",

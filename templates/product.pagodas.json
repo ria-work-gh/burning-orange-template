@@ -12,6 +12,36 @@
     "main": {
       "type": "main-product",
       "blocks": {
+        "attribute_PmJnMM": {
+          "type": "attribute",
+          "settings": {
+            "icon": "shopify://shop_images/Vector_7.svg",
+            "title": "UV50 protection",
+            "subtitle": "for sunny days"
+          }
+        },
+        "attribute_dRmGcV": {
+          "type": "attribute",
+          "settings": {
+            "icon": "shopify://shop_images/Vector_4.svg",
+            "title": "FSC Beechwood",
+            "subtitle": "responsibly sourced"
+          }
+        },
+        "attribute_Biwenn": {
+          "type": "attribute",
+          "settings": {
+            "icon": "shopify://shop_images/Vector_8.svg",
+            "title": "generous shade",
+            "subtitle": "2.5 m canopy"
+          }
+        },
+        "klaviyo_reviews_average_rating_eyeAzj": {
+          "type": "shopify://apps/klaviyo-reviews/blocks/average-rating/db20e365-d984-4ac4-9655-e1588d951ca9",
+          "settings": {
+            "product": "{{product}}"
+          }
+        },
         "discount_message_tE4e3U": {
           "type": "discount_message",
           "settings": {
@@ -49,6 +79,10 @@
         }
       },
       "block_order": [
+        "attribute_PmJnMM",
+        "attribute_dRmGcV",
+        "attribute_Biwenn",
+        "klaviyo_reviews_average_rating_eyeAzj",
         "discount_message_tE4e3U",
         "accordion_dimensions",
         "accordion_material",
@@ -146,11 +180,25 @@
         "image_caption": "",
         "color_scheme": "scheme-1"
       }
+    },
+    "17906124559dfef46f": {
+      "type": "apps",
+      "blocks": {
+        "klaviyo_reviews_product_reviews_w43nyb": {
+          "type": "shopify://apps/klaviyo-reviews/blocks/product-reviews/db20e365-d984-4ac4-9655-e1588d951ca9",
+          "settings": {}
+        }
+      },
+      "block_order": [
+        "klaviyo_reviews_product_reviews_w43nyb"
+      ],
+      "settings": {}
     }
   },
   "order": [
     "main",
     "hotspot_image",
-    "image_text_craft"
+    "image_text_craft",
+    "17906124559dfef46f"
   ]
 }

@@ -12,6 +12,36 @@
     "main": {
       "type": "main-product",
       "blocks": {
+        "attribute_x3NTgt": {
+          "type": "attribute",
+          "settings": {
+            "icon": "shopify://shop_images/Vector_3.svg",
+            "title": "Jaquard Woven",
+            "subtitle": "design woven, not printed"
+          }
+        },
+        "attribute_LTRfMK": {
+          "type": "attribute",
+          "settings": {
+            "icon": "shopify://shop_images/Vector_9.svg",
+            "title": "100% Organic Cotton",
+            "subtitle": "natural & breathable"
+          }
+        },
+        "attribute_yExYLF": {
+          "type": "attribute",
+          "settings": {
+            "icon": "shopify://shop_images/Frame_1171277374.svg",
+            "title": "reversible design",
+            "subtitle": "two look in one"
+          }
+        },
+        "klaviyo_reviews_average_rating_cPkqVB": {
+          "type": "shopify://apps/klaviyo-reviews/blocks/average-rating/db20e365-d984-4ac4-9655-e1588d951ca9",
+          "settings": {
+            "product": "{{product}}"
+          }
+        },
         "accordion_dimensions": {
           "type": "accordion",
           "settings": {
@@ -35,6 +65,10 @@
         }
       },
       "block_order": [
+        "attribute_x3NTgt",
+        "attribute_LTRfMK",
+        "attribute_yExYLF",
+        "klaviyo_reviews_average_rating_cPkqVB",
         "accordion_dimensions",
         "accordion_material",
         "accordion_origin"
@@ -120,11 +154,25 @@
         "image_caption": "",
         "color_scheme": "scheme-1"
       }
+    },
+    "179061247526c2a293": {
+      "type": "apps",
+      "blocks": {
+        "klaviyo_reviews_product_reviews_pTj6Xt": {
+          "type": "shopify://apps/klaviyo-reviews/blocks/product-reviews/db20e365-d984-4ac4-9655-e1588d951ca9",
+          "settings": {}
+        }
+      },
+      "block_order": [
+        "klaviyo_reviews_product_reviews_pTj6Xt"
+      ],
+      "settings": {}
     }
   },
   "order": [
     "main",
     "hotspot_image",
-    "image_text_craft"
+    "image_text_craft",
+    "179061247526c2a293"
   ]
 }

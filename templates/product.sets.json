@@ -12,6 +12,36 @@
     "main": {
       "type": "main-product",
       "blocks": {
+        "attribute_hFFVXC": {
+          "type": "attribute",
+          "settings": {
+            "icon": "shopify://shop_images/Group_1.svg",
+            "title": "complete set",
+            "subtitle": "parasol + two chairs"
+          }
+        },
+        "attribute_ta8t3i": {
+          "type": "attribute",
+          "settings": {
+            "icon": "shopify://shop_images/Vector_14.svg",
+            "title": "designed together",
+            "subtitle": "perfectly coordinated"
+          }
+        },
+        "attribute_PpmbyJ": {
+          "type": "attribute",
+          "settings": {
+            "icon": "shopify://shop_images/Vector_15.svg",
+            "title": "crafted by hand",
+            "subtitle": "artisan-made"
+          }
+        },
+        "klaviyo_reviews_average_rating_Lbca3a": {
+          "type": "shopify://apps/klaviyo-reviews/blocks/average-rating/db20e365-d984-4ac4-9655-e1588d951ca9",
+          "settings": {
+            "product": "{{product}}"
+          }
+        },
         "discount_message_cLkJCz": {
           "type": "discount_message",
           "settings": {
@@ -41,6 +71,10 @@
         }
       },
       "block_order": [
+        "attribute_hFFVXC",
+        "attribute_ta8t3i",
+        "attribute_PpmbyJ",
+        "klaviyo_reviews_average_rating_Lbca3a",
         "discount_message_cLkJCz",
         "accordion_material",
         "accordion_dimensions",
@@ -127,11 +161,25 @@
         "image_caption": "",
         "color_scheme": "scheme-1"
       }
+    },
+    "1790612491c168cad7": {
+      "type": "apps",
+      "blocks": {
+        "klaviyo_reviews_product_reviews_bdqizX": {
+          "type": "shopify://apps/klaviyo-reviews/blocks/product-reviews/db20e365-d984-4ac4-9655-e1588d951ca9",
+          "settings": {}
+        }
+      },
+      "block_order": [
+        "klaviyo_reviews_product_reviews_bdqizX"
+      ],
+      "settings": {}
     }
   },
   "order": [
     "main",
     "hotspot_image",
-    "image_text_craft"
+    "image_text_craft",
+    "1790612491c168cad7"
   ]
 }

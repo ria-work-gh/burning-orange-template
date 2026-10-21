@@ -12,6 +12,36 @@
     "main": {
       "type": "main-product",
       "blocks": {
+        "klaviyo_reviews_average_rating_gR4bNf": {
+          "type": "shopify://apps/klaviyo-reviews/blocks/average-rating/db20e365-d984-4ac4-9655-e1588d951ca9",
+          "settings": {
+            "product": "{{product}}"
+          }
+        },
+        "attribute_Tj8Wmp": {
+          "type": "attribute",
+          "settings": {
+            "icon": "shopify://shop_images/Vector_3.svg",
+            "title": "Hand woven",
+            "subtitle": "in Indonesia"
+          }
+        },
+        "attribute_bMY4ny": {
+          "type": "attribute",
+          "settings": {
+            "icon": "shopify://shop_images/Vector_4.svg",
+            "title": "solid acacia",
+            "subtitle": "responsibly sourced"
+          }
+        },
+        "attribute_9niqEw": {
+          "type": "attribute",
+          "settings": {
+            "icon": "shopify://shop_images/Vector_6.svg",
+            "title": "foldable",
+            "subtitle": "easy to store"
+          }
+        },
         "accordion_dimensions": {
           "type": "accordion",
           "settings": {
@@ -43,11 +73,15 @@
         "discount_message": {
           "type": "discount_message",
           "settings": {
-            "message": ""
+            "message": "Buy a pair for £425 - save £75"
           }
         }
       },
       "block_order": [
+        "klaviyo_reviews_average_rating_gR4bNf",
+        "attribute_Tj8Wmp",
+        "attribute_bMY4ny",
+        "attribute_9niqEw",
         "accordion_dimensions",
         "accordion_material",
         "accordion_UK8EwB",
@@ -135,11 +169,25 @@
         "image_caption": "",
         "color_scheme": "scheme-1"
       }
+    },
+    "179061107940e0ae67": {
+      "type": "apps",
+      "blocks": {
+        "klaviyo_reviews_product_reviews_jMynKH": {
+          "type": "shopify://apps/klaviyo-reviews/blocks/product-reviews/db20e365-d984-4ac4-9655-e1588d951ca9",
+          "settings": {}
+        }
+      },
+      "block_order": [
+        "klaviyo_reviews_product_reviews_jMynKH"
+      ],
+      "settings": {}
     }
   },
   "order": [
     "main",
     "hotspot_image",
-    "image_text_craft"
+    "image_text_craft",
+    "179061107940e0ae67"
   ]
 }
