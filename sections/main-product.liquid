@@ -54,7 +54,7 @@
       <div class="pdp-info">
         <div class="pdp-info-left">
           <div class="pdp-header">
-            <h1 class="text-large">{{ product.title }}</h1>
+            <h1 class="text-large">{{ product.metafields.custom.heading.value | default: product.title }}</h1>
             {%- for block in section.blocks -%}
               {%- if block.type == '@app' -%}
                 {% render block %}
