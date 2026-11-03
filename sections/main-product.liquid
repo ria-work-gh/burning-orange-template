@@ -54,7 +54,16 @@
       <div class="pdp-info">
         <div class="pdp-info-left">
           <div class="pdp-header">
-            <h1 class="text-large">{{ product.metafields.custom.heading.value | default: product.title }}</h1>
+            {%- comment -%}
+              When custom.heading is set, it becomes a visually hidden H1 for SEO and the
+              visible product title is demoted to a <p> so the page keeps a single H1.
+            {%- endcomment -%}
+            {%- if product.metafields.custom.heading != blank -%}
+              <h1 class="visually-hidden">{{ product.metafields.custom.heading.value }}</h1>
+              <p class="text-large">{{ product.title }}</p>
+            {%- else -%}
+              <h1 class="text-large">{{ product.title }}</h1>
+            {%- endif -%}
             {%- for block in section.blocks -%}
               {%- if block.type == '@app' -%}
                 {% render block %}
